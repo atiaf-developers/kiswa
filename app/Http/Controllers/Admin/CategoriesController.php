@@ -14,7 +14,6 @@ class CategoriesController extends BackendController {
     private $rules = array(
         'active' => 'required',
         'this_order' => 'required',
-        'category_image' => 'required|image|mimes:gif,png,jpeg|max:1000'
     );
 
     public function __construct() {
@@ -38,8 +37,6 @@ class CategoriesController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
-
-
         return $this->_view('categories/create', 'backend');
     }
 
@@ -52,7 +49,7 @@ class CategoriesController extends BackendController {
     public function store(Request $request) {
 
         $columns_arr = array(
-            'title' => 'required|unique:categories_translations,title'
+            'title' => 'required|unique:categoris_translations,title'
         );
         $this->rules = array_merge($this->rules, $this->lang_rules($columns_arr));
         $validator = Validator::make($request->all(), $this->rules);
@@ -68,8 +65,8 @@ class CategoriesController extends BackendController {
             $category = new Category;
             $category->active = $request->input('active');
             $category->this_order = $request->input('this_order');
-            $category->image = Category::upload($request->file('category_image'), 'categories', true);
-            $category->slug = str_slug($title['en']);
+            // $category->image = Category::upload($request->file('category_image'), 'categories', true);
+            // $category->locale = str_slug($title['en']);
             $category->save();
 
             $category_translations = array();
@@ -143,7 +140,7 @@ class CategoriesController extends BackendController {
         }
         $this->rules['category_image'] = 'image|mimes:gif,png,jpeg|max:1000';
         $columns_arr = array(
-            'title' => 'required|unique:categories_translations,title,' . $id . ',category_id'
+            'title' => 'required|unique:categoris_translations,title,' . $id . ',category_id'
         );
 
         $this->rules = array_merge($this->rules, $this->lang_rules($columns_arr));
@@ -160,11 +157,11 @@ class CategoriesController extends BackendController {
             $title = $request->input('title');
             $category->active = $request->input('active');
             $category->this_order = $request->input('this_order');
-            if ($request->file('category_image')) {
-                Category::deleteUploaded('categories', $category->image);
-                $category->image = Category::upload($request->file('category_image'), 'categories', true);
-            }
-            $category->slug = str_slug($title['en']);
+            // if ($request->file('category_image')) {
+            //     Category::deleteUploaded('categories', $category->image);
+            //     $category->image = Category::upload($request->file('category_image'), 'categories', true);
+            // }
+            // $category->locale = str_slug($title['en']);
             $category->save();
 
             $category_translations = array();
@@ -214,10 +211,10 @@ class CategoriesController extends BackendController {
     }
 
     public function data(Request $request) {
-        $categories = Category::Join('categories_translations', 'categories.id', '=', 'categories_translations.category_id')
-                ->where('categories_translations.locale', $this->lang_code)
+        $categories = Category::Join('categoris_translations', 'categories.id', '=', 'categoris_translations.category_id')
+                ->where('categoris_translations.locale', $this->lang_code)
                 ->select([
-            'categories.id', 'categories.image', "categories_translations.title", "categories.this_order", "categories.active"
+            'categories.id', "categoris_translations.title", "categories.this_order", "categories.active"
         ]);
 
         return \Datatables::eloquent($categories)
@@ -260,12 +257,6 @@ class CategoriesController extends BackendController {
                                 $class = 'label-danger';
                             }
                             $back = '<span class="label label-sm ' . $class . '">' . $message . '</span>';
-                            return $back;
-                        })
-                        ->addColumn('image', function ($item) {
-
-                            $back = '<img src="' . url('public/uploads/categories/' . $item->image) . '" style="height:64px;width:64px;"/>';
-
                             return $back;
                         })
                         ->escapeColumns([])

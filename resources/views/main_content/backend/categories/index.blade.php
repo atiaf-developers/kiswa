@@ -38,7 +38,7 @@
                     <th>{{_lang('app.title')}}</th>
                     <th>{{_lang('app.active')}}</th>
                     <th>{{_lang('app.this_order')}}</th>
-                    <th>{{_lang('app.image')}}</th>
+                    {{--  <th>{{_lang('app.image')}}</th>  --}}
                     <th>{{_lang('app.options')}}</th>
                 </tr>
             </thead>

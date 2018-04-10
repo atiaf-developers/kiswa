@@ -36,17 +36,7 @@
                     <label for="email">{{_lang('app.email') }}</label>
                     <span class="help-block"></span>
                 </div>
-                <div class="form-group form-md-line-input col-md-6">
-                    <input type="text" class="form-control" id="work_from" name="setting[work_from]" value="{{$settings['work_from']->value}}">
-                    <label for="work_from">{{_lang('app.work_to') }}</label>
-                    <span class="help-block"></span>
-                </div>
-                <div class="form-group form-md-line-input col-md-6">
-                    <input type="text" class="form-control" id="work_to" name="setting[work_to]" value="{{$settings['work_to']->value}}">
-                    <label for="work_to">{{_lang('app.work_to') }}</label>
-                    <span class="help-block"></span>
-                </div>
-                <div class="form-group col-md-2">
+                {{--  <div class="form-group col-md-2">
                     <label class="control-label">{{_lang('app.about_image')}}</label>
 
                     <div class="about_image_box">
@@ -54,7 +44,7 @@
                     </div>
                     <input type="file" name="about_image" id="about_image" style="display:none;">     
                     <span class="help-block"></span>             
-                </div>
+                </div>  --}}
 
                 <div class="clearfix"></div>
 
@@ -70,19 +60,24 @@
         </div>
 
     </div>
-    <div class="panel panel-default">
+    {{--  <div class="panel panel-default">
 
         <div class="panel-body">
 
-            <div class="form-body">
+            <div class="form-body">  --}}
 
                 @foreach ($languages as $key => $value)
+                <div class="panel panel-default">
+
+                        <div class="panel-body">
+                
+                            <div class="form-body">
                 <div class="col-md-12">
-                    <div class="form-group form-md-line-input col-md-3">
+                    {{--  <div class="form-group form-md-line-input col-md-12">
                         <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="{{isset($settings_translations[$key])?$settings_translations[$key]->title:''}}">
                         <label for="title">{{_lang('app.title') }} {{ _lang('app. '.$value.'') }}</label>
                         <span class="help-block"></span>
-                    </div>
+                    </div>  --}}
                     <div class="form-group form-md-line-input col-md-3">
                         <textarea class="form-control" id="description[{{ $key }}]" name="description[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->description:''}}</textarea>
                         <label for="description">{{_lang('app.description') }} {{ _lang('app. '.$value.'') }}</label>
@@ -104,9 +99,6 @@
                         <span class="help-block"></span>
                     </div>
                 </div>
-
-                @endforeach
-
             </div>
 
 
@@ -116,6 +108,9 @@
         </div>
 
     </div>
+                @endforeach
+
+           
     <div class="panel panel-default">
 
         <div class="panel-body">
