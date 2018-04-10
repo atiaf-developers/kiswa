@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration {
             $table->string('password');
             $table->integer('type');
             /*
-             1 => managers
-             2 => bus_supervisors
+             1 => client
+             2 => delegate
             */
             $table->string('device_token');
             $table->boolean('device_type');

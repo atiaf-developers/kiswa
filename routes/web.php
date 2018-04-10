@@ -91,14 +91,15 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::resource('groups', 'GroupsController');
     Route::resource('admins', 'AdminsController');
 
-    Route::resource('pilgrims', 'PilgrimsController');
+    Route::resource('cooperating_societies', 'CooperatingSocietiesController');
+    Route::resource('activities', 'ActivitiesController');
     Route::post('pilgrims/import', 'PilgrimsController@import');
     Route::post('pilgrims/data', 'PilgrimsController@data');
     Route::resource('locations', 'LocationsController');
     Route::resource('our_locations', 'OurLocationsController');
     Route::resource('categories', 'CategoriesController');
     Route::resource('games', 'GamesController');
-    Route::resource('slider', 'SliderController');
+    Route::resource('videos', 'VideosController');
 
     Route::get('settings', 'SettingsController@index');
   
@@ -130,8 +131,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('contact_messages/data', 'ContactMessagesController@data');
 
     Route::post('categories/data', 'CategoriesController@data');
-    Route::post('slider/data', 'SliderController@data');
-    Route::post('games/data', 'GamesController@data');
+    Route::post('videos/data', 'VideosController@data');
+    Route::post('cooperating_societies/data', 'CooperatingSocietiesController@data');
+    Route::post('activities/data', 'ActivitiesController@data');
+   
+
+    
+
  
 
 
