@@ -13,7 +13,7 @@ class SettingsController extends BackendController {
 
     private $rules = array(
         'setting.email' => 'required|email', 'setting.phone' => 'required',
-        'setting.work_from' => 'required', 'setting.work_to' => 'required',
+        // 'setting.work_from' => 'required', 'setting.work_to' => 'required',
         'setting.social_media.facebook' => 'required',
         'setting.social_media.twitter' => 'required',
         'setting.social_media.instagram' => 'required',
@@ -24,7 +24,11 @@ class SettingsController extends BackendController {
     public function index() {
 
         $this->data['settings'] = Setting::get()->keyBy('name');
-        $this->data['settings']['social_media']=json_decode($this->data['settings']['social_media']->value);
+        // dd($this->data['settings']);
+        if($this->data['settings']){
+            $this->data['settings']['social_media']=json_decode($this->data['settings']['social_media']->value);
+        }
+        
         //dd($this->data['settings']['social_media']);
         $this->data['settings_translations'] = SettingTranslation::get()->keyBy('locale');
         return $this->_view('settings/index', 'backend');
@@ -36,7 +40,7 @@ class SettingsController extends BackendController {
             $this->rules['about_image'] = 'image|mimes:gif,png,jpeg|max:1000';
         }
         $columns_arr = array(
-            'title' => 'required',
+            // 'title' => 'required',
             'about' => 'required',
             'description' => 'required',
             'address' => 'required',
@@ -54,31 +58,21 @@ class SettingsController extends BackendController {
             DB::beginTransaction();
             try {
                 $setting = $request->input('setting');
-                //dd(json_encode($setting['social_media']));
-                Setting::updateOrCreate(
-                        ['name' => 'email'], ['value' => $setting['email']]);
-                Setting::updateOrCreate(
-                        ['name' => 'phone'], ['value' => $setting['phone']]);
-                Setting::updateOrCreate(
-                        ['name' => 'social_media'], ['value' => json_encode($setting['social_media'])]);
-                Setting::updateOrCreate(
-                        ['name' => 'lat'], ['value' => $setting['lat']]);
-                Setting::updateOrCreate(
-                        ['name' => 'lng'], ['value' => $setting['lng']]);
-                Setting::updateOrCreate(
-                        ['name' => 'work_from'], ['value' => $setting['work_from']]);
-                Setting::updateOrCreate(
-                        ['name' => 'work_to'], ['value' => $setting['work_to']]);
-                if ($request->file('about_image')) {
-                    Setting::updateOrCreate(
-                            ['name' => 'about_image'], ['value' => Setting::upload($request->file('about_image'), '/', true)]);
+                foreach($setting as $key=>$value){
+                    if($key=='social_media'){
+                        Setting::updateOrCreate(
+                        ['name' => $key], ['value' => json_encode($value)]);
+                    }else{
+                        Setting::updateOrCreate(
+                            ['name' => $key], ['value' => $value]);
+                    }
                 }
-                $title = $request->input('title');
+                // $title = $request->input('title');
                 $description = $request->input('description');
                 $address = $request->input('address');
                 $about = $request->input('about');
                 $policy = $request->input('policy');
-                foreach ($title as $key => $value) {
+                foreach ($about as $key => $value) {
                     SettingTranslation::updateOrCreate(
                             ['locale' => $key], [
                                 'locale' => $key, 'title' => $value, 'description' => $description[$key],

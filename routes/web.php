@@ -103,7 +103,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::get('settings', 'SettingsController@index');
   
-
+    // Route For Container Moduel {Start}
+    Route::resource('container', 'ContainersController');
+    Route::post('container/data', 'ContainersController@data');
+    // Route For Container Moduel {End}
 
 
 

@@ -68,7 +68,7 @@
                      <label for="status">{{_lang('app.status') }}</label>
                     <span class="help-block"></span>
                 </div> 
-                 <div class="form-group col-md-2">
+                 {{--  <div class="form-group col-md-2">
                     <label class="control-label">{{_lang('app.image')}}</label>
 
                     <div class="category_image_box">
@@ -76,7 +76,7 @@
                     </div>
                     <input type="file" name="category_image" id="category_image" style="display:none;">     
                     <span class="help-block"></span>             
-                </div>
+                </div>  --}}
 
                 
 
