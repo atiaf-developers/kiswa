@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\ModelTrait;
 use DB;
 
 class User extends Authenticatable {
 
     use Notifiable;
+    use ModelTrait;
 
     protected $casts = array(
         'id' => 'integer',
@@ -23,7 +25,7 @@ class User extends Authenticatable {
         parent::boot();
 
         static::deleting(function($user) {
-          
+            
         });
     }
    
