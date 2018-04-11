@@ -15,8 +15,10 @@ class News extends MyModel
 	public static function transform($item)
 	{
 		$transformer = new \stdClass();
-		$transformer->image = $item->image ? url('public/uploads/news') . '/' . $item->image : '';
+		$transformer->title = $item->title;
 		$transformer->description = $item->description;
+		$prefixed_array = preg_filter('/^/', url('public/uploads/news') . '/', json_decode($item->images));
+		$transformer->images = $prefixed_array;
 		$transformer->created_at = date('d/m/Y',strtotime($item->created_at));
 
        return $transformer;

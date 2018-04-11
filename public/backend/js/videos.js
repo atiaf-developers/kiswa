@@ -7,8 +7,24 @@ var Videos = function () {
         $.extend(config, new_config);
         handleRecords();
         handleSubmit();
+        handleChangeYoutubeUrl();
     };
 
+    
+    var handleChangeYoutubeUrl = function () {
+        $('#url').on('change', function () {
+            var value = $(this).val();
+            if (value && value != '') {
+                var myId = My.getYoutubeEmbedUrl(value);
+
+                $('#youtube_url').val(myId);
+
+                $('#youtube-iframe').html('<iframe width="100%" height="315" src="//www.youtube.com/embed/' + myId + '" frameborder="0" allowfullscreen></iframe>');
+            }
+
+        })
+
+    }
 
     var handleRecords = function () {
         Videos_grid = $('.dataTable').dataTable({

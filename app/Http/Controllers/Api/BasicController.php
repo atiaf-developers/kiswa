@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Setting;
 use App\Models\Category;
 use App\Models\News;
-use App\Models\OurLocation;
+use App\Models\CooperatingSociety;
 use App\Models\ContactMessage;
 use App\Models\CommonQuestion;
 use App\Models\RateQuestion;
@@ -30,11 +30,7 @@ class BasicController extends ApiController {
         'name' => 'required'
     );
 
-    private $rate_rules = array(
-        'question_id' => 'required',
-        'answer_id' => 'required',
-    );
-
+   
     
 
     public function getToken(Request $request) {
@@ -102,7 +98,7 @@ class BasicController extends ApiController {
                           ->where('news_translations.locale',$this->lang_code)
                           ->where('news.active',true)
                           ->orderBy('news.this_order')
-                          ->select('news.id','news.image','news.created_at','news_translations.description')
+                          ->select('news.id','news.images','news.created_at','news_translations.title','news_translations.description')
                           ->paginate($this->limit);
 
 
@@ -118,29 +114,30 @@ class BasicController extends ApiController {
             $categories = Category::Join('categories_translations','categories.id','=','categories_translations.category_id')
                                    ->where('categories_translations.locale',$this->lang_code)
                                    ->where('categories.active',true)
-                                   ->where('categories.parent_id',0)
                                    ->orderBy('categories.this_order')
-                                   ->select("categories.id", "categories_translations.title","categories.parent_id")
-                                   ->paginate($this->limit);
+                                   ->select("categories.id", "categories_translations.title")
+                                   ->get();
             return _api_json(Category::transformCollection($categories));
         } catch (\Exception $e) {
+            dd($e);
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
 
 
-    public function getOurLocations() {
+    public function getCooperatingSocities() {
         try {
 
-            $our_locations = OurLocation::Join('our_locations_translations','our_locations.id','=','our_locations_translations.our_location_id')
-                                   ->where('our_locations_translations.locale',$this->lang_code)
-                                   ->where('our_locations.active',true)
-                                   ->orderBy('our_locations.this_order')
-                                   ->select("our_locations.id","our_locations.location_image","our_locations_translations.title","our_locations_translations.address","our_locations.lat","our_locations.lng","our_locations.contact_numbers")
+            $cooperating_societies = CooperatingSociety::Join('cooperating_societies_translations','cooperating_societies.id','=','cooperating_societies_translations.cooperating_society_id')
+                                   ->where('cooperating_societies_translations.locale',$this->lang_code)
+                                   ->where('cooperating_societies.active',true)
+                                   ->orderBy('cooperating_societies.this_order')
+                                   ->select("cooperating_societies.id","cooperating_societies.image","cooperating_societies_translations.title","cooperating_societies_translations.description")
                                    ->paginate($this->limit);
 
-            return _api_json(OurLocation::transformCollection($our_locations));
+            return _api_json(CooperatingSociety::transformCollection($cooperating_societies));
         } catch (\Exception $e) {
+            dd($e);
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }

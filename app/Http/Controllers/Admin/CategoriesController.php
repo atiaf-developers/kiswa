@@ -49,7 +49,7 @@ class CategoriesController extends BackendController {
     public function store(Request $request) {
 
         $columns_arr = array(
-            'title' => 'required|unique:categoris_translations,title'
+            'title' => 'required|unique:categories_translations,title'
         );
         $this->rules = array_merge($this->rules, $this->lang_rules($columns_arr));
         $validator = Validator::make($request->all(), $this->rules);
@@ -140,7 +140,7 @@ class CategoriesController extends BackendController {
         }
         $this->rules['category_image'] = 'image|mimes:gif,png,jpeg|max:1000';
         $columns_arr = array(
-            'title' => 'required|unique:categoris_translations,title,' . $id . ',category_id'
+            'title' => 'required|unique:categories_translations,title,' . $id . ',category_id'
         );
 
         $this->rules = array_merge($this->rules, $this->lang_rules($columns_arr));
@@ -211,10 +211,10 @@ class CategoriesController extends BackendController {
     }
 
     public function data(Request $request) {
-        $categories = Category::Join('categoris_translations', 'categories.id', '=', 'categoris_translations.category_id')
-                ->where('categoris_translations.locale', $this->lang_code)
+        $categories = Category::Join('categories_translations', 'categories.id', '=', 'categories_translations.category_id')
+                ->where('categories_translations.locale', $this->lang_code)
                 ->select([
-            'categories.id', "categoris_translations.title", "categories.this_order", "categories.active"
+            'categories.id', "categories_translations.title", "categories.this_order", "categories.active"
         ]);
 
         return \Datatables::eloquent($categories)

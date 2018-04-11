@@ -23,7 +23,7 @@ var Categories = function() {
             },
             "columns": [
                 //                    {"data": "user_input", orderable: false, "class": "text-center"},
-                { "data": "title", "name": "categoris_translations.title" },
+                { "data": "title", "name": "categories_translations.title" },
                 { "data": "active", "name": "categories.active", searchable: false },
                 { "data": "this_order", "name": "categories.this_order" },
                 // { "data": "image", orderable: false, searchable: false },

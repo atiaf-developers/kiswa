@@ -54,9 +54,15 @@
             <div class="form-body">
 
                 <div class="form-group form-md-line-input col-md-6">
+                    <input type="hidden" name="youtube_url" id="youtube_url" value="">
                     <input type="text" class="form-control" id="url" name="url" value="">
                     <label for="url">{{_lang('app.url') }}</label>
                     <span class="help-block"></span>
+
+                </div>
+
+                <div id="youtube-iframe" class="col-md-12">
+
                 </div>
 
                 <div class="form-group form-md-line-input col-md-3">
@@ -73,6 +79,8 @@
                      <label for="status">{{_lang('app.status') }}</label>
                     <span class="help-block"></span>
                 </div> 
+
+
 
                 
                 

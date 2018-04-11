@@ -15,9 +15,9 @@ class CooperatingSociety extends MyModel
 	public static function transform($item)
 	{
 		$transformer = new \stdClass();
-		$transformer->image = $item->image ? url('public/uploads/cooperating_societies') . '/' . $item->image : '';
+		$transformer->title = $item->title;
 		$transformer->description = $item->description;
-		$transformer->created_at = date('d/m/Y',strtotime($item->created_at));
+		$transformer->image = $item->image ? url('public/uploads/cooperating_societies') . '/' . $item->image : '';
 
        return $transformer;
 		

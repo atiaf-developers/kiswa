@@ -23,9 +23,9 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('/token', 'BasicController@getToken');
     Route::get('/settings', 'BasicController@getSettings');
 
-    Route::get('get_categories', 'BasicController@getCategories');
+    Route::get('get_donation_types', 'BasicController@getCategories');
     Route::get('get_news', 'BasicController@getNews');
-    Route::get('get_our_locations', 'BasicController@getOurLocations');
+    Route::get('get_cooperating_socities', 'BasicController@getCooperatingSocities');
     Route::get('get_common_questions', 'BasicController@getCommonQuestions');
     Route::get('get_rate_questions', 'BasicController@getRateQuestions');
     Route::get('get_communication_guides', 'BasicController@getCommunicationGuides');

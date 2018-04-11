@@ -25,10 +25,11 @@ class Category extends MyModel {
     }
 
     public static function transform($item) {
-        $item->image = url('public/uploads/categories/m_' . static::rmv_prefix($item->image));
-        $item->url = _url('category/' . $item->slug);
+        $transformer = new \stdClass();
+        $transformer->id = $item->id;
+        $transformer->title = $item->title;
 
-        return $item;
+        return $transformer;
     }
 
     public static function transformFrontHome($item) {
