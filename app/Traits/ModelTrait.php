@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Traits;
+use Image;
 
-
-class ModelTrait {
+trait ModelTrait {
 
     protected $lang_code;
     protected static $limit = 1;

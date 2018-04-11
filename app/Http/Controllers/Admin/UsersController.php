@@ -74,14 +74,14 @@ class UsersController extends BackendController {
         } else {
             $image=User::upload($request->file('user_image'), 'users',true);
             $User = new User;
-            $User->fullname = $request->input('fullname');
+            $User->name = $request->input('fullname');
             $User->username = $request->input('username');
             $User->email = $request->input('email');
             $User->mobile = $request->input('mobile');
             $User->password = bcrypt($request->input('password'));
             $User->active = $request->input('active');
             $User->type = $request->input('type');
-            $User->user_image = $image;
+            $User->image = $image;
             try {
                 $User->save();
                 return _json('success', _lang('app.added_successfully'));
@@ -102,20 +102,7 @@ class UsersController extends BackendController {
         $User = User::find($id);
 
         if ($User != null) {
-            $User=User::transform($User);
-            $Massage=Massage::whereNull('from_id')->where('to_id',$id)->first();
-            if($Massage){
-                $User->msg_id=$Massage->id;
-            }else{
-                $Massage=new Massage;
-                $Massage->to_id=$id;
-                $Massage->chat='';
-                $Massage->save();
-                $Massage=Massage::whereNull('from_id')->where('to_id',$id)->first();
-                $User->msg_id=$Massage->id;
-
-            }
-            // dd($User);
+            // $User=User::transform($User);
             return _json('success', $User);
         } else {
             return _json('error', _lang('app.error_is_occured'));
@@ -161,7 +148,7 @@ class UsersController extends BackendController {
             $errors = $validator->errors()->toArray();
             return _json('error', $errors);
         } else {
-          $User->fullname = $request->input('fullname');
+          $User->name = $request->input('fullname');
           $User->username = $request->input('username');
           $User->email = $request->input('email');
           $User->mobile = $request->input('mobile');
@@ -177,10 +164,8 @@ class UsersController extends BackendController {
                         unlink($file);
                     }
                 }
-                $User->user_image = $this->_upload($request->file('user_image'), 'users');
+                $User->image = User::upload($request->file('user_image'), 'users',true);
             }
-        
-        
             try {
                 $User->save();
                 return _json('success', _lang('app.updated_successfully'));

@@ -389,7 +389,7 @@ var Users = function() {
                     for (i in data.message) {
                         if (i == 'password') {
                             continue;
-                        } else if (i == 'user_image') {
+                        } else if (i == 'image') {
                             $('.user_image_box').html('<img style="height:80px;width:150px;" class="user_image"  src="' + config.public_path + '/uploads/users/' + data.message[i] + '" alt="your image" />');
                         } else {
                             $('#' + i).val(data.message[i]);

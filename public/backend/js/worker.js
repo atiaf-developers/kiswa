@@ -52,7 +52,7 @@ var Worker = function() {
                         //"processing": true,
                         "serverSide": true,
                         "ajax": {
-                            "url": config.admin_url + "/users/data?page=worker",
+                            "url": config.admin_url + "/users/data?type=clients",
                             "type": "POST",
                             data: { type: type, _token: $('input[name="_token"]').val() },
                         },
@@ -76,7 +76,7 @@ var Worker = function() {
                         data.type = type
                         data._token = $('input[name="_token"]').val()
                     })
-                    Famous_grid.api().ajax.url(config.admin_url + "/users/data?page=worker").load();
+                    Famous_grid.api().ajax.url(config.admin_url + "/users/data?type=clients").load();
                 }
                 $('#famous-table').show();
             } else {
@@ -86,7 +86,7 @@ var Worker = function() {
                         //"processing": true,
                         "serverSide": true,
                         "ajax": {
-                            "url": config.admin_url + "/users/data?page=worker",
+                            "url": config.admin_url + "/users/data?type=clients",
                             "type": "POST",
                             data: { type: type, _token: $('input[name="_token"]').val() },
                         },
@@ -109,7 +109,7 @@ var Worker = function() {
                         data.type = type
                         data._token = $('input[name="_token"]').val()
                     })
-                    Members_grid.api().ajax.url(config.admin_url + "/users/data?page=worker").load();
+                    Members_grid.api().ajax.url(config.admin_url + "/users/data?type=clients").load();
                 }
                 $('#members-table').show();
             }
@@ -126,7 +126,7 @@ var Worker = function() {
             //"processing": true,
             "serverSide": true,
             "ajax": {
-                "url": config.admin_url + "/users/data?page=worker",
+                "url": config.admin_url + "/users/data?type=clients",
                 "type": "POST",
                 data: { type: type, _token: $('input[name="_token"]').val() },
             },
@@ -136,7 +136,6 @@ var Worker = function() {
                 { "data": "image", "name": "image" },
                 { "data": "mobile", "name": "mobile" },
                 { "data": "active", "name": "active" },
-                { "data": "trust", "name": "trust" },
                 { "data": "options", orderable: false, searchable: false }
             ],
             "order": [
@@ -205,10 +204,10 @@ var Worker = function() {
         $('#addEditWorkerForm').submit(function() {
             var id = $('#id').val();
             var formData = new FormData($(this)[0]);
-            var action = config.admin_url + '/users?page=worker';
+            var action = config.admin_url + '/users?type=clients';
             if (id != 0) {
                 formData.append('_method', 'PATCH');
-                action = config.admin_url + '/users/' + id + '?page=worker';
+                action = config.admin_url + '/users/' + id + '?type=clients';
             }
 
 
@@ -376,7 +375,7 @@ var Worker = function() {
             var id = $(t).attr("data-id");
             My.editForm({
                 element: t,
-                url: config.admin_url + '/users/' + id + '?page=worker',
+                url: config.admin_url + '/users/' + id + '?type=clients',
                 success: function(data) {
                     console.log(data);
 
@@ -412,7 +411,7 @@ var Worker = function() {
             document.getElementById('user_id').value = id;
             My.editForm({
                 element: t,
-                url: config.admin_url + '/users/' + id + '?page=worker',
+                url: config.admin_url + '/users/' + id + '?type=clients',
                 success: function(data) {
                     console.log(data);
 
@@ -507,7 +506,7 @@ var Worker = function() {
         allowable: function(t) {
             var id = $(t).attr("data-id");
 
-            var action = config.admin_url + '/users/trust/' + id + '?page=worker';
+            var action = config.admin_url + '/users/trust/' + id + '?type=clients';
             $.ajax({
                 url: action,
                 data: '',
@@ -578,7 +577,7 @@ var Worker = function() {
         order: function(t) {
             var id = $(t).attr("data-id");
 
-            var action = config.admin_url + '/users/order/' + id + '?page=worker';
+            var action = config.admin_url + '/users/order/' + id + '?type=clients';
             $.ajax({
                 url: action,
                 data: '',
@@ -650,7 +649,7 @@ var Worker = function() {
             var id = $(t).attr("data-id");
             My.deleteForm({
                 element: t,
-                url: config.admin_url + '/users/' + id + '?page=worker',
+                url: config.admin_url + '/users/' + id + '?type=clients',
                 data: { _method: 'DELETE', _token: $('input[name="_token"]').val() },
                 success: function(data) {
 

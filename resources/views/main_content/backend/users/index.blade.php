@@ -25,7 +25,7 @@
                     <input type="hidden" name="type" id="type" value="1">
                     <div class="form-body">
                         <div class="form-group form-md-line-input col-md-6">
-                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="{{_lang('app.fullname')}}">
+                            <input type="text" class="form-control" id="name" name="fullname" placeholder="{{_lang('app.fullname')}}">
                             <label for="fullname">{{_lang('app.fullname')}}</label>
                             <span class="help-block"></span>
                         </div>

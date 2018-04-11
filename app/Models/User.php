@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\ModelTrait;
 use DB;
 
+
+
 class User extends Authenticatable {
 
     use Notifiable;
