@@ -109,6 +109,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     // Route For Container Moduel {End}
 
 
+    // Route For Users Moduel {Start}
+    Route::resource('users', 'UsersController');
+    Route::post('users/data', 'UsersController@data');
+    // Route For Users Moduel {End}
+
 
 
 

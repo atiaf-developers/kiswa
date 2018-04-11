@@ -128,8 +128,6 @@ class MyModel extends Model {
         $path = public_path() . "/uploads/$path";
         $extension = (!$base) ? '.' . strtolower($file->getClientOriginalExtension()) : '.png';
         $filename = time() . mt_rand(1, 1000000) . $extension;
-
-
         $image = Image::make($file);
         $names = array();
         if ($resize) {

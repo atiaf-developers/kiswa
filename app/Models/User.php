@@ -15,7 +15,8 @@ class User extends Authenticatable {
         'mobile' => 'integer',
     );
     public static $sizes = array(
-        's' => array('width' => 150, 'height' => 150)
+        's' => array('width' => 120, 'height' => 120),
+        'm' => array('width' => 400, 'height' => 400),
     );
 
     protected static function boot() {
@@ -25,5 +26,6 @@ class User extends Authenticatable {
           
         });
     }
+   
 
 }
