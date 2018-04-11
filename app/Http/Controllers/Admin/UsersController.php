@@ -215,7 +215,7 @@ class UsersController extends BackendController {
                     if($item->type==1){
                         $js='Users';
                     }else{
-                        $js='Delegates';
+                        $js='Worker';
                     }
                     $back = "";
 

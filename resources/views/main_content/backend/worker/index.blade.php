@@ -35,6 +35,11 @@
                     <input type="hidden" name="type" id="type" value="2">
                     <div class="form-body">
                         <div class="form-group form-md-line-input col-md-6">
+                            <input type="text" class="form-control" id="name" name="fullname" placeholder="{{_lang('app.fullname')}}">
+                            <label for="fullname">{{_lang('app.fullname')}}</label>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="form-group form-md-line-input col-md-6">
                             <input type="text" class="form-control" id="username" name="username" placeholder="{{_lang('app.username')}}">
                             <label for="username">{{_lang('app.username')}}</label>
                             <span class="help-block"></span>
@@ -54,31 +59,6 @@
                             <label for="mobile">{{_lang('app.mobile')}}</label>
                             <span class="help-block"></span>
                         </div>
-                        <div class="form-group form-md-line-input col-md-6">
-                            <input type="text" class="form-control" id="job" name="job" placeholder="{{_lang('app.job')}}" readonly="">
-                            <label for="password">{{_lang('app.job')}}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-6">
-                            <input type="text" class="form-control" id="subjob" name="subjob" placeholder="{{_lang('app.subjob')}}" readonly="">
-                            <label for="password">{{_lang('app.sub_job')}}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-6">
-                            <input type="text" class="form-control" id="country" name="country" placeholder="{{_lang('app.country')}}" readonly="">
-                            <label for="password">{{_lang('app.country')}}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-6">
-                            <input type="text" class="form-control" id="city" name="city" placeholder="{{_lang('app.city')}}" readonly="">
-                            <label for="password">{{_lang('app.city')}}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-6">
-                            <input type="text" class="form-control" id="state" name="state" placeholder="{{_lang('app.state')}}" readonly="">
-                            <label for="password">{{_lang('app.state')}}</label>
-                            <span class="help-block"></span>
-                        </div>
                         <div class = "col-md-6 form-group form-md-line-input">
                             <select class = "form-control edited" id = "active" name = "active">
                                 <option value = "1">{{_lang('app.active')}}</option>
@@ -86,11 +66,6 @@
                             </select>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="form-group form-md-line-input col-md-9">
-                            <textarea rows="5" class="form-control" name="about" id="about"></textarea>
-                            <label for="about">{{_lang('app.about') }} (Optinal)</label>
-                            <span class="help-block"></span>
-                        </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">{{_lang('app.image')}}</label>
                             <div class="user_image_box image_uploaded_box">
@@ -99,28 +74,7 @@
                             <input type="file" name="user_image" id="user_image" style="display:none;" readonly="">
                             <div class="help-block"></div>
                         </div>
-                        <div class="form-group col-md-12">
-                        <input value="" type="hidden" id="lat" name="lat">
-                        <input value="" type="hidden" id="lng" name="lng">
-
-                        <span class="help-block utbox"></span>
-                         <style>
-                             .pac-container{
-                                z-index: 99999;
-                             }
-                             #pac-input{
-                                left:20% !important;
-                             }
-                         </style>
-                        <div class="maplarger"  >
-                             <div id="map" style="height: 500px; width:100%;"></div>
-                             <div id="infowindow-content">
-                                <span id="place-name"  class="title"></span><br>
-                                <span id="place-address"></span>
-                            </div>
-                          </div>
-                        <div class="clearfix"></div>
-                      </div>
+                       
 
 
 
@@ -182,7 +136,7 @@
         <div class="clearfix"></div>
 
         <div id="famous-table" class="table-container">
-            <!-- <a class = "btn btn-sm btn-info pull-left" style = "margin-bottom: 40px;" href = "" onclick = "Worker.add(); return false;" > {{_lang('app.add_new')}} </a> -->
+           <a class = "btn btn-sm btn-info pull-left" style = "margin-bottom: 40px;" href = "" onclick = "Worker.add(); return false;" > {{_lang('app.add_new')}} </a> 
             <table class = "table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer">
                 <thead>
                     <tr>
@@ -190,7 +144,6 @@
                         <th>{{_lang('app.image')}}</th>
                         <th>{{_lang('app.mobile')}}</th>
                         <th>{{_lang('app.status')}}</th>
-                        <th>{{_lang('app.has_trust')}}</th>
                         <th>{{_lang('app.options')}}</th>
                     </tr>
                 </thead>
@@ -268,7 +221,5 @@
 
       // console.log(map);
 </script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUyHUMEdN1Fjbj4z8Ig8MZIxl9meBW2Go&callback=initMap">
-    </script>
+
 @endsection
