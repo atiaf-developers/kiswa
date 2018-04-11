@@ -1,40 +1,14 @@
 <?php
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use App\Helpers\AUTHORIZATION;
-use App\Models\User;
-use Request;
+namespace App\Traits;
 use Image;
 
-class MyModel extends Model {
+trait ModelTrait {
 
     protected $lang_code;
     protected static $limit = 1;
     protected static $distance = 1000000;
-    protected static $status_text = [
-        0 => 'pending',
-        1 => 'in_progress',
-        2 => 'on_the_way',
-        3 => 'deliverd',
-        4 => 'rejected',
-    ];
 
-    public function __construct(array $attributes = array()) {
-        parent::__construct($attributes);
-    }
-
-    protected static function auth_user() {
-        $token = Request::header('authorization');
-        $token = Authorization::validateToken($token);
-        $user = null;
-        if ($token) {
-            $user = User::find($token->id);
-        }
-
-        return $user;
-    }
 
     protected static function getLangCode() {
         $lang_code = app()->getLocale();
@@ -52,18 +26,6 @@ class MyModel extends Model {
         return $currency_sign;
     }
 
-    protected static function transformCollection2($items) {
-
-        $transformers = array();
-
-        if (count($items)) {
-            foreach ($items as $item) {
-                $transformers[] = self::transform($item);
-            }
-        }
-
-        return $transformers;
-    }
 
     protected static function transformCollection($items, $type = null) {
 
@@ -128,6 +90,8 @@ class MyModel extends Model {
         $path = public_path() . "/uploads/$path";
         $extension = (!$base) ? '.' . strtolower($file->getClientOriginalExtension()) : '.png';
         $filename = time() . mt_rand(1, 1000000) . $extension;
+
+
         $image = Image::make($file);
         $names = array();
         if ($resize) {
