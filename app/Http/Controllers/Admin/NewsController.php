@@ -14,10 +14,10 @@ class NewsController extends BackendController {
 
     private $rules = array(
         'images.0' => 'required|image|mimes:gif,png,jpeg|max:1000',
-        'images.1' => 'required|image|mimes:gif,png,jpeg|max:1000',
-        'images.2' => 'required|image|mimes:gif,png,jpeg|max:1000',
-        'images.3' => 'required|image|mimes:gif,png,jpeg|max:1000',
-        'images.4' => 'required|image|mimes:gif,png,jpeg|max:1000',
+        'images.1' => 'image|mimes:gif,png,jpeg|max:1000',
+        'images.2' => 'image|mimes:gif,png,jpeg|max:1000',
+        'images.3' => 'image|mimes:gif,png,jpeg|max:1000',
+        'images.4' => 'image|mimes:gif,png,jpeg|max:1000',
         'active' => 'required',
         'this_order' => 'required'
     );
@@ -67,17 +67,14 @@ class NewsController extends BackendController {
         DB::beginTransaction();
         try {
 
-            $gallery = [];
-
+            $images = [];
             foreach ($request->file('images') as $one) {
-                $gallery[] = News::upload($one, 'news', true);
+                $images[] = News::upload($one, 'news', true);
             }
-
-
             $news = new News;
             $news->active = $request->input('active');
             $news->this_order = $request->input('this_order');
-            $news->images = json_encode($gallery);
+            $news->images = json_encode($images);
             
             $news->save();
             
@@ -93,7 +90,7 @@ class NewsController extends BackendController {
                     'news_id' => $news->id
                 );
             }
-            NewsTranslation::insert($News_translations);
+            NewsTranslation::insert($news_translations);
             DB::commit();
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
@@ -131,7 +128,7 @@ class NewsController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
 
-        $news_translations = NewsTranslation::where('news_id',$id)->get()->keyBy('locale');
+        $this->data['translations'] = NewsTranslation::where('news_id',$id)->get()->keyBy('locale');
         $news->images = json_decode($news->images);
         $this->data['news'] = $news;
 
@@ -147,15 +144,15 @@ class NewsController extends BackendController {
      */
     public function update(Request $request, $id) {
 
-        $News = News::find($id);
+        $news = News::find($id);
 
-        if (!$News) {
+        if (!$news) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
 
-        if (!$request->file('image')) {
-           unset($this->rules['image']);
-        }
+     
+        unset($this->rules['images.0']);
+        
         
        $columns_arr = array(
             'title' => 'required',
@@ -173,34 +170,38 @@ class NewsController extends BackendController {
 
         DB::beginTransaction();
         try {
-
-            $News->active = $request->input('active');
-            $News->this_order = $request->input('this_order');
-            if ($request->file('image')) {
-                if ($News->image) {
-                    $old_image = $News->image;
-                    News::deleteUploaded('news', $old_image);
+             $images = json_decode($news->images);
+            if ($request->file('images')) {
+                foreach ($request->file('images') as $key => $one) {
+                    if (isset($images[$key])) {
+                         News::deleteUploaded('news', $images[$key]);
+                    }
+                   
+                    $images[$key] = News::upload($one, 'news', true);
                 }
-                $News->image = News::upload($request->file('image'), 'news', true);
             }
-            $News->save();
+
+            $news->active = $request->input('active');
+            $news->this_order = $request->input('this_order');
+            $news->images = json_encode($images);
+            $news->save();
             
-            $News_translations = array();
+            $news_translations = array();
 
-            NewsTranslation::where('News_id', $News->id)->delete();
+            NewsTranslation::where('news_id', $news->id)->delete();
 
-            $News_title = $request->input('title');
-            $News_description = $request->input('description');
+            $news_title = $request->input('title');
+            $news_description = $request->input('description');
 
             foreach ($this->languages as $key => $value) {
-                $News_translations[] = array(
+                $news_translations[] = array(
                     'locale' => $key,
-                    'title'  => $News_title[$key],
-                    'description' => $News_description[$key],
-                    'News_id' => $News->id
+                    'title'  => $news_title[$key],
+                    'description' => $news_description[$key],
+                    'news_id' => $news->id
                 );
             }
-            NewsTranslation::insert($News_translations);
+            NewsTranslation::insert($news_translations);
 
             DB::commit();
             return _json('success', _lang('app.updated_successfully'));
@@ -217,13 +218,13 @@ class NewsController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        $News = News::find($id);
-        if (!$News) {
+        $news = News::find($id);
+        if (!$news) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
         DB::beginTransaction();
         try {
-            $News->delete();
+            $news->delete();
             DB::commit();
             return _json('success', _lang('app.deleted_successfully'));
         } catch (\Exception $ex) {
@@ -231,6 +232,7 @@ class NewsController extends BackendController {
             if ($ex->getCode() == 23000) {
                 return _json('error', _lang('app.this_record_can_not_be_deleted_for_linking_to_other_records'), 400);
             } else {
+                dd($ex);
                 return _json('error', _lang('app.error_is_occured'), 400);
             }
         }
@@ -238,7 +240,7 @@ class NewsController extends BackendController {
 
     public function data(Request $request) {
 
-        $news = News::Join('news_translations', 'news.id', '=', 'news_translations.News_id')
+        $news = News::Join('news_translations', 'news.id', '=', 'news_translations.news_id')
                 ->where('news_translations.locale', $this->lang_code)
                 ->select([
             'news.id', "news_translations.title", "news.this_order", 'news.active',
@@ -264,7 +266,7 @@ class NewsController extends BackendController {
 
                 if (\Permissions::check('news', 'delete')) {
                     $back .= '<li>';
-                    $back .= '<a href="" data-toggle="confirmation" onclick = "news.delete(this);return false;" data-id = "' . $item->id . '">';
+                    $back .= '<a href="" data-toggle="confirmation" onclick = "News.delete(this);return false;" data-id = "' . $item->id . '">';
                     $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
                     $back .= '</a>';
                     $back .= '</li>';

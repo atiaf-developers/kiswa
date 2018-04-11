@@ -28,7 +28,7 @@
         <table class = "table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer">
             <thead>
                 <tr>
-                    <th>{{_lang('app.description')}}</th>
+                    <th>{{_lang('app.title')}}</th>
                     <th>{{_lang('app.active')}}</th>
                     <th>{{_lang('app.this_order')}}</th>
                     <th>{{_lang('app.options')}}</th>

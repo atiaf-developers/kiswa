@@ -35,10 +35,11 @@ class News extends MyModel
 		});
 
 		static::deleted(function($news) {
-			if ($news->image) {
-				$old_image = $news->image;
-                static::deleteUploaded('news', $old_image);
-			}
+				$old_images = json_decode($news->images);
+				
+				foreach ($old_images as $key => $value) {
+					static::deleteUploaded('news', $value);
+				}
 		});
 	}
 

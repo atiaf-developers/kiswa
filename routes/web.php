@@ -98,7 +98,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::resource('locations', 'LocationsController');
     Route::resource('our_locations', 'OurLocationsController');
     Route::resource('categories', 'CategoriesController');
-    Route::resource('games', 'GamesController');
+    Route::resource('news', 'NewsController');
     Route::resource('videos', 'VideosController');
 
     Route::get('settings', 'SettingsController@index');
@@ -137,6 +137,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('videos/data', 'VideosController@data');
     Route::post('cooperating_societies/data', 'CooperatingSocietiesController@data');
     Route::post('activities/data', 'ActivitiesController@data');
+    Route::post('news/data', 'NewsController@data');
    
 
     
