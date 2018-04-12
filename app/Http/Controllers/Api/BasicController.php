@@ -8,30 +8,25 @@ use Illuminate\Support\Facades\Validator;
 use App\Helpers\AUTHORIZATION;
 use App\Models\User;
 use App\Models\Setting;
+use App\Models\SettingTranslation;
 use App\Models\Category;
 use App\Models\News;
-use App\Models\CooperatingSociety;
+use App\Models\DonationType;
 use App\Models\ContactMessage;
-use App\Models\CommonQuestion;
-use App\Models\RateQuestion;
-use App\Models\RateQuestionAnswer;
-use App\Models\CommunicationGuide;
-use App\Models\Rating;
+use App\Models\Activity;
+use App\Models\video;
 use App\Helpers\Fcm;
 use Carbon\Carbon;
 use DB;
 
 class BasicController extends ApiController {
 
-    private $contact_rules = array(
-        'mobile' => 'required',
-        'type' => 'required',
+    private $contact_rules = array( 
         'message' => 'required',
+        'email' => 'required|email',
+        'type' => 'required',
         'name' => 'required'
-    );
-
-   
-    
+    ); 
 
     public function getToken(Request $request) {
         $token = $request->header('authorization');
@@ -58,12 +53,11 @@ class BasicController extends ApiController {
 
     public function getSettings() {
         try {
-            $settings = Setting::select(["email", "phone", "about_us_$this->lang_code as about_us",
-                        "android_url", "ios_url", "usage_conditions_$this->lang_code as usage_conditions", "usage_conditions_message_$this->lang_code as usage_conditions_message",
-                        "designer_register_message_$this->lang_code as designer_register_message"])
-                    ->first();
-            $settings->currency_sign= $this->currency_sign;
-            return _api_json(Setting::transform($settings));
+        $settings = Setting::select('name','value')->get()->keyBy('name');
+
+        $settings['info'] = SettingTranslation::where('locale', $this->lang_code)->first();
+            
+            return _api_json($settings);
         } catch (\Exception $e) {
             return _api_json(new \stdClass(), ['message' => $e->getMessage()], 400);
         }
@@ -79,7 +73,7 @@ class BasicController extends ApiController {
         } else {
             try {
                 $ContactMessage = new ContactMessage;
-                $ContactMessage->mobile = $request->input('mobile');
+                $ContactMessage->email = $request->input('email');
                 $ContactMessage->type = $request->input('type');
                 $ContactMessage->message = $request->input('message');
                 $ContactMessage->name = $request->input('name');
@@ -114,128 +108,85 @@ class BasicController extends ApiController {
             $categories = Category::Join('categories_translations','categories.id','=','categories_translations.category_id')
                                    ->where('categories_translations.locale',$this->lang_code)
                                    ->where('categories.active',true)
+                                   ->where('categories.parent_id',0)
                                    ->orderBy('categories.this_order')
-                                   ->select("categories.id", "categories_translations.title")
+                                   ->select("categories.id", "categories.image","categories_translations.title")
                                    ->get();
+
             return _api_json(Category::transformCollection($categories));
         } catch (\Exception $e) {
-            dd($e);
+            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
+        }
+    }
+
+    public function getCategory(Request $request) {
+        try {
+            $categories = Category::Join('categories_translations','categories.id','=','categories_translations.category_id')
+                                   ->where('categories_translations.locale',$this->lang_code)
+                                   ->where('categories.active',true)
+                                   ->where('categories.parent_id',$request->category_id)
+                                   ->orderBy('categories.this_order')
+                                   ->select("categories.id", "categories.image","categories_translations.title","categories_translations.description")
+                                   ->paginate();
+
+            return _api_json(Category::transformCollection($categories));
+        } catch (\Exception $e) {
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
 
 
-    public function getCooperatingSocities() {
+    public function getDonationTypes() {
         try {
 
-            $cooperating_societies = CooperatingSociety::Join('cooperating_societies_translations','cooperating_societies.id','=','cooperating_societies_translations.cooperating_society_id')
-                                   ->where('cooperating_societies_translations.locale',$this->lang_code)
-                                   ->where('cooperating_societies.active',true)
-                                   ->orderBy('cooperating_societies.this_order')
-                                   ->select("cooperating_societies.id","cooperating_societies.image","cooperating_societies_translations.title","cooperating_societies_translations.description")
+            $donation_types = DonationType::Join('donation_types_translations','donation_types.id','=','donation_types_translations.donation_type_id')
+                                   ->where('donation_types_translations.locale',$this->lang_code)
+                                   ->where('donation_types.active',true)
+                                   ->orderBy('donation_types.this_order')
+                                   ->select("donation_types.id","donation_types_translations.title")
+                                   ->get();
+
+            return _api_json($donation_types);
+        } catch (\Exception $e) {
+            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
+        }
+    }
+
+    public function getActivities() {
+        try {
+            $activities = Activity::Join('activities_translations','activities.id','=','activities_translations.activity_id')
+                                   ->where('activities_translations.locale',$this->lang_code)
+                                   ->where('activities.active',true)
+                                   ->orderBy('activities.this_order')
+                                   ->select("activities.id", "activities.image","activities_translations.title","activities_translations.description")
                                    ->paginate($this->limit);
 
-            return _api_json(CooperatingSociety::transformCollection($cooperating_societies));
+            return _api_json(Activity::transformCollection($activities));
         } catch (\Exception $e) {
-            dd($e);
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
 
-
-    public function getCommonQuestions() {
+    public function getVideos() {
         try {
-
-            $common_questions = CommonQuestion::Join('common_questions_translations','common_questions.id','=','common_questions_translations.common_question_id')
-                                   ->where('common_questions_translations.locale',$this->lang_code)
-                                   ->where('common_questions.active',true)
-                                   ->orderBy('common_questions.this_order')
-                                   ->select("common_questions.id","common_questions_translations.question","common_questions_translations.answer")
+            $videos = Video::Join('videos_translations','videos.id','=','videos_translations.video_id')
+                                   ->where('videos_translations.locale',$this->lang_code)
+                                   ->where('videos.active',true)
+                                   ->orderBy('videos.this_order')
+                                   ->select("videos.id", "videos.youtube_url","videos_translations.title")
                                    ->paginate($this->limit);
 
-            return _api_json(CommonQuestion::transformCollection($common_questions));
+            return _api_json(Video::transformCollection($videos));
         } catch (\Exception $e) {
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
 
 
-    public function getRateQuestions() {
-        try {
-            
-            $rate_questions = RateQuestion::Join('rate_questions_translations','rate_questions.id','=','rate_questions_translations.rate_question_id')
-                                   ->where('rate_questions_translations.locale',$this->lang_code)
-                                   ->where('rate_questions.active',true)
-                                   ->orderBy('rate_questions.this_order')
-                                   ->select("rate_questions.id","rate_questions_translations.title")
-                                   ->paginate($this->limit);
-
-            return _api_json(RateQuestion::transformCollection($rate_questions));
-        } catch (\Exception $e) {
-           
-            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
-        }
-    }
-
-    public function getCommunicationGuides() {
-        try {
-            
-            $communication_guides = CommunicationGuide::Join('communication_guides_translations', 'communication_guides.id', '=', 'communication_guides_translations.communication_guide_id')
-                                                ->where('communication_guides_translations.locale', $this->lang_code)
-                                                ->where('communication_guides.active',true)
-                                                ->orderBy('communication_guides.this_order')
-                                                ->select([
-                                                  'communication_guides.id', "communication_guides_translations.title","communication_guides_translations.description"
-                                               ])
-                                               ->paginate($this->limit);
-
-            return _api_json(CommunicationGuide::transformCollection($communication_guides));
-        } catch (\Exception $e) {
-            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
-        }
-    }
 
 
-    public function rate(Request $request) {
-        try {
-            $validator = Validator::make($request->all(), $this->rate_rules);
-            if ($validator->fails()) {
-                $errors = $validator->errors()->toArray();
-                return _api_json('', ['errors' => $errors], 400);
-            }   
-                DB::beginTransaction();
-                try {
-                    $check = Rating::where('question_id',$request->input('question_id'))
-                                  ->where('user_id',$this->auth_user()->id)
-                                  ->first();
-                    if ($check) {
-                        $check->answer_id = $request->answer_id;
-                        $check->save();
-                        DB::table('rate_question_answers')->where('id', $check->answer_id)->decrement('count_of_raters',1);
-                    }
-                    else{
-                        $rate = new Rating;
-                        $rate->question_id = $request->input('question_id');
-                        $rate->answer_id = $request->input('answer_id');
-                        $rate->user_id = $this->auth_user()->id;
-                        $rate->save();
-                    }
-                    DB::table('rate_question_answers')->where('id', $request->answer_id)->increment('count_of_raters',1);
-                
-                   DB::commit();
-                    return _api_json('', ['message' => _lang('app.thank_you_for_your_answer')]);
-                } catch (\Exception $ex) {
-                    DB::rollback();
-                    return _api_json('', ['message' => _lang('app.error_is_occured')], 400);
-                }
-            
-           
-        } catch (\Exception $e) {
-            
-            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
-        }
-    }
 
+   
    
   
 

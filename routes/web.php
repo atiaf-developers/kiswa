@@ -91,7 +91,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::resource('groups', 'GroupsController');
     Route::resource('admins', 'AdminsController');
 
-    Route::resource('cooperating_societies', 'CooperatingSocietiesController');
+    Route::resource('donation_types', 'DonationTypesController');
     Route::resource('activities', 'ActivitiesController');
     Route::post('pilgrims/import', 'PilgrimsController@import');
     Route::post('pilgrims/data', 'PilgrimsController@data');
@@ -140,7 +140,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::post('categories/data', 'CategoriesController@data');
     Route::post('videos/data', 'VideosController@data');
-    Route::post('cooperating_societies/data', 'CooperatingSocietiesController@data');
+    Route::post('donation_types/data', 'DonationTypesController@data');
     Route::post('activities/data', 'ActivitiesController@data');
     Route::post('news/data', 'NewsController@data');
    

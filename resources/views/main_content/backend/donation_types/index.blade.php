@@ -1,14 +1,14 @@
 @extends('layouts.backend')
 
-@section('pageTitle', _lang('app.cooperating_societies'))
+@section('pageTitle', _lang('app.donation_types'))
 
 @section('breadcrumb')
 <li><a href="{{url('admin')}}">{{_lang('app.dashboard')}}</a> <i class="fa fa-circle"></i></li>
-<li><span> {{_lang('app.cooperating_societies')}}</span></li>
+<li><span> {{_lang('app.donation_types')}}</span></li>
 @endsection
 
 @section('js')
-<script src="{{url('public/backend/js')}}/cooperating_societies.js" type="text/javascript"></script>
+<script src="{{url('public/backend/js')}}/donation_types.js" type="text/javascript"></script>
 @endsection
 @section('content')
 {{ csrf_field() }}
@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="btn-group">
-                        <a class="btn green" style="margin-bottom: 40px;" href = "{{ route('cooperating_societies.create') }}" onclick="">{{ _lang('app.add_new')}}<i class="fa fa-plus"></i> </a>
+                        <a class="btn green" style="margin-bottom: 40px;" href = "{{ route('donation_types.create') }}" onclick="">{{ _lang('app.add_new')}}<i class="fa fa-plus"></i> </a>
                     </div>
                 </div>
             </div>

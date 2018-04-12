@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Notification;
 use App\Models\Setting;
 use App\Traits\Basic;
+use App\Models\Device;
 use Request;
 
 class ApiController extends Controller {
@@ -82,13 +83,11 @@ class ApiController extends Controller {
         return $user;
     }
 
-    
-
-    protected function update_token($device_token, $device_type, $user_id) {
-        $User = User::find($user_id);
-        $User->device_token = $device_token;
-        $User->device_type = $device_type;
-        $User->save();
+    protected function update_token($device_token, $device_type, $device_id) {
+        $device = Device::where('device_id',$device_id)->first();
+        $device->device_token = $device_token;
+        $device->device_type = $device_type;
+        $device->save();
     }
 
     

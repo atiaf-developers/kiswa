@@ -4,22 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Video extends MyModel
+class DonationType extends MyModel
 {
-    protected $table = "videos";
+    protected $table = "donation_types";
 
 	public function translations() {
-		return $this->hasMany(VideoTranslation::class, 'video_id');
+		return $this->hasMany(DonationTypeTranslation::class, 'donation_type_id');
 	}
 
 	public static function transform($item)
 	{
 		$transformer = new \stdClass();
-		
+		$transformer->id = $item->id;
 		$transformer->title = $item->title;
-		$transformer->url = "https://www.youtube.com/embed"."/".$item->youtube_url;
 
-       return $transformer;
+        return $transformer;
 		
 	}
 
@@ -28,13 +27,13 @@ class Video extends MyModel
 	protected static function boot() {
 		parent::boot();
 
-		static::deleting(function($video) {
-			foreach ($video->translations as $translation) {
+		static::deleting(function($donation_type) {
+			foreach ($donation_type->translations as $translation) {
 				$translation->delete();
 			}
 		});
 
-	
+		
 	}
 
 

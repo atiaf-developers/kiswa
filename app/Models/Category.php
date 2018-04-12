@@ -28,9 +28,14 @@ class Category extends MyModel {
         $transformer = new \stdClass();
         $transformer->id = $item->id;
         $transformer->title = $item->title;
-
+        $transformer->image = url('public/uploads/categories/s_' . static::rmv_prefix($item->image));
+        if ($item->description) {
+            $transformer->description = $item->description;
+        }
         return $transformer;
     }
+
+
 
     public static function transformFrontHome($item) {
 
@@ -47,6 +52,10 @@ class Category extends MyModel {
             foreach ($category->translations as $translation) {
                 $translation->delete();
             }
+        });
+
+        static::deleted(function($category) {
+            Category::deleteUploaded('categories', $category->image);
         });
     }
 

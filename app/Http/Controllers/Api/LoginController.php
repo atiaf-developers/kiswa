@@ -13,7 +13,10 @@ class LoginController extends ApiController {
     private $rules = array(
         'username' => 'required',
         'password' => 'required',
-        'type' => 'required|in:1,2,3'
+        'type' => 'required',
+        'device_id' => 'required',
+        'device_token' => 'required',
+        'device_type' => 'required',
     );
 
     public function login(Request $request) {
@@ -22,28 +25,16 @@ class LoginController extends ApiController {
             $errors = $validator->errors()->toArray();
             return _api_json(new \stdClass(), ['errors' => $errors], 400);
         } else {
-            if ($request->type == 1) {
+            
 
-
-                
-            }
-            elseif ($request->type == 2) {
-                
-            }
-            elseif ($request->type == 3) {
-                
-            }
-            else{
-
-            }
-
-            $credentials = $request->only('username', 'password');
+            $credentials = $request->only('username', 'password','type');
             if ($user = $this->auth_check($credentials)) {
                 $token = new \stdClass();
                 $token->id = $user->id;
                 $token->expire = strtotime('+' . $this->expire_no . $this->expire_type);
                 $expire_in_seconds = $token->expire;
-                $user = $user->type == 2 ? User::transformClient($user) : User::transformDesigner($user);
+                $this->update_token($request->input('device_token'),$request->input('device_type'),$request->input('device_id'));
+                $user = User::transform($user);
                 return _api_json($user, ['message' => _lang('app.login_done_successfully'), 'token' => AUTHORIZATION::generateToken($token), 'expire' => $expire_in_seconds]);
             }
             return _api_json(new \stdClass(), ['message' => _lang('app.invalid_credentials')], 400);
@@ -52,11 +43,8 @@ class LoginController extends ApiController {
 
     private function auth_check($credentials) {
 
-        $find = User::where(function ($query) use($credentials) {
-                    $query->where('email', $credentials['username']);
-                    $query->orWhere('mobile', $credentials['username']);
-                })
-                ->where('type', $credentials['type'])
+        $find = User::where('username', $credentials['username'])
+                 ->where('type', $credentials['type'])
                 ->where('active', 1)
                 ->first();
         if ($find) {

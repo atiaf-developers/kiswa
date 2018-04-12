@@ -23,11 +23,12 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('/token', 'BasicController@getToken');
     Route::get('/settings', 'BasicController@getSettings');
 
-    Route::get('get_donation_types', 'BasicController@getCategories');
+    Route::get('get_categories', 'BasicController@getCategories');
+    Route::get('get_category', 'BasicController@getCategory');
     Route::get('get_news', 'BasicController@getNews');
-    Route::get('get_cooperating_socities', 'BasicController@getCooperatingSocities');
-    Route::get('get_common_questions', 'BasicController@getCommonQuestions');
-    Route::get('get_rate_questions', 'BasicController@getRateQuestions');
+    Route::get('get_donation_types', 'BasicController@getDonationTypes');
+    Route::get('get_activities', 'BasicController@getActivities');
+    Route::get('get_videos', 'BasicController@getVideos');
     Route::get('get_communication_guides', 'BasicController@getCommunicationGuides');
     Route::post('send_contact_message', 'BasicController@sendContactMessage');
     
@@ -36,6 +37,8 @@ Route::group(['namespace' => 'Api'], function () {
     
     Route::post('login', 'LoginController@login');
     Route::post('register', 'RegisterController@register');
+    Route::post('send_verification_code', 'RegisterController@sendVerificationCode');
+
     Route::get('setting', 'BasicController@getSettings');
 
     Route::group(['middleware' => 'jwt.auth'], function () {

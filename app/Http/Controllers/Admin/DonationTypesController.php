@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BackendController;
-use App\Models\CooperatingSociety;
-use App\Models\CooperatingSocietyTranslation;
+use App\Models\DonationType;
+use App\Models\DonationTypeTranslation;
 use Validator;
 use DB;
 
 
-class CooperatingSocietiesController extends BackendController {
+class DonationTypesController extends BackendController {
 
     private $rules = array(
-        'image' => 'required|image|mimes:gif,png,jpeg|max:1000',
         'active' => 'required',
         'this_order' => 'required'
     );
@@ -21,14 +20,14 @@ class CooperatingSocietiesController extends BackendController {
     public function __construct() {
 
         parent::__construct();
-        $this->middleware('CheckPermission:cooperating_societies,open', ['only' => ['index']]);
-        $this->middleware('CheckPermission:cooperating_societies,add', ['only' => ['store']]);
-        $this->middleware('CheckPermission:cooperating_societies,edit', ['only' => ['show', 'update']]);
-        $this->middleware('CheckPermission:cooperating_societies,delete', ['only' => ['delete']]);
+        $this->middleware('CheckPermission:donation_types,open', ['only' => ['index']]);
+        $this->middleware('CheckPermission:donation_types,add', ['only' => ['store']]);
+        $this->middleware('CheckPermission:donation_types,edit', ['only' => ['show', 'update']]);
+        $this->middleware('CheckPermission:donation_types,delete', ['only' => ['delete']]);
     }
 
     public function index(Request $request) {
-        return $this->_view('cooperating_societies/index', 'backend');
+        return $this->_view('donation_types/index', 'backend');
     }
 
     /**
@@ -37,7 +36,7 @@ class CooperatingSocietiesController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
-        return $this->_view('cooperating_societies/create', 'backend');
+        return $this->_view('donation_types/create', 'backend');
     }
 
     /**
@@ -49,8 +48,8 @@ class CooperatingSocietiesController extends BackendController {
     public function store(Request $request) {
 
         $columns_arr = array(
-            'title' => 'required',
-            'description' => 'required'
+            'title' => 'required|unique:donation_types_translations,title',
+            
         );
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
@@ -62,26 +61,23 @@ class CooperatingSocietiesController extends BackendController {
         }
         DB::beginTransaction();
         try {
-            $cooperating_society = new CooperatingSociety;
-            $cooperating_society->active = $request->input('active');
-            $cooperating_society->this_order = $request->input('this_order');
-            $cooperating_society->image = CooperatingSociety::upload($request->file('image'), 'cooperating_societies', true);
+            $donation_type = new DonationType;
+            $donation_type->active = $request->input('active');
+            $donation_type->this_order = $request->input('this_order');
             
-            $cooperating_society->save();
+            $donation_type->save();
             
-            $cooperating_society_translations = array();
-            $cooperating_society_title = $request->input('title');
-            $cooperating_society_description = $request->input('description');
+            $donation_type_translations = array();
+            $donation_type_title = $request->input('title');
 
             foreach ($this->languages as $key => $value) {
-                $cooperating_society_translations[] = array(
+                $donation_type_translations[] = array(
                     'locale' => $key,
-                    'title'  => $cooperating_society_title[$key],
-                    'description' => $cooperating_society_description[$key],
-                    'cooperating_society_id' => $cooperating_society->id
+                    'title'  => $donation_type_title[$key],
+                    'donation_type_id' => $donation_type->id
                 );
             }
-            CooperatingSocietyTranslation::insert($cooperating_society_translations);
+            DonationTypeTranslation::insert($donation_type_translations);
             DB::commit();
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
@@ -97,7 +93,7 @@ class CooperatingSocietiesController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $find = CooperatingSociety::find($id);
+        $find = DonationType::find($id);
 
         if ($find) {
             return _json('success', $find);
@@ -113,16 +109,16 @@ class CooperatingSocietiesController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $cooperating_society = CooperatingSociety::find($id);
+        $donation_type = DonationType::find($id);
 
-        if (!$cooperating_society) {
+        if (!$donation_type) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
 
-        $this->data['translations'] = CooperatingSocietyTranslation::where('cooperating_society_id',$id)->get()->keyBy('locale');
-        $this->data['cooperating_society'] = $cooperating_society;
+        $this->data['translations'] = DonationTypeTranslation::where('donation_type_id',$id)->get()->keyBy('locale');
+        $this->data['donation_type'] = $donation_type;
 
-        return $this->_view('cooperating_societies/edit', 'backend');
+        return $this->_view('donation_types/edit', 'backend');
     }
 
     /**
@@ -134,19 +130,14 @@ class CooperatingSocietiesController extends BackendController {
      */
     public function update(Request $request, $id) {
 
-        $cooperating_society = CooperatingSociety::find($id);
+        $donation_type = DonationType::find($id);
 
-        if (!$cooperating_society) {
+        if (!$donation_type) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
 
-        if (!$request->file('image')) {
-           unset($this->rules['image']);
-        }
-        
        $columns_arr = array(
-            'title' => 'required',
-            'description' => 'required'
+            'title' => 'required|unique:donation_types_translations,title,'.$id .',donation_type_id',
         );
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
@@ -161,33 +152,25 @@ class CooperatingSocietiesController extends BackendController {
         DB::beginTransaction();
         try {
 
-            $cooperating_society->active = $request->input('active');
-            $cooperating_society->this_order = $request->input('this_order');
-            if ($request->file('image')) {
-                if ($cooperating_society->image) {
-                    $old_image = $cooperating_society->image;
-                    CooperatingSociety::deleteUploaded('cooperating_societies', $old_image);
-                }
-                $cooperating_society->image = CooperatingSociety::upload($request->file('image'), 'cooperating_societies', true);
-            }
-            $cooperating_society->save();
+            $donation_type->active = $request->input('active');
+            $donation_type->this_order = $request->input('this_order');
             
-            $cooperating_society_translations = array();
+            $donation_type->save();
+            
+            $donation_type_translations = array();
 
-            CooperatingSocietyTranslation::where('cooperating_society_id', $cooperating_society->id)->delete();
+            DonationTypeTranslation::where('donation_type_id', $donation_type->id)->delete();
 
-            $cooperating_society_title = $request->input('title');
-            $cooperating_society_description = $request->input('description');
+            $donation_type_title = $request->input('title');
 
             foreach ($this->languages as $key => $value) {
-                $cooperating_society_translations[] = array(
+                $donation_type_translations[] = array(
                     'locale' => $key,
-                    'title'  => $cooperating_society_title[$key],
-                    'description' => $cooperating_society_description[$key],
-                    'cooperating_society_id' => $cooperating_society->id
+                    'title'  => $donation_type_title[$key],
+                    'donation_type_id' => $donation_type->id
                 );
             }
-            CooperatingSocietyTranslation::insert($cooperating_society_translations);
+            DonationTypeTranslation::insert($donation_type_translations);
 
             DB::commit();
             return _json('success', _lang('app.updated_successfully'));
@@ -204,13 +187,13 @@ class CooperatingSocietiesController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        $cooperating_society = CooperatingSociety::find($id);
-        if (!$cooperating_society) {
+        $donation_type = DonationType::find($id);
+        if (!$donation_type) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
         DB::beginTransaction();
         try {
-            $cooperating_society->delete();
+            $donation_type->delete();
             DB::commit();
             return _json('success', _lang('app.deleted_successfully'));
         } catch (\Exception $ex) {
@@ -225,33 +208,33 @@ class CooperatingSocietiesController extends BackendController {
 
     public function data(Request $request) {
 
-        $cooperating_societies = CooperatingSociety::Join('cooperating_societies_translations', 'cooperating_societies.id', '=', 'cooperating_societies_translations.cooperating_society_id')
-                ->where('cooperating_societies_translations.locale', $this->lang_code)
+        $donation_types = DonationType::Join('donation_types_translations', 'donation_types.id', '=', 'donation_types_translations.donation_type_id')
+                ->where('donation_types_translations.locale', $this->lang_code)
                 ->select([
-            'cooperating_societies.id', "cooperating_societies_translations.title", "cooperating_societies.this_order", 'cooperating_societies.active',
+            'donation_types.id', "donation_types_translations.title", "donation_types.this_order", 'donation_types.active',
         ]);
 
-        return \Datatables::eloquent($cooperating_societies)
+        return \Datatables::eloquent($donation_types)
         ->addColumn('options', function ($item) {
 
             $back = "";
-            if (\Permissions::check('cooperating_societies', 'edit') || \Permissions::check('cooperating_societies', 'delete')) {
+            if (\Permissions::check('donation_types', 'edit') || \Permissions::check('donation_types', 'delete')) {
                 $back .= '<div class="btn-group">';
                 $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
                 $back .= '<i class="fa fa-angle-down"></i>';
                 $back .= '</button>';
                 $back .= '<ul class = "dropdown-menu" role = "menu">';
-                if (\Permissions::check('cooperating_societies', 'edit')) {
+                if (\Permissions::check('donation_types', 'edit')) {
                     $back .= '<li>';
-                    $back .= '<a href="' . route('cooperating_societies.edit', $item->id) . '">';
+                    $back .= '<a href="' . route('donation_types.edit', $item->id) . '">';
                     $back .= '<i class = "icon-docs"></i>' . _lang('app.edit');
                     $back .= '</a>';
                     $back .= '</li>';
                 }
 
-                if (\Permissions::check('cooperating_societies', 'delete')) {
+                if (\Permissions::check('donation_types', 'delete')) {
                     $back .= '<li>';
-                    $back .= '<a href="" data-toggle="confirmation" onclick = "CooperatingSocieties.delete(this);return false;" data-id = "' . $item->id . '">';
+                    $back .= '<a href="" data-toggle="confirmation" onclick = "DonationTypes.delete(this);return false;" data-id = "' . $item->id . '">';
                     $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
                     $back .= '</a>';
                     $back .= '</li>';

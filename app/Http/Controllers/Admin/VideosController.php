@@ -65,6 +65,7 @@ class VideosController extends BackendController {
             $video->active = $request->input('active');
             $video->this_order = $request->input('this_order');
             $video->url = $request->input('url');
+            $video->youtube_url = $request->input('youtube_url');
             
             $video->save();
             
@@ -157,6 +158,7 @@ class VideosController extends BackendController {
             $video->active = $request->input('active');
             $video->this_order = $request->input('this_order');
             $video->url = $request->input('url');
+            $video->youtube_url = $request->input('youtube_url');
             $video->save();
             
             $video_translations = array();

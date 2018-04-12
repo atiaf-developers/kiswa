@@ -25,7 +25,12 @@ class UserController extends ApiController {
     protected function update(Request $request) {
         $User = $this->auth_user();
         $rules = array();
-
+        if ($request->input('name')) {
+            $rules['name'] = "required";
+        }
+        if ($request->input('username')) {
+            $rules['username'] = "required|unique:users,username,$User->id";
+        }
         if ($request->input('email')) {
             $rules['email'] = "required|email|unique:users,email,$User->id";
         }
@@ -49,6 +54,12 @@ class UserController extends ApiController {
 
             DB::beginTransaction();
             try {
+                if ($request->input('name')) {
+                    $User->name = $request->input('name');
+                }
+                if ($request->input('username')) {
+                    $User->username = $request->input('username');
+                }
                 if ($request->input('email')) {
                     $User->email = $request->input('email');
                 }
@@ -62,58 +73,19 @@ class UserController extends ApiController {
                         $User->password = bcrypt($request->input('password'));
                     }
                 }
-                $User->save();
-                if ($User->type == 2) {
-                    $Client = $User->client;
-                    if ($request->input('fname')) {
-                        $Client->fname = $request->input('fname');
+                if ($request->input('image')) {
+                       
+                   $file = public_path("uploads/users/$User->image");
+                    if (!is_dir($file)) {
+                        if (file_exists($file)) {
+                            unlink($file);
+                        }
                     }
-                    if ($request->input('lname')) {
-                        $Client->lname = $request->input('lname');
-                    }
-                    if ($request->input('image')) {
-                        //dd($request->input('image'));
-                        $Client->image = $this->_upload($request->input('image'), 'users', true, '\App\Models\User', false, true);
-                    }
-                    $Client->save();
-                    $User = User::transformClient($User);
-                } else if ($User->type == 3) {
-                    $Designer = $User->designer;
-                    if ($request->input('responsible_person_name')) {
-                        $Designer->responsible_person_name = $request->input('responsible_person_name');
-                    }
-                    if ($request->input('trade_name')) {
-                        $Designer->trade_name = $request->input('trade_name');
-                    }
-                    if ($request->input('about')) {
-                        $Designer->about = $request->input('about');
-                    }
-                    if ($request->input('lat')) {
-                        $Designer->lat = $request->input('lat');
-                    }
-                    if ($request->input('lng')) {
-                        $Designer->lng = $request->input('lng');
-                    }
-                    if ($request->input('image')) {
-                        $Designer->image = $this->_upload($request->input('image'), 'users', true, '\App\Models\User', false, true);
-                    }
-                    $Designer->save();
-                    $categories = json_decode($request->input('categories'));
-                    $data = array();
-                    foreach ($categories as $category) {
-                        $where_arr = [
-                            'category_id' => $category,
-                            'designer_id' => $Designer->id,
-                        ];
-                        $data_arr = [
-                            'category_id' => $category,
-                            'designer_id' => $Designer->id,
-                        ];
-                        DesignerCategory::updateOrCreate($where_arr, $data_arr);
-                    }
-                    $User = User::transformDesigner($User);
-                }
 
+                    $User->user_image = img_decoder($request->input('image'), 'users');
+                }
+                $User->save();        
+                $User = User::transform($User);
                 DB::commit();
                 return _api_json($User, ['message' => _lang('app.updated_successfully')]);
             } catch (\Exception $e) {

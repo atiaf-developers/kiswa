@@ -5,8 +5,12 @@
 @section('breadcrumb')
 <li><a href="{{url('admin')}}">{{_lang('app.dashboard')}}</a> <i class="fa fa-circle"></i></li>
 
+@if($path)
+<li><a href="{{route('categories.index')}}">{{_lang('app.categories')}}</a> <i class="fa fa-circle"></i></li>
+{!!$path!!}
+@else
 <li><span> {{_lang('app.categories')}}</span></li>
-
+@endif
 
 
 @endsection
@@ -26,7 +30,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="btn-group">
-                        <a class="btn green" style="margin-bottom: 40px;" href = "{{ route('categories.create') }}" onclick="">{{ _lang('app.add_new')}}<i class="fa fa-plus"></i> </a>
+                        <a class="btn green" style="margin-bottom: 40px;" href = "{{ route('categories.create') }}{{ $parent_id!=0?'?parent='.$parent_id:'' }}" onclick="">{{ _lang('app.add_new')}}<i class="fa fa-plus"></i> </a>
                     </div>
                 </div>
             </div>
@@ -38,7 +42,6 @@
                     <th>{{_lang('app.title')}}</th>
                     <th>{{_lang('app.active')}}</th>
                     <th>{{_lang('app.this_order')}}</th>
-                    {{--  <th>{{_lang('app.image')}}</th>  --}}
                     <th>{{_lang('app.options')}}</th>
                 </tr>
             </thead>
@@ -55,7 +58,7 @@ var new_lang = {
 
 };
 var new_config = {
-   action:'index'
+    parent_id: "{{$parent_id}}"
 };
 </script>
 @endsection

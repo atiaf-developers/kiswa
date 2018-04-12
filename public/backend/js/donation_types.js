@@ -1,29 +1,28 @@
-var CooperatingSocieties_grid;
+var DonationTypes_grid;
 
-var CooperatingSocieties = function () {
+var DonationTypes = function () {
 
     var init = function () {
         $.extend(lang, new_lang);
         $.extend(config, new_config);
         handleRecords();
         handleSubmit();
-        My.readImageMulti('image');
     };
 
 
     var handleRecords = function () {
-        CooperatingSocieties_grid = $('.dataTable').dataTable({
+        DonationTypes_grid = $('.dataTable').dataTable({
             //"processing": true,
             "serverSide": true,
             "ajax": {
-                "url": config.admin_url + "/cooperating_societies/data",
+                "url": config.admin_url + "/donation_types/data",
                 "type": "POST",
                 data: {_token: $('input[name="_token"]').val()},
             },
             "columns": [
-                {"data": "title","name":"cooperating_societies_translations.title"},
-                {"data": "active","name":"cooperating_societies.active", orderable: false, searchable: false},
-                {"data": "this_order","name":"cooperating_societies.this_order"},
+                {"data": "title","name":"donation_types_translations.title"},
+                {"data": "active","name":"donation_types.active", orderable: false, searchable: false},
+                {"data": "this_order","name":"donation_types.this_order"},
                 {"data": "options", orderable: false, searchable: false}
             ],
             "order": [
@@ -36,7 +35,7 @@ var CooperatingSocieties = function () {
 
 
     var handleSubmit = function () {
-        $('#addEditCooperatingSocietiesForm').validate({
+        $('#addEditDonationTypesForm').validate({
             rules: {
                  this_order: {
                      required: true,
@@ -64,34 +63,30 @@ var CooperatingSocieties = function () {
         
        var langs = JSON.parse(config.languages);
         for (var x = 0; x < langs.length; x++) {
-             var ele = "textarea[name='description[" + langs[x] + "]']";
-             var ele2 = "input[name='title[" + langs[x] + "]']";
-             $(ele).rules('add', {
-                 required: true
-             });
-             $(ele2).rules('add', {
+             var title = "input[name='title[" + langs[x] + "]']";
+             $(title).rules('add', {
                  required: true
              });
          }
 
-        $('#addEditCooperatingSocietiesForm .submit-form').click(function () {
+        $('#addEditDonationTypesForm .submit-form').click(function () {
 
-            if ($('#addEditCooperatingSocietiesForm').validate().form()) {
-                $('#addEditCooperatingSocietiesForm .submit-form').prop('disabled', true);
-                $('#addEditCooperatingSocietiesForm .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+            if ($('#addEditDonationTypesForm').validate().form()) {
+                $('#addEditDonationTypesForm .submit-form').prop('disabled', true);
+                $('#addEditDonationTypesForm .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
                 setTimeout(function () {
-                    $('#addEditCooperatingSocietiesForm').submit();
+                    $('#addEditDonationTypesForm').submit();
                 }, 1000);
             }
             return false;
         });
-        $('#addEditCooperatingSocietiesForm input').keypress(function (e) {
+        $('#addEditDonationTypesForm input').keypress(function (e) {
             if (e.which == 13) {
-                if ($('#addEditCooperatingSocietiesForm').validate().form()) {
-                    $('#addEditCooperatingSocietiesForm .submit-form').prop('disabled', true);
-                    $('#addEditCooperatingSocietiesForm .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+                if ($('#addEditDonationTypesForm').validate().form()) {
+                    $('#addEditDonationTypesForm .submit-form').prop('disabled', true);
+                    $('#addEditDonationTypesForm .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
                     setTimeout(function () {
-                        $('#addEditCooperatingSocietiesForm').submit();
+                        $('#addEditDonationTypesForm').submit();
                     }, 1000);
                 }
                 return false;
@@ -100,13 +95,13 @@ var CooperatingSocieties = function () {
 
 
 
-        $('#addEditCooperatingSocietiesForm').submit(function () {
+        $('#addEditDonationTypesForm').submit(function () {
             var id = $('#id').val();
-            var action = config.admin_url + '/cooperating_societies';
+            var action = config.admin_url + '/donation_types';
             var formData = new FormData($(this)[0]);
             if (id != 0) {
                 formData.append('_method', 'PATCH');
-                action = config.admin_url + '/cooperating_societies/' + id;
+                action = config.admin_url + '/donation_types/' + id;
             }
             $.ajax({
                 url: action,
@@ -116,14 +111,14 @@ var CooperatingSocieties = function () {
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    $('#addEditCooperatingSocietiesForm .submit-form').prop('disabled', false);
-                    $('#addEditCooperatingSocietiesForm .submit-form').html(lang.save);
+                    $('#addEditDonationTypesForm .submit-form').prop('disabled', false);
+                    $('#addEditDonationTypesForm .submit-form').html(lang.save);
 
                     if (data.type == 'success')
                     {
                         My.toast(data.message);
                         if (id == 0) {
-                            CooperatingSocieties.empty();
+                            DonationTypes.empty();
                         }
 
 
@@ -132,7 +127,7 @@ var CooperatingSocieties = function () {
                             for (i in data.errors)
                             {
                                 var message=data.errors[i];
-                                 if (i.startsWith('title') || i.startsWith('description')) {
+                                 if (i.startsWith('title')) {
                                     var key_arr = i.split('.');
                                     var key_text = key_arr[0] + '[' + key_arr[1] + ']';
                                     i = key_text;
@@ -146,8 +141,8 @@ var CooperatingSocieties = function () {
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    $('#addEditCooperatingSocietiesForm .submit-form').prop('disabled', false);
-                    $('#addEditCooperatingSocietiesForm .submit-form').html(lang.save);
+                    $('#addEditDonationTypesForm .submit-form').prop('disabled', false);
+                    $('#addEditDonationTypesForm .submit-form').html(lang.save);
                     My.ajax_error_message(xhr);
                 },
                 dataType: "json",
@@ -174,17 +169,17 @@ var CooperatingSocieties = function () {
             var id = $(t).attr("data-id");
             My.deleteForm({
                 element: t,
-                url: config.admin_url + '/cooperating_societies/' + id,
+                url: config.admin_url + '/donation_types/' + id,
                 data: {_method: 'DELETE', _token: $('input[name="_token"]').val()},
                 success: function (data)
                 {
-                    CooperatingSocieties_grid.api().ajax.reload();
+                    DonationTypes_grid.api().ajax.reload();
                 }
             });
 
         },
         add: function () {
-            CooperatingSocieties.empty();
+            DonationTypes.empty();
             if (parent_id > 0) {
                 $('.for-country').hide();
                 $('.for-city').show();
@@ -193,8 +188,8 @@ var CooperatingSocieties = function () {
                 $('.for-city').hide();
             }
 
-            My.setModalTitle('#addEditCooperatingSocietiesForm', lang.add_location);
-            $('#addEditCooperatingSocietiesForm').modal('show');
+            My.setModalTitle('#addEditDonationTypesForm', lang.add_location);
+            $('#addEditDonationTypesForm').modal('show');
         },
 
         error_message: function (message) {
@@ -228,6 +223,6 @@ var CooperatingSocieties = function () {
 
 }();
 jQuery(document).ready(function () {
-    CooperatingSocieties.init();
+    DonationTypes.init();
 });
 

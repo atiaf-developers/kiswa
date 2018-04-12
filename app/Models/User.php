@@ -16,12 +16,29 @@ class User extends Authenticatable {
 
     protected $casts = array(
         'id' => 'integer',
-        'mobile' => 'integer',
+        'mobile' => 'string',
     );
     public static $sizes = array(
         's' => array('width' => 120, 'height' => 120),
         'm' => array('width' => 400, 'height' => 400),
     );
+
+    public static function transform($item)
+    {
+        $transformer = new \stdClass();
+        $transformer->name = $item->name;
+        $transformer->username = $item->username;
+        $transformer->email = $item->email;
+        $transformer->mobile = $item->mobile;
+        if ($item->image) {
+            $transformer->image = url('public/uploads/users').'/'.$item->image;
+        }
+        else{
+             $transformer->image = url('public/uploads/users/default.png');
+        }
+        
+        return $transformer;
+    }
 
     protected static function boot() {
         parent::boot();
