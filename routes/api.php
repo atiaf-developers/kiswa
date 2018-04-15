@@ -32,7 +32,8 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('get_communication_guides', 'BasicController@getCommunicationGuides');
     Route::post('send_contact_message', 'BasicController@sendContactMessage');
     
-    
+       
+    Route::resource('donation_requests','DonationRequestsController');
 
     
     Route::post('login', 'LoginController@login');

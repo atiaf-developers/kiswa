@@ -19,7 +19,7 @@ class UserController extends ApiController {
 
     public function show() {
         $User = $this->auth_user();
-        return _api_json(true, User::transform($User));
+        return _api_json(User::transform($User));
     }
 
     protected function update(Request $request) {
@@ -49,7 +49,7 @@ class UserController extends ApiController {
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
-            return _api_json('', ['errors' => $errors]);
+            return _api_json(new \stdClass(), ['errors' => $errors],400);
         } else {
 
             DB::beginTransaction();
@@ -68,7 +68,7 @@ class UserController extends ApiController {
                 }
                 if ($old_password = $request->input('old_password')) {
                     if (!password_verify($old_password, $User->password)) {
-                        return _api_json(false, '', ['message' => _lang('app.invalid_old_password')]);
+                        return _api_json(new \stdClass(), ['message' => _lang('app.invalid_old_password')],400);
                     } else {
                         $User->password = bcrypt($request->input('password'));
                     }
@@ -90,13 +90,11 @@ class UserController extends ApiController {
                 return _api_json($User, ['message' => _lang('app.updated_successfully')]);
             } catch (\Exception $e) {
                 $message = _lang('app.error_is_occured');
-                return _api_json(new \stdClass(), ['message' => $e->getMessage() . $e->getLine()]);
+                return _api_json(new \stdClass(), ['message' =>  $message],400);
             }
         }
     }
 
-    public function raters() {
-        return _api_json(Designer::transformCollection(Designer::raters($this->auth_user()->id), 'Raters'));
-    }
+   
 
 }

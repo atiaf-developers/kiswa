@@ -13,7 +13,7 @@ use DB;
 class RegisterController extends ApiController {
 
     private $rules = array(
-        
+        'step' => 'required',
         'name' => 'required',
         'username' => 'required|unique:users',
         'email' => 'required|email|unique:users',
@@ -27,59 +27,53 @@ class RegisterController extends ApiController {
     );
 
     private $verification_rules = array(
-        'mobile' => 'required', 
+        'mobile' => 'required|unique:users',
     );
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function sendVerificationCode(Request $request)
-    {
-        try {
-        $validator = Validator::make($request->all(), $this->verification_rules);
-        if ($validator->fails()) {
-            $errors = $validator->errors()->toArray();
-            return _api_json(new \stdClass(), ['errors' => $errors], 400);
-        }
-
-        $verification_code = Random(4);
-
-        return _api_json('',['code' => $verification_code ]);
-            
-        } catch (\Exception $e) {
-            $message = _lang('app.error_is_occured');
-            return _api_json('', ['message' => $message],400);
-        }
-        
-    }
-
     public function register(Request $request) {
        
-        $validator = Validator::make($request->all(), $this->rules);
-        if ($validator->fails()) {
-            $errors = $validator->errors()->toArray();
-            return _api_json(new \stdClass(), ['errors' => $errors], 400);
-        } else {
-   
+       if ($request->step == 1) {
+            $validator = Validator::make($request->all(), $this->verification_rules);
+            if ($validator->fails()) {
+                    $errors = $validator->errors()->toArray();
+                    return _api_json(new \stdClass(), ['errors' => $errors], 400);
+            }
+
+            $verification_code = Random(4);
+            return _api_json(new \stdClass(),['code' => $verification_code ]);
+
+       }
+       else if($request->step == 2){
+            $validator = Validator::make($request->all(), $this->rules);
+            if ($validator->fails()) {
+                $errors = $validator->errors()->toArray();
+                return _api_json(new \stdClass(), ['errors' => $errors], 400);
+            }
             DB::beginTransaction();
             try {
                 $user = $this->create_user($request);
                 DB::commit();
-                
+                    
                 $token = new \stdClass();
                 $token->id = $user->id;
                 $token->expire = strtotime('+' . $this->expire_no . $this->expire_type);
                 $expire_in_seconds = $token->expire;
                 return _api_json(User::transform($user), ['token' => AUTHORIZATION::generateToken($token), 'expire' => $expire_in_seconds], 201);
-                
+                    
             } catch (\Exception $e) {
                 DB::rollback();
-                dd($e);
                 $message = _lang('app.error_is_occured');
                 return _api_json(new \stdClass(), ['message' => $message],400);
             }
-        }
+
+       }
+       else{
+          return _api_json(new \stdClass(), ['message' => _lang('app.error_is_occured')], 400);
+       } 
     }
 
     private function create_user($request) {
