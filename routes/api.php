@@ -47,6 +47,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post('user/update', 'UserController@update');
         Route::post('rate', 'BasicController@rate');
         Route::get('donation_requests','DonationRequestsController@index');
+        Route::get('containers','ContainersController@index');
        
 
       
