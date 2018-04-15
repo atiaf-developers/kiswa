@@ -49,7 +49,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::get('donation_requests','DonationRequestsController@index');
         Route::get('containers','ContainersController@index');
        
-
+        Route::get('log_dump','ContainersController@Logdump');
       
     });
 });
