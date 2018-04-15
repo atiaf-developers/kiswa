@@ -14,11 +14,10 @@ class MyModel extends Model {
     protected static $limit = 1;
     protected static $distance = 1000000;
     protected static $status_text = [
-        0 => 'pending',
-        1 => 'in_progress',
-        2 => 'on_the_way',
-        3 => 'deliverd',
-        4 => 'rejected',
+        2 => 'start',
+        3 => 'i_have_arrived',
+        4 => 'Received',
+        5 => 'donation_has_been_received_successfully'
     ];
 
     public function __construct(array $attributes = array()) {

@@ -44,10 +44,67 @@ class DonationRequestsController extends ApiController {
         'device_type' => 'required',
     );
 
+    private $donation_requests_rules = array(
+        'type' => 'required',
+        'lat'  => 'required',
+        'lng'  => 'required'
+    );
+
+    private $status_rules = array(
+        'request' => 'required',
+        'status'  => 'required'
+    );
+
+    
+
     public function __construct() {
         parent::__construct();
     }
+    
+    public function index(Request $request)
+    {
+        try {
 
+            $validator = Validator::make($request->all(), $this->donation_requests_rules);
+            if ($validator->fails()) {
+                    $errors = $validator->errors()->toArray();
+                    return _api_json(new \stdClass(), ['errors' => $errors], 400);
+            }
+
+           $user = $this->auth_user();
+           $lat = $request->input('lat');
+           $lng = $request->input('lng');
+           $type = $request->input('type');
+          
+           $donation_requests = DonationRequest::join('donation_types','donation_requests.donation_type_id','=','donation_types.id');
+           $donation_requests->join('donation_types_translations','donation_types_translations.donation_type_id','=','donation_types.id');
+            $donation_requests->where('donation_types_translations.locale',$this->lang_code);
+            $donation_requests->where('donation_requests.delegate_id',$user->id);
+               if ($type == 1) {
+
+                    $donation_requests->whereIn('status',[1,2,3]);
+                    $donation_requests->select('donation_requests.id','donation_requests.status','donation_requests.appropriate_time','donation_requests.description','donation_requests.images','donation_requests.lat','donation_requests.lng','donation_requests.name','donation_requests.mobile',
+                                                'donation_types_translations.title as donation_type',DB::raw($this->iniDiffLocations('donation_requests',$lat,$lng))
+                                            );
+                    //$donation_requests->having('distance','<=',$distance);
+                    $donation_requests->orderBy('distance');
+
+               }
+               else if($type == 2){
+                    $donation_requests->where('status',4);
+                    $donation_requests->select('donation_requests.id','donation_requests.status','donation_requests.appropriate_time','donation_requests.description','donation_requests.images','donation_requests.name','donation_types_translations.title as donation_type');
+               }
+             $donation_requests = $donation_requests->paginate($this->limit);
+           
+           return _api_json(DonationRequest::transformCollection($donation_requests));
+        } catch (\Exception $e) {
+            $message = _lang('app.error_is_occured');
+            return _api_json('', ['message' => $message],400);
+        }
+    }
+
+
+    //for the client
     public function store(Request $request) {
        if ($request->step) {
             if ($request->step == 1) {
@@ -113,6 +170,31 @@ class DonationRequestsController extends ApiController {
                 return _api_json('', ['message' => $message],400);
             }
        } 
+    }
+    
+
+    public function status(Request $request)
+    {
+        try {
+
+           $validator = Validator::make($request->all(), $this->status_rules);
+            if ($validator->fails()) {
+                    $errors = $validator->errors()->toArray();
+                    return _api_json(new \stdClass(), ['errors' => $errors], 400);
+            }
+
+            $donation_request = DonationRequest::find($request->input('request'));
+            if (!$donation_request) {
+                $message = _lang('app.not_found');
+                return _api_json('', ['message' => $message],404);
+            }
+
+
+            
+        } catch (\Exception $e) {
+            $message = _lang('app.error_is_occured');
+            return _api_json('', ['message' => $message],400);
+        }
     }
 
     private function create_donation_request($request) {

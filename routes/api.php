@@ -33,7 +33,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('send_contact_message', 'BasicController@sendContactMessage');
     
        
-    Route::resource('donation_requests','DonationRequestsController');
+    Route::post('donation_requests','DonationRequestsController@store');
 
     
     Route::post('login', 'LoginController@login');
@@ -46,6 +46,7 @@ Route::group(['namespace' => 'Api'], function () {
 
         Route::post('user/update', 'UserController@update');
         Route::post('rate', 'BasicController@rate');
+        Route::get('donation_requests','DonationRequestsController@index');
        
 
       
