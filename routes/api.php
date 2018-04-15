@@ -46,7 +46,12 @@ Route::group(['namespace' => 'Api'], function () {
 
         Route::post('user/update', 'UserController@update');
         Route::post('rate', 'BasicController@rate');
-       
+
+        // Delegate < start >
+            // Container < start >
+            Route::get('log_dump', 'ContainersController@Logdump');
+            // Container < end >
+        // Delegate < end >
 
       
     });
