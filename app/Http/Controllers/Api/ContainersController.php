@@ -47,7 +47,12 @@ class ContainersController extends ApiController
             if(date('Y-m-d',strtotime($date->format('Y-m-d'))) == $end){
                 break;
             }
-            $range['date'] = $date->format('Y-m-d');
+            if ($this->lang_code == 'ar') {
+                $range['date'] = ArabicDateSpecial($date->format('l ,F j , Y h:i A'));
+            }
+            else{
+                $range['date'] = $date->format('l ,F j , Y h:i A');
+            }
             if(in_array($range['date'],$loadedDates)){
                 $range['load']=true;
             }else{

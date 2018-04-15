@@ -48,7 +48,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post('rate', 'BasicController@rate');
         Route::get('donation_requests','DonationRequestsController@index');
        
-
+        Route::get('log_dump','ContainersController@Logdump');
       
     });
 });
