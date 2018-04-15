@@ -28,7 +28,9 @@ class ContainersController extends ApiController
             $delegate_containers = Container::leftJoin('unloaded_containers','unloaded_containers.container_id','=','containers.id')
             ->join('containers_translations','containers_translations.container_id','=','containers.id')
             ->where('containers.delegate_id',$user->id)
-            ->where('unloaded_containers.date_of_unloading')
+
+            //->whereDate('unloaded_containers.date_of_unloading',date('Y-m-d'))
+
             ->where('containers_translations.locale',$this->lang_code)
             ->select('containers.id','containers_translations.title','containers_translations.address','containers.lat','containers.lng',DB::raw($this->iniDiffLocations('containers',$lat,$lng)),'unloaded_containers.id as status')
             ->orderBy('distance')
@@ -36,7 +38,6 @@ class ContainersController extends ApiController
 
             return _api_json(Container::transformCollection($delegate_containers));
         } catch (\Exception $e) {
-            dd($e);
             $message = _lang('app.error_is_occured');
             return _api_json('', ['message' => $message],400);
         }
