@@ -25,8 +25,6 @@ class LoginController extends ApiController {
             $errors = $validator->errors()->toArray();
             return _api_json(new \stdClass(), ['errors' => $errors], 400);
         } else {
-            
-
             $credentials = $request->only('username', 'password','type');
             if ($user = $this->auth_check($credentials)) {
                 $token = new \stdClass();

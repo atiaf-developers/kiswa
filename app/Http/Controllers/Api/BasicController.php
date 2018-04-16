@@ -54,7 +54,7 @@ class BasicController extends ApiController {
     public function getSettings() {
         try {
         $settings = Setting::select('name','value')->get()->keyBy('name');
-
+        $settings['social_media'] = json_decode($settings['social_media']->value);
         $settings['info'] = SettingTranslation::where('locale', $this->lang_code)->first();
             
             return _api_json($settings);
@@ -94,8 +94,6 @@ class BasicController extends ApiController {
                           ->orderBy('news.this_order')
                           ->select('news.id','news.images','news.created_at','news_translations.title','news_translations.description')
                           ->paginate($this->limit);
-
-
             return _api_json(News::transformCollection($news));
         } catch (\Exception $e) {
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);

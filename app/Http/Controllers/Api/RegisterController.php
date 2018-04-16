@@ -84,7 +84,6 @@ class RegisterController extends ApiController {
                 );
        
         $User = new User;
-       
         $User->name = $request->input('name');
         $User->username = $request->input('username');
         $User->mobile = $request->input('mobile');

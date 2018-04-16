@@ -49,7 +49,7 @@ class UserController extends ApiController {
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
-            return _api_json(new \stdClass(), ['errors' => $errors],400);
+            return _api_json(new \stdClass(), ['errors' => $errors], 400);
         } else {
 
             DB::beginTransaction();
@@ -68,33 +68,29 @@ class UserController extends ApiController {
                 }
                 if ($old_password = $request->input('old_password')) {
                     if (!password_verify($old_password, $User->password)) {
-                        return _api_json(new \stdClass(), ['message' => _lang('app.invalid_old_password')],400);
+                        return _api_json(new \stdClass(), ['message' => _lang('app.invalid_old_password')], 400);
                     } else {
                         $User->password = bcrypt($request->input('password'));
                     }
                 }
-                if ($request->input('image')) {
-                       
-                   $file = public_path("uploads/users/$User->image");
-                    if (!is_dir($file)) {
-                        if (file_exists($file)) {
-                            unlink($file);
-                        }
+                if ($image=$request->input('image')) {
+                    $image = preg_replace("/\r|\n/", "", $image);
+                    User::deleteUploaded('users', $User->image);
+                    if (isBase64image($image)) {
+                         $User->image = User::upload($image, 'users', true, false, true);
                     }
-
-                    $User->user_image = img_decoder($request->input('image'), 'users');
+                   
                 }
-                $User->save();        
+
+                $User->save();
                 $User = User::transform($User);
                 DB::commit();
                 return _api_json($User, ['message' => _lang('app.updated_successfully')]);
             } catch (\Exception $e) {
                 $message = _lang('app.error_is_occured');
-                return _api_json(new \stdClass(), ['message' =>  $message],400);
+                return _api_json(new \stdClass(), ['message' => $message], 400);
             }
         }
     }
-
-   
 
 }
