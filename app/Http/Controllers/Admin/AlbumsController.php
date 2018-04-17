@@ -219,7 +219,7 @@ class AlbumsController extends BackendController {
         ->addColumn('options', function ($item) {
 
             $back = "";
-            if (\Permissions::check('albums', 'edit') || \Permissions::check('albums', 'delete')) {
+            if (\Permissions::check('albums', 'edit') || \Permissions::check('albums', 'delete') || \Permissions::check('album_images', 'open')) {
                 $back .= '<div class="btn-group">';
                 $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
                 $back .= '<i class="fa fa-angle-down"></i>';
@@ -240,10 +240,10 @@ class AlbumsController extends BackendController {
                     $back .= '</a>';
                     $back .= '</li>';
                 }
-                if (\Permissions::check('gallery', 'open')) {
+                if (\Permissions::check('album_images', 'open')) {
                     $back .= '<li>';
-                    $back .= '<a href="' . url('admin/gallery?album='.$item->id) . '">';
-                    $back .= '<i class = "icon-docs"></i>' . _lang('app.gallery');
+                    $back .= '<a href="'.route('album_images.index').'?album='.$item->id.'">';
+                    $back .= '<i class = "icon-docs"></i>' . _lang('app.album_images');
                     $back .= '</a>';
                     $back .= '</li>';
                 }
