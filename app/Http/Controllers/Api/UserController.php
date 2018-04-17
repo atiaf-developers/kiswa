@@ -35,7 +35,7 @@ class UserController extends ApiController {
             $rules['email'] = "required|email|unique:users,email,$User->id";
         }
         if ($request->input('image')) {
-            $rules['image'] = "is_base64image";
+            $rules['image'] = "required";
         }
         if ($request->input('mobile')) {
             $rules['mobile'] = "required|unique:users,mobile,$User->id";

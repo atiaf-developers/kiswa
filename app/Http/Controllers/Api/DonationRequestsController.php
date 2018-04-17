@@ -128,7 +128,7 @@ class DonationRequestsController extends ApiController {
                     $message = _lang('app.error_is_occured');
                     return _api_json('', ['message' => $e->getMessage()], 400);
                 }
-            } 
+            }
         }
     }
 
@@ -225,6 +225,10 @@ class DonationRequestsController extends ApiController {
         $donation_images = json_decode($request->images);
         $images = [];
         foreach ($donation_images as $image) {
+            $image = preg_replace("/\r|\n/", "", $image);
+            if (!isBase64image($image)) {
+                continue;
+            }
             $images[] = DonationRequest::upload($image, 'donation_requests', true, false, true);
         }
         $donation_request->images = json_encode($images);
