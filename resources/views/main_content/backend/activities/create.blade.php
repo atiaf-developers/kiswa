@@ -89,7 +89,7 @@
                     <span class="help-block"></span>
                 </div>
 
-                <div class="form-group form-md-line-input col-md-2">
+                <div class="form-group form-md-line-input col-md-3">
                     <select class="form-control edited" id="active" name="active">
                         <option  value="1">{{ _lang('app.active') }}</option>
                         <option  value="0">{{ _lang('app.not_active') }}</option>
@@ -98,27 +98,82 @@
                     <span class="help-block"></span>
                 </div> 
 
-                 <div class="clearfix"></div>
-                <div class="form-group col-md-6">
-                    <label class="control-label">{{_lang('app.image')}}</label>
+            </div>
+        </div>
 
-                    <div class="image_box">
-                        <img src="{{url('no-image.png')}}" width="100" height="80" class="image" />
+    </div>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{_lang('app.images') }}</h3>
+        </div>
+        <div class="panel-body">
+
+
+            <div class="form-body">
+
+                <div class="form-group col-md-2">
+                    <label class="control-label">1</label>
+
+                    <div class="image_one_box">
+                        <img src="{{url('no-image.png')}}" width="100" height="80" class="image_one" />
                     </div>
-                    <input type="file" name="image" id="image" style="display:none;">     
+                    <input type="file" name="images[0]" id="image_one" style="display:none;">     
                     <span class="help-block"></span>             
                 </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">2</label>
+
+                    <div class="image_two_box">
+                        <img src="{{url('no-image.png')}}" width="100" height="80" class="image_two" />
+                    </div>
+                    <input type="file" name="images[1]" id="image_two" style="display:none;">     
+                    <span class="help-block"></span>             
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">3</label>
+
+                    <div class="image_three_box">
+                        <img src="{{url('no-image.png')}}" width="100" height="80" class="image_three" />
+                    </div>
+                    <input type="file" name="images[2]" id="image_three" style="display:none;">     
+                    <span class="help-block"></span>             
+                </div>
+
+                <div class="form-group col-md-2">
+                    <label class="control-label">4</label>
+
+                    <div class="image_four_box">
+                        <img src="{{url('no-image.png')}}" width="100" height="80" class="image_four" />
+                    </div>
+                    <input type="file" name="images[3]" id="image_four" style="display:none;">     
+                    <span class="help-block"></span>             
+                </div>
+
+                <div class="form-group col-md-2">
+                    <label class="control-label">5</label>
+
+                    <div class="image_five_box">
+                        <img src="{{url('no-image.png')}}" width="100" height="80" class="image_five" />
+                    </div>
+                    <input type="file" name="images[4]" id="image_five" style="display:none;">     
+                    <span class="help-block"></span>             
+                </div>
+
+
 
             </div>
         </div>
 
         <div class="panel-footer text-center">
             <button type="button" class="btn btn-info submit-form"
-                    >{{_lang('app.save') }}</button>
+            >{{_lang('app.save') }}</button>
         </div>
 
 
     </div>
+
+
 
 
 </form>

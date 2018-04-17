@@ -7,6 +7,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\AUTHORIZATION;
 use App\Models\User;
+use App\Models\Device;
 
 class LoginController extends ApiController {
 
@@ -20,20 +21,29 @@ class LoginController extends ApiController {
     );
 
     public function login(Request $request) {
+        if ($request->type == 1) {
+            unset($this->rules['password']);
+        }
         $validator = Validator::make($request->all(), $this->rules);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return _api_json(new \stdClass(), ['errors' => $errors], 400);
         } else {
-            
-
             $credentials = $request->only('username', 'password','type');
             if ($user = $this->auth_check($credentials)) {
                 $token = new \stdClass();
                 $token->id = $user->id;
                 $token->expire = strtotime('+' . $this->expire_no . $this->expire_type);
                 $expire_in_seconds = $token->expire;
-                $this->update_token($request->input('device_token'),$request->input('device_type'),$request->input('device_id'));
+                
+
+                $device = Device::updateOrCreate(
+                    ['device_id' =>$request->input('device_id')],
+                    ['device_token' => $request->input('device_token'),'device_type' => $request->input('device_type')]
+                );
+                $user->device_id = $device->id;
+                $user->save();
+
                 $user = User::transform($user);
                 return _api_json($user, ['message' => _lang('app.login_done_successfully'), 'token' => AUTHORIZATION::generateToken($token), 'expire' => $expire_in_seconds]);
             }
@@ -48,9 +58,15 @@ class LoginController extends ApiController {
                 ->where('active', 1)
                 ->first();
         if ($find) {
-            if (password_verify($credentials['password'], $find->password)) {
-                return $find;
+            if (isset($credentials['password'])) {
+                if (password_verify($credentials['password'], $find->password)) {
+                     return $find;
+                }
+                else{
+                    return false;
+                }
             }
+            return $find;
         }
         return false;
     }

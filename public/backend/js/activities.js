@@ -7,7 +7,11 @@ var Activities = function () {
         $.extend(config, new_config);
         handleRecords();
         handleSubmit();
-        My.readImageMulti('image');
+        My.readImageMulti('image_one');
+        My.readImageMulti('image_two');
+        My.readImageMulti('image_three');
+        My.readImageMulti('image_four');
+        My.readImageMulti('image_five');
     };
 
 
@@ -132,7 +136,7 @@ var Activities = function () {
                             for (i in data.errors)
                             {
                                 var message=data.errors[i];
-                                 if (i.startsWith('title') || i.startsWith('description')) {
+                                 if (i.startsWith('title') || i.startsWith('description')|| i.startsWith('images')) {
                                     var key_arr = i.split('.');
                                     var key_text = key_arr[0] + '[' + key_arr[1] + ']';
                                     i = key_text;
@@ -218,7 +222,11 @@ var Activities = function () {
             $('#category_icon').val('');
             $('#active').find('option').eq(0).prop('selected', true);
             $('input[type="checkbox"]').prop('checked', false);
-            $('.image_box').html('<img src="' + config.url + '/no-image.png" class="image" width="150" height="80" />');
+            $('.image_one_box').html('<img src="' + config.url + '/no-image.png" class="image_one" width="150" height="80" />');
+            $('.image_two_box').html('<img src="' + config.url + '/no-image.png" class="image_two" width="150" height="80" />');
+            $('.image_three_box').html('<img src="' + config.url + '/no-image.png" class="image_three" width="150" height="80" />');
+            $('.image_four_box').html('<img src="' + config.url + '/no-image.png" class="image_four" width="150" height="80" />');
+            $('.image_five_box').html('<img src="' + config.url + '/no-image.png" class="image_five" width="150" height="80" />');
             $('.has-error').removeClass('has-error');
             $('.has-success').removeClass('has-success');
             $('.help-block').html('');

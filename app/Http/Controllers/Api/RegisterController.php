@@ -16,10 +16,10 @@ class RegisterController extends ApiController {
         'step' => 'required',
         'name' => 'required',
         'username' => 'required|unique:users',
-        'email' => 'required|email|unique:users',
+        'email' => 'email|unique:users',
         'mobile' => 'required|unique:users',
-        'password' => 'required',
-        'confirm_password' => 'required|same:password',
+        //'password' => 'required',
+        //'confirm_password' => 'required|same:password',
         'device_id' => 'required',
         'device_token' => 'required',
         'device_type' => 'required',
@@ -84,7 +84,6 @@ class RegisterController extends ApiController {
                 );
        
         $User = new User;
-       
         $User->name = $request->input('name');
         $User->username = $request->input('username');
         $User->mobile = $request->input('mobile');
