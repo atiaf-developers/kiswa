@@ -16,8 +16,8 @@ class Activity extends MyModel {
         $transformer = new \stdClass();
         $transformer->title = $item->title;
         $transformer->description = $item->description;
-        //$transformer->image = $item->image ? url('public/uploads/activities') . '/' . $item->image : '';
-        $transformer->images = [];
+        $prefixed_array = preg_filter('/^/', url('public/uploads/activities') . '/', json_decode($item->images));
+        $transformer->images = $prefixed_array;
 
         return $transformer;
     }
@@ -32,10 +32,10 @@ class Activity extends MyModel {
         });
 
         static::deleted(function($activity) {
-            if ($activity->image) {
-                $old_image = $activity->image;
-                static::deleteUploaded('activities', $old_image);
-            }
+                $old_images = json_decode($activity->images);
+                foreach ($old_images as $key => $value) {
+                    static::deleteUploaded('activities', $value);
+                }
         });
     }
 

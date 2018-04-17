@@ -14,7 +14,7 @@ use App\Models\News;
 use App\Models\DonationType;
 use App\Models\ContactMessage;
 use App\Models\Activity;
-use App\Models\video;
+use App\Models\Video;
 use App\Helpers\Fcm;
 use Carbon\Carbon;
 use DB;

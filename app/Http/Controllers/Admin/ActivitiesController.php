@@ -13,7 +13,11 @@ use DB;
 class ActivitiesController extends BackendController {
 
     private $rules = array(
-        'image' => 'required|image|mimes:gif,png,jpeg|max:1000',
+        'images.0' => 'required|image|mimes:gif,png,jpeg|max:1000',
+        'images.1' => 'image|mimes:gif,png,jpeg|max:1000',
+        'images.2' => 'image|mimes:gif,png,jpeg|max:1000',
+        'images.3' => 'image|mimes:gif,png,jpeg|max:1000',
+        'images.4' => 'image|mimes:gif,png,jpeg|max:1000',
         'active' => 'required',
         'this_order' => 'required'
     );
@@ -62,10 +66,14 @@ class ActivitiesController extends BackendController {
         }
         DB::beginTransaction();
         try {
+            $images = [];
+            foreach ($request->file('images') as $one) {
+                $images[] = Activity::upload($one, 'activities', true);
+            }
             $activity = new Activity;
             $activity->active = $request->input('active');
             $activity->this_order = $request->input('this_order');
-            $activity->image = Activity::upload($request->file('image'), 'activities', true);
+            $activity->images = json_encode($images);
             
             $activity->save();
             
@@ -118,7 +126,7 @@ class ActivitiesController extends BackendController {
         if (!$activity) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
-
+        $activity->images = json_decode($activity->images);
         $this->data['translations'] = ActivityTranslation::where('activity_id',$id)->get()->keyBy('locale');
         
         $this->data['activity'] = $activity;
@@ -140,11 +148,8 @@ class ActivitiesController extends BackendController {
         if (!$activity) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
-
-        if (!$request->file('image')) {
-           unset($this->rules['image']);
-        }
-        
+        $this->rules['images.0'] = 'image|mimes:gif,png,jpeg|max:1000';
+       
        $columns_arr = array(
             'title' => 'required',
             'description' => 'required'
@@ -161,16 +166,20 @@ class ActivitiesController extends BackendController {
 
         DB::beginTransaction();
         try {
+            $images = json_decode($activity->images);
+            if ($request->file('images')) {
+                foreach ($request->file('images') as $key => $one) {
+                    if (isset($images[$key])) {
+                         Activity::deleteUploaded('activities', $images[$key]);
+                    }
+                   
+                    $images[$key] = Activity::upload($one, 'activities', true);
+                }
+            }
 
             $activity->active = $request->input('active');
             $activity->this_order = $request->input('this_order');
-            if ($request->file('image')) {
-                if ($activity->image) {
-                    $old_image = $activity->image;
-                    Activity::deleteUploaded('activities', $old_image);
-                }
-                $activity->image = Activity::upload($request->file('image'), 'activities', true);
-            }
+            $activity->images = json_encode($images);
             $activity->save();
             
             $activity_translations = array();

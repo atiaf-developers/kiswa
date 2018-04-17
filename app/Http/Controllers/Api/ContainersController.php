@@ -24,11 +24,12 @@ class ContainersController extends ApiController {
             $lat = $request->input('lat');
             $lng = $request->input('lng');
 
-            $delegate_containers = Container::leftJoin('unloaded_containers', 'unloaded_containers.container_id', '=', 'containers.id')
+            $delegate_containers = Container::leftJoin('unloaded_containers', function ($join) {
+                        $join->on('unloaded_containers.container_id', '=', 'containers.id');
+                        $join->whereDate('unloaded_containers.date_of_unloading',date('Y-m-d'));
+                    })
                     ->join('containers_translations', 'containers_translations.container_id', '=', 'containers.id')
                     ->where('containers.delegate_id', $user->id)
-
-                    //->whereDate('unloaded_containers.date_of_unloading',date('Y-m-d'))
                     ->where('containers_translations.locale', $this->lang_code)
                     ->select('containers.id', 'containers_translations.title', 'containers_translations.address', 'containers.lat', 'containers.lng', DB::raw($this->iniDiffLocations('containers', $lat, $lng)), 'unloaded_containers.id as status')
                     ->orderBy('distance')

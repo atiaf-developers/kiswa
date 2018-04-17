@@ -84,10 +84,13 @@ class ApiController extends Controller {
     }
 
     protected function update_token($device_token, $device_type, $device_id) {
-        $device = Device::where('device_id',$device_id)->first();
-        $device->device_token = $device_token;
-        $device->device_type = $device_type;
-        $device->save();
+         $device = Device::updateOrCreate(
+                    ['device_id' => $device_id],
+                    ['device_token' => $device_token,'device_type' => $device_type]
+                );
+         $user = $this->auth_user();
+         $user->device_id = $device->id;
+        $user->save();
     }
 
     protected function iniDiffLocations($tableName, $lat, $lng)
