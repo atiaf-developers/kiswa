@@ -71,13 +71,13 @@ class AlbumsController extends BackendController {
             $title = $request->input('title');
 
             foreach ($this->languages as $key => $value) {
-                $album_translations[] = array(
+                $translations[] = array(
                     'locale' => $key,
                     'title'  => $title[$key],
                     'album_id' => $album->id
                 );
             }
-            AlbumTranslation::insert($album_translations);
+            AlbumTranslation::insert($translations);
             DB::commit();
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
@@ -137,7 +137,7 @@ class AlbumsController extends BackendController {
         }
 
        $columns_arr = array(
-            'title' => 'required|unique:albums_translations,title,'.$id .',donation_type_id',
+            'title' => 'required|unique:albums_translations,title,'.$id .',album_id',
         );
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
@@ -157,20 +157,20 @@ class AlbumsController extends BackendController {
             
             $album->save();
             
-            $album_translations = array();
+            $translations = array();
 
-            AlbumTranslation::where('donation_type_id', $album->id)->delete();
+            AlbumTranslation::where('album_id', $album->id)->delete();
 
-            $album_title = $request->input('title');
+            $title = $request->input('title');
 
             foreach ($this->languages as $key => $value) {
-                $album_translations[] = array(
+                $translations[] = array(
                     'locale' => $key,
-                    'title'  => $album_title[$key],
-                    'donation_type_id' => $album->id
+                    'title'  => $title[$key],
+                    'album_id' => $album->id
                 );
             }
-            AlbumTranslation::insert($album_translations);
+            AlbumTranslation::insert($translations);
 
             DB::commit();
             return _json('success', _lang('app.updated_successfully'));
@@ -191,6 +191,7 @@ class AlbumsController extends BackendController {
         if (!$album) {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
+        //dd($album);
         DB::beginTransaction();
         try {
             $album->delete();
@@ -236,6 +237,13 @@ class AlbumsController extends BackendController {
                     $back .= '<li>';
                     $back .= '<a href="" data-toggle="confirmation" onclick = "Albums.delete(this);return false;" data-id = "' . $item->id . '">';
                     $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
+                    $back .= '</a>';
+                    $back .= '</li>';
+                }
+                if (\Permissions::check('gallery', 'open')) {
+                    $back .= '<li>';
+                    $back .= '<a href="' . url('admin/gallery?album='.$item->id) . '">';
+                    $back .= '<i class = "icon-docs"></i>' . _lang('app.gallery');
                     $back .= '</a>';
                     $back .= '</li>';
                 }

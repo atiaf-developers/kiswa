@@ -12,7 +12,7 @@
 <script src="{{url('public/backend/js')}}/albums.js" type="text/javascript"></script>
 @endsection
 @section('content')
-<form role="form"  id="addEditDonationTypesForm" enctype="multipart/form-data">
+<form role="form"  id="addEditAlbumsForm" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="panel panel-default">
@@ -29,7 +29,7 @@
 
                 <div class="form-group form-md-line-input col-md-6">
 
-                    <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="{{ $translations[$key]->title }}" >
+                    <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="{{ isset($translations[$key])?$translations[$key]->title:'' }}" >
 
                     <label for="title">{{_lang('app.title') }} {{ _lang('app. '.$key.'') }}</label>
                     <span class="help-block"></span>
