@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ModelTrait;
 
 
-class DonationRequest extends MyModel
+class DonationRequest extends Model
 {
+    use ModelTrait;
     protected $table = "donation_requests";
 
     public static function transform($item)

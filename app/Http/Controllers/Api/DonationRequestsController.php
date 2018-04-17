@@ -225,7 +225,7 @@ class DonationRequestsController extends ApiController {
         $donation_images = json_decode($request->images);
         $images = [];
         foreach ($donation_images as $image) {
-            $images[] = img_decoder($image, 'donation_requests');
+            $images[] = DonationRequest::upload($image, 'donation_requests', true, false, true);
         }
         $donation_request->images = json_encode($images);
         if ($this->auth_user()) {

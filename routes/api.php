@@ -24,6 +24,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('/settings', 'BasicController@getSettings');
 
     Route::get('get_categories', 'BasicController@getCategories');
+    Route::get('get_albums', 'BasicController@getAlbums');
     Route::get('get_category', 'BasicController@getCategory');
     Route::get('get_news', 'BasicController@getNews');
     Route::get('get_donation_types', 'BasicController@getDonationTypes');
