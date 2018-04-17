@@ -3,11 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ModelTrait;
 
 
-class DonationRequest extends MyModel
+class DonationRequest extends Model
 {
+    use ModelTrait;
     protected $table = "donation_requests";
+    protected static $status_text = [
+        2 => 'start',
+        3 => 'i_have_arrived',
+        4 => 'Received',
+        5 => 'donation_has_been_received_successfully'
+    ];
 
     public static function transform($item)
     {

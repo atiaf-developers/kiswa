@@ -15,6 +15,7 @@ use App\Models\DonationType;
 use App\Models\ContactMessage;
 use App\Models\Activity;
 use App\Models\Video;
+use App\Models\Album;
 use App\Helpers\Fcm;
 use Carbon\Carbon;
 use DB;
@@ -156,7 +157,7 @@ class BasicController extends ApiController {
                                    ->where('activities_translations.locale',$this->lang_code)
                                    ->where('activities.active',true)
                                    ->orderBy('activities.this_order')
-                                   ->select("activities.id", "activities.image","activities_translations.title","activities_translations.description")
+                                   ->select("activities.id", "activities.images","activities_translations.title","activities_translations.description")
                                    ->paginate($this->limit);
 
             return _api_json(Activity::transformCollection($activities));
@@ -182,7 +183,21 @@ class BasicController extends ApiController {
 
 
 
+    public function getAlbums() {
+        try {
+            $albums = Album::Join('albums_translations','albums.id','=','albums_translations.album_id')
+                                   ->where('albums_translations.locale',$this->lang_code)
+                                   ->where('albums.active',true)
+                                   ->orderBy('albums.this_order')
+                                   ->select("albums.id","albums_translations.title")
+                                   ->paginate($this->limit);
 
+            return _api_json(Album::transformCollection($albums));
+        } catch (\Exception $e) {
+         
+            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
+        }
+    }
 
    
    

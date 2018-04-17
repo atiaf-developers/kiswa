@@ -9,6 +9,8 @@ trait ModelTrait {
     protected static $limit = 1;
     protected static $distance = 1000000;
 
+    
+
 
     protected static function getLangCode() {
         $lang_code = app()->getLocale();
