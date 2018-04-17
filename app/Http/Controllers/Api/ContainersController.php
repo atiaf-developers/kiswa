@@ -35,8 +35,11 @@ class ContainersController extends ApiController
         $interval = \DateInterval::createFromDateString('-1 day');
         $dateRange = new \DatePeriod($start, $interval, $diff->days);
         $User = $this->auth_user();
+        $days=10;
+        $Pageination_date=strtotime("-".$days." days", strtotime($start->format('Y-m-d')));
         $countainer=UnloadContainer::where('delegate_id',$User->id)
         ->where('container_id',$req->container_id)
+        ->whereBetween('date_of_unloading',[$Pageination_date,$start])
         ->get();
         $loadedDates = $countainer->pluck('date_of_unloading')->toArray();
         $count=1;
@@ -53,7 +56,7 @@ class ContainersController extends ApiController
             else{
                 $range['date'] = $date->format('l ,F j , Y h:i A');
             }
-            if(in_array($range['date'],$loadedDates)){
+            if(in_array(date('Y-m-d',strtotime($date->format('Y-m-d'))),$loadedDates)){
                 $range['load']=true;
             }else{
                 $range['load']=false;
