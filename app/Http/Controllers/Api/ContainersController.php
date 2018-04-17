@@ -32,6 +32,7 @@ class ContainersController extends ApiController {
                     ->where('containers.delegate_id', $user->id)
                     ->where('containers_translations.locale', $this->lang_code)
                     ->select('containers.id', 'containers_translations.title', 'containers_translations.address', 'containers.lat', 'containers.lng', DB::raw($this->iniDiffLocations('containers', $lat, $lng)), 'unloaded_containers.id as status')
+                    ->groupBy('containers.id')
                     ->orderBy('distance')
                     ->paginate($this->limit);
 
