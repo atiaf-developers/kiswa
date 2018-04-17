@@ -33,8 +33,11 @@ class Album extends MyModel {
         $transformer = new \stdClass();
         $transformer->id = $item->id;
         $transformer->title = $item->title;
-        $album_images = $item->images()->pluck('image')->toArray();
-        $prefixed_array = preg_filter('/^/', url('public/uploads/albums') . '/', $album_images);
+        $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
+        foreach ($album_images as $key => $value) {
+            $album_images[$key] =  static::rmv_prefix($value);
+        }
+        $prefixed_array = preg_filter('/^/', url('public/uploads/albums') . '/m_', $album_images);
         $transformer->images = $prefixed_array;
         $transformer->images_count = count($prefixed_array);
 
