@@ -204,10 +204,11 @@ class DonationRequestsController extends ApiController {
             }
 
             $donation_request = DonationRequest::join('devices','devices.id','=','donation_requests.device_id')
+                                             ->leftJoin('users','users.device_id','=','devices.id')
                                              ->where('donation_requests.id',$request->input('request_id'))
-                                             ->select('donation_requests.*','devices.device_token','devices.device_type')
+                                             ->select('donation_requests.*','devices.device_token','devices.device_type','users.id as user_id')
                                              ->first();
-                                                
+
             if (!$donation_request) {
                 $message = _lang('app.not_found');
                 return _api_json('', ['message' => $message], 404);
@@ -235,12 +236,14 @@ class DonationRequestsController extends ApiController {
             }
             $donation_request->status = $request->input('status');
             $donation_request->save();
-            //create_noti($request->input('request_id'),,$request->input('status'));
 
+            if ($donation_request->user_id) {
+                $this->create_noti($request->input('request_id'),$donation_request->user_id,$request->input('status'));
+            }
             $fcm = new Fcm();
             $notification = ['title' => 'Keswa','body' => $message];
             if ($donation_request->device_type == 1) {
-                 $fcm->send($donation_request->device_token, $notification, 'and');
+                $fcm->send($donation_request->device_token, $notification, 'and');
             }
             else{
                $fcm->send($donation_request->device_token, $notification, 'ios');
