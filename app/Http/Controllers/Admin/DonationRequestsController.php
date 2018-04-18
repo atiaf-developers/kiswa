@@ -84,9 +84,11 @@ class DonationRequestsController extends BackendController {
                 $device = Device::find($DonationRequest->device_id);
                 if ($device) {
                     $notification = array('title' => _lang('app.kiswa'), 'body' => DonationRequest::$status_text[1], 'type' => 1);
-                    $device_type = $device->type == 1 ? 'and' : 'ios';
+                    $device_type = $device->device_type == 1 ? 'and' : 'ios';
                     $Fcm = new Fcm;
-                    $Fcm->send($device->device_token, $notification, $device_type);
+                    //dd($device_type);
+                    $send=$Fcm->send($device->device_token, $notification, $device_type);
+                    dd($send);
                 }
 
                 DB::commit();

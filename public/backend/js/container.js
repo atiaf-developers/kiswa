@@ -1,8 +1,8 @@
 var Container_grid;
 
-var Container = function() {
+var Container = function () {
 
-    var init = function() {
+    var init = function () {
 
         $.extend(lang, new_lang);
         //nextLevel = 1;
@@ -16,48 +16,51 @@ var Container = function() {
 
 
 
-    var handleRecords = function() {
-            Container_grid = $('.dataTable').dataTable({
-                //"processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": config.admin_url + "/container/data",
-                    "type": "POST",
-                    data: { _token: $('input[name="_token"]').val() },
-                },
-                "columns": [
-                    { "data": "title", "name": "containers_translations.question" },
-                    { "data": "address", "name": "containers_translations.question" },
-                    { "data": "active" },
-                    { "data": "options", orderable: false, searchable: false }
-                ],
-                "order": [
-                    [2, "asc"]
-                ],
-                "oLanguage": { "sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json' }
+    var handleRecords = function () {
+        Container_grid = $('.dataTable').dataTable({
+            //"processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": config.admin_url + "/container/data",
+                "type": "POST",
+                data: {_token: $('input[name="_token"]').val()},
+            },
+            "columns": [
+                {"data": "title", "name": "containers_translations.title"},
+                {"data": "delegate", "name": "users.username"},
+                {"data": "active"},
+                {"data": "options", orderable: false, searchable: false}
+            ],
+            "order": [
+                [2, "asc"]
+            ],
+            "oLanguage": {"sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json'}
 
-            });
-        }
-        // console.log(data);
+        });
+    }
+    // console.log(data);
 
-    var handleSubmit = function() {
+    var handleSubmit = function () {
         $('#addEditContainerForm').validate({
             rules: {
+                delegate_id: {
+                    required: true,
+                },
                 'title[]': {
                     required: true,
                 },
             },
             //messages: lang.messages,
-            highlight: function(element) { // hightlight error inputs
+            highlight: function (element) { // hightlight error inputs
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 
             },
-            unhighlight: function(element) {
+            unhighlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
                 $(element).closest('.form-group').find('.help-block').html('').css('opacity', 0);
 
             },
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 $(element).closest('.form-group').find('.help-block').html($(error).html()).css('opacity', 1);
             }
         });
@@ -79,23 +82,23 @@ var Container = function() {
         //     });
         // }
 
-        $('#addEditContainerForm .submit-form').click(function() {
+        $('#addEditContainerForm .submit-form').click(function () {
 
             if ($('#addEditContainerForm').validate().form()) {
                 $('#addEditContainerForm .submit-form').prop('disabled', true);
                 $('#addEditContainerForm .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
-                setTimeout(function() {
+                setTimeout(function () {
                     $('#addEditContainerForm').submit();
                 }, 1000);
             }
             return false;
         });
-        $('#addEditContainerForm input').keypress(function(e) {
+        $('#addEditContainerForm input').keypress(function (e) {
             if (e.which == 13) {
                 if ($('#addEditContainerForm').validate().form()) {
                     $('#addEditContainerForm .submit-form').prop('disabled', true);
                     $('#addEditContainerorm .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('#addEditContainerForm').submit();
                     }, 1000);
                 }
@@ -105,7 +108,7 @@ var Container = function() {
 
 
 
-        $('#addEditContainerForm').submit(function() {
+        $('#addEditContainerForm').submit(function () {
             var id = $('#id').val();
             var action = config.admin_url + '/container';
             var formData = new FormData($(this)[0]);
@@ -120,7 +123,7 @@ var Container = function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
+                success: function (data) {
                     $('#addEditContainerForm .submit-form').prop('disabled', false);
                     $('#addEditContainerForm .submit-form').html(lang.save);
 
@@ -134,21 +137,22 @@ var Container = function() {
 
                     } else {
                         if (typeof data.errors !== 'undefined') {
-                            var message = data.errors[i];
                             for (i in data.errors) {
+                                var message = data.errors[i];
                                 if (i.startsWith('title')) {
                                     var key_arr = i.split('.');
                                     var key_text = key_arr[0] + '[' + key_arr[1] + ']';
                                     i = key_text;
                                 }
+                
                                 $('[name="' + i + '"]')
-                                    .closest('.form-group').addClass('has-error');
+                                        .closest('.form-group').addClass('has-error');
                                 $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(message).css('opacity', 1);
                             }
                         }
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     $('#addEditContainerForm .submit-form').prop('disabled', false);
                     $('#addEditContainerForm .submit-form').html(lang.save);
                     My.ajax_error_message(xhr);
@@ -168,10 +172,10 @@ var Container = function() {
     }
 
     return {
-        init: function() {
+        init: function () {
             init();
         },
-        edit: function(t) {
+        edit: function (t) {
             if (parent_id > 0) {
                 $('.for-country').hide();
                 $('.for-city').show();
@@ -183,7 +187,7 @@ var Container = function() {
             My.editForm({
                 element: t,
                 url: config.admin_url + '/container/' + id,
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
 
                     Container.empty();
@@ -197,14 +201,14 @@ var Container = function() {
             });
 
         },
-        delete: function(t) {
+        delete: function (t) {
 
             var id = $(t).attr("data-id");
             My.deleteForm({
                 element: t,
                 url: config.admin_url + '/container/' + id,
-                data: { _method: 'DELETE', _token: $('input[name="_token"]').val() },
-                success: function(data) {
+                data: {_method: 'DELETE', _token: $('input[name="_token"]').val()},
+                success: function (data) {
                     Container_grid.api().ajax.reload();
 
 
@@ -212,7 +216,7 @@ var Container = function() {
             });
 
         },
-        add: function() {
+        add: function () {
             Container.empty();
             if (parent_id > 0) {
                 $('.for-country').hide();
@@ -226,7 +230,7 @@ var Container = function() {
             $('#addEditContainerForm').modal('show');
         },
 
-        error_message: function(message) {
+        error_message: function (message) {
             $.alert({
                 title: lang.error,
                 content: message,
@@ -236,12 +240,12 @@ var Container = function() {
                     tryAgain: {
                         text: lang.try_again,
                         btnClass: 'btn-red',
-                        action: function() {}
+                        action: function () {}
                     }
                 }
             });
         },
-        empty: function() {
+        empty: function () {
             $('#id').val(0);
             $('#category_icon').val('');
             $('#active').find('option').eq(0).prop('selected', true);
@@ -255,6 +259,6 @@ var Container = function() {
     };
 
 }();
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     Container.init();
 });

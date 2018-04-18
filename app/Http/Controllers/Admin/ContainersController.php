@@ -14,7 +14,7 @@ class ContainersController extends BackendController
 {
     private $rules = array(
         // 'this_order' => 'required',
-        // 'delegate_id' => 'required',
+        'delegate_id' => 'required',
         'active' => 'required',
         'lat' => 'required',
         'lng' => 'required',
@@ -163,10 +163,11 @@ class ContainersController extends BackendController
         }
     }
     public function data(Request $request) {
-        $containers = Container::Join('containers_translations', 'containers.id', '=', 'containers_translations.container_id')
+        $containers = Container::join('containers_translations', 'containers.id', '=', 'containers_translations.container_id')
+                ->join('users', 'users.id', '=', 'containers.delegate_id')
                 ->where('containers_translations.locale', $this->lang_code)
                 ->select([
-            'containers.id', "containers_translations.title","containers_translations.address", "containers.active"
+            'containers.id', "containers_translations.title","users.username as delegate", "containers.active"
         ]);
 
         return \Datatables::eloquent($containers)

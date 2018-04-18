@@ -31,7 +31,7 @@
             <thead>
                 <tr>
                     <th>{{_lang('app.title')}}</th>
-                    <th>{{_lang('app.address')}}</th>
+                    <th>{{_lang('app.delegate')}}</th>
                     <th>{{_lang('app.status')}}</th>
                     <th>{{_lang('app.options')}}</th>
                 </tr>
