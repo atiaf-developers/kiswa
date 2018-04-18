@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Device;
 use App\Models\DonationRequest;
 use DB;
+use App\Helpers\Fcm;
 
 class DonationRequestsController extends ApiController {
 
@@ -47,7 +48,7 @@ class DonationRequestsController extends ApiController {
         'lng' => 'required'
     );
     private $status_rules = array(
-        'request' => 'required',
+        'request_id' => 'required',
         'status' => 'required'
     );
 
@@ -126,7 +127,7 @@ class DonationRequestsController extends ApiController {
                 } catch (\Exception $e) {
                     DB::rollback();
                     $message = _lang('app.error_is_occured');
-                    return _api_json('', ['message' => $e->getMessage()], 400);
+                    return _api_json('', ['message' => $message], 400);
                 }
             }
         }
@@ -202,11 +203,49 @@ class DonationRequestsController extends ApiController {
                 return _api_json(new \stdClass(), ['errors' => $errors], 400);
             }
 
-            $donation_request = DonationRequest::find($request->input('request'));
+            $donation_request = DonationRequest::join('devices','devices.id','=','donation_requests.device_id')
+                                             ->where('donation_requests.id',$request->input('request_id'))
+                                             ->select('donation_requests.*','devices.device_token','devices.device_type')
+                                             ->first();
+                                                
             if (!$donation_request) {
                 $message = _lang('app.not_found');
                 return _api_json('', ['message' => $message], 404);
             }
+
+            switch ($request->status) {
+                case 2:
+                    $message['message_ar'] = "المندوب قادم اليك لاستلام الطلب";
+                    $message['message_en'] = "The delegate is coming to you to receive the donation";
+                    break;
+
+                case 3:
+                    $message['message_ar'] = "لقد تم وصول المندوب لاستلام التبرع";
+                    $message['message_en'] = 'The delegate has arrived to receive the donation';
+                    break;
+
+                 case 4:
+                    $message['message_ar'] = "تم استلام التبرع من قبل المندوب";
+                    $message['message_en'] = 'The donation was received by the delegate';
+                    break;
+                
+                default:
+                     $message = [];
+                    break;
+            }
+            $donation_request->status = $request->input('status');
+            $donation_request->save();
+
+
+            $fcm = new Fcm();
+            $notification = ['title' => 'Keswa','body' => $message];
+            if ($donation_request->device_type == 1) {
+                 $fcm->send($donation_request->device_token, $notification, 'and');
+            }
+            else{
+               $fcm->send($donation_request->device_token, $notification, 'ios');
+            }
+        return _api_json('',['message' => _lang('app.updated_successfully')]);
         } catch (\Exception $e) {
             $message = _lang('app.error_is_occured');
             return _api_json('', ['message' => $message], 400);
