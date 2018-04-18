@@ -238,8 +238,13 @@ class DonationRequestsController extends ApiController {
             $donation_request->save();
 
             if ($donation_request->user_id) {
-                $this->create_noti($request->input('request_id'),$donation_request->user_id,$request->input('status'));
+               $notifier_id = $donation_request->user_id;
+               $notifible_type = 1;
+            }else{
+               $notifier_id = $donation_request->device_id;
+                $notifible_type = 3;
             }
+            $this->create_noti($request->input('request_id'),$notifier_id,$request->input('status'),$notifible_type);
             $fcm = new Fcm();
             $notification = ['title' => 'Keswa','body' => $message];
             if ($donation_request->device_type == 1) {
