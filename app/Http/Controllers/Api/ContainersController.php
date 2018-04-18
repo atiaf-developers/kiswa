@@ -10,7 +10,7 @@ use App\Models\UnloadContainer;
 use DatePeriod;
 use DateTime;
 use DateInterval;
-
+use DB;
 class ContainersController extends ApiController
 {
     public function __construct() {
@@ -91,6 +91,6 @@ class ContainersController extends ApiController
             $result[]=$range;
             $count++;
         }
-        return _api_json($result);
+        return _api_json($result,['end_date'=>date('Y-m-d',strtotime('1-3-2018'))]);
     }
 }
