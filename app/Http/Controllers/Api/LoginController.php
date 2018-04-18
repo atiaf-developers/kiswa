@@ -35,8 +35,6 @@ class LoginController extends ApiController {
                 $token->id = $user->id;
                 $token->expire = strtotime('+' . $this->expire_no . $this->expire_type);
                 $expire_in_seconds = $token->expire;
-                
-
                 $device = Device::updateOrCreate(
                     ['device_id' =>$request->input('device_id')],
                     ['device_token' => $request->input('device_token'),'device_type' => $request->input('device_type')]

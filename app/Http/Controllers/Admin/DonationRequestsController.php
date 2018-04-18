@@ -13,8 +13,10 @@ use DB;
 use Redirect;
 use Validator;
 use App\Models\User;
+use App\Models\Device;
 use App\Models\DonationRequest;
 use PDF;
+use App\Helpers\Fcm;
 
 class DonationRequestsController extends BackendController {
 
@@ -79,6 +81,14 @@ class DonationRequestsController extends BackendController {
                 $DonationRequest->delegate_id = $delegate;
                 $DonationRequest->status = 1;
                 $DonationRequest->save();
+                $device = Device::find($DonationRequest->device_id);
+                if ($device) {
+                    $notification = array('title' => _lang('app.kiswa'), 'body' => DonationRequest::$status_text[1], 'type' => 1);
+                    $device_type = $device->type == 1 ? 'and' : 'ios';
+                    $Fcm = new Fcm;
+                    $Fcm->send($device->device_token, $notification, $device_type);
+                }
+
                 DB::commit();
                 return _json('success', url('admin/donation_requests'));
             } catch (\Exception $ex) {
