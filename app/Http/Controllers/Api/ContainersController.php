@@ -11,8 +11,13 @@ use DatePeriod;
 use DateTime;
 use DateInterval;
 use DB;
+
 class ContainersController extends ApiController
 {
+    private $rules = array(
+        'container_id' => 'required'
+    );
+
     public function __construct() {
         parent::__construct();
     }
@@ -38,6 +43,34 @@ class ContainersController extends ApiController
             $message = _lang('app.error_is_occured');
             return _api_json('', ['message' => $message], 400);
         }
+    }
+
+
+    public function unload_container(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), $this->rules);
+            if ($validator->fails()) {
+                $errors = $validator->errors()->toArray();
+                return _api_json(new \stdClass(), ['errors' => $errors], 400);
+            }
+            $user = $this->auth_user();
+            $container = Container::find($request->input('container_id'));
+            if (!$container) {
+                return _api_json('',['message' => _lang('app.not_found')],404);
+            }
+            $unlaod_container = new UnloadContainer();
+            $unlaod_container->container_id = $request->input('container_id');
+            $unlaod_container->delegate_id = $user->id;
+            $unlaod_container->date_of_unloading = date('Y-m-d');
+            $unlaod_container->save();
+               
+             return _api_json('',['message' => _lang('app.updated_successfully')]);
+        } catch (\Exception $e) {
+            $message = _lang('app.error_is_occured');
+            return _api_json('', ['message' => $message],400);
+        }
+        
     }
 
 
@@ -91,6 +124,6 @@ class ContainersController extends ApiController
             $result[]=$range;
             $count++;
         }
-        return _api_json($result,['end_date'=>date('Y-m-d',strtotime('1-3-2018'))]);
+        return _api_json($result);
     }
 }
