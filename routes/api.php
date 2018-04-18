@@ -42,6 +42,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('send_verification_code', 'RegisterController@sendVerificationCode');
 
     Route::get('setting', 'BasicController@getSettings');
+    Route::get('notifications', 'NotificationsController@index');
 
     Route::group(['middleware' => 'jwt.auth'], function () {
 

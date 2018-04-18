@@ -197,29 +197,6 @@ class BasicController extends ApiController {
          
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
-    }
-
-
-    public function getNotifications() {
-        try {
-            $albums = Album::Join('albums_translations','albums.id','=','albums_translations.album_id')
-                                   ->where('albums_translations.locale',$this->lang_code)
-                                   ->where('albums.active',true)
-                                   ->orderBy('albums.this_order')
-                                   ->select("albums.id","albums_translations.title")
-                                   ->paginate($this->limit);
-
-            return _api_json(Album::transformCollection($albums));
-        } catch (\Exception $e) {
-         
-            return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
-        }
-    }
-
-   
-   
-  
-
-   
+    }   
 
 }
