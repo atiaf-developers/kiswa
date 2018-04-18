@@ -4,6 +4,8 @@ namespace App\Traits;
 
 use App\Models\Setting;
 use Image;
+use App\Models\NotiObject;
+use App\Models\Noti;
 
 trait Basic {
 
@@ -50,7 +52,18 @@ trait Basic {
 
     
 
-   
+   protected function create_noti($entity_id,$notifier_id,$entity_type,$notifible_type=1) {
+        $NotiObject = new NotiObject;
+        $NotiObject->entity_id = $entity_id;
+        $NotiObject->entity_type_id = $entity_type;
+        $NotiObject->notifiable_type = $notifible_type;
+        $NotiObject->save();
+        $Noti = new Noti;
+        $Noti->notifier_id = $notifier_id;
+        $Noti->noti_object_id = $NotiObject->id;
+        
+        $Noti->save();
+    }
 
     protected function lang_rules($columns_arr=array())
     {

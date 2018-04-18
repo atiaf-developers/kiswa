@@ -235,7 +235,7 @@ class DonationRequestsController extends ApiController {
             }
             $donation_request->status = $request->input('status');
             $donation_request->save();
-
+            create_noti($request->input('request_id'),$user,$request->input('status'));
 
             $fcm = new Fcm();
             $notification = ['title' => 'Keswa','body' => $message];
