@@ -179,7 +179,7 @@ if (!function_exists('ArabicDate')) {
 
 if (!function_exists('ArabicDateSpecial')) {
 
-    function ArabicDateSpecial($date) {
+    function ArabicDateSpecial($date,$time=true) {
         $months = array("Jan" => "يناير", "Feb" => "فبراير", "Mar" => "مارس", "Apr" => "أبريل", "May" => "مايو", "Jun" => "يونيو", "Jul" => "يوليو", "Aug" => "أغسطس", "Sep" => "سبتمبر", "Oct" => "أكتوبر", "Nov" => "نوفمبر", "Dec" => "ديسمبر");
         $your_date = $date; // The Current Date
         $en_month = date("M", strtotime($your_date));
@@ -198,9 +198,10 @@ if (!function_exists('ArabicDateSpecial')) {
         $eastern_arabic_symbols = array("٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩");
         //$current_date = $ar_day . ' ' . date('d', strtotime($your_date)) . ' - ' . $ar_month . ' - ' . date('Y');
         //$current_date = $ar_day . ' ' . date('d', strtotime($your_date)) . ' ' . $ar_month;
-        
-        $current_date =  date('h:i A',strtotime($your_date)).' '.$ar_day . ',' .$ar_month.' '.date('d', strtotime($your_date)) . ' ,' . date('Y');
-       
+        if($time)
+         $current_date =  date('h:i A',strtotime($your_date)).' '.$ar_day . ',' .$ar_month.' '.date('d', strtotime($your_date)) . ' ,' . date('Y');
+        else
+        $current_date =  $ar_day . ',' .$ar_month.' '.date('d', strtotime($your_date)) . ' ,' . date('Y');
 
         //$arabic_date = str_replace($standard, $eastern_arabic_symbols, $current_date);
 

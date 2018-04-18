@@ -51,16 +51,18 @@ class ContainersController extends ApiController
                 break;
             }
             if ($this->lang_code == 'ar') {
-                $range['date'] = ArabicDateSpecial($date->format('l ,F j , Y h:i A'));
+                $range['date'] = ArabicDateSpecial($date->format('l ,F j , Y h:i A') , false);
+                
             }
             else{
-                $range['date'] = $date->format('l ,F j , Y h:i A');
+                $range['date'] = $date->format('l ,F j , Y');
             }
             if(in_array(date('Y-m-d',strtotime($date->format('Y-m-d'))),$loadedDates)){
                 $range['load']=true;
             }else{
                 $range['load']=false;
             }
+            $range['date_sended']=$date->format('Y-m-d');
             $result[]=$range;
             $count++;
         }
