@@ -48,9 +48,13 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post('user/update', 'UserController@update');
         Route::post('rate', 'BasicController@rate');
         Route::get('donation_requests','DonationRequestsController@index');
+        Route::post('change_request_status','DonationRequestsController@status');
+        
         Route::get('containers','ContainersController@index');
+        
        
         Route::get('log_dump','ContainersController@Logdump');
+        Route::post('unload_container','ContainersController@unload_container');
       
     });
 });
