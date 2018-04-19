@@ -27,8 +27,10 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('get_albums', 'BasicController@getAlbums');
     Route::get('get_category', 'BasicController@getCategory');
     Route::get('get_news', 'BasicController@getNews');
+    Route::get('get_news_detailes/{id}', 'BasicController@getNewsDetailes');
     Route::get('get_donation_types', 'BasicController@getDonationTypes');
     Route::get('get_activities', 'BasicController@getActivities');
+    Route::get('get_activity_detailes/{id}', 'BasicController@getActivityDetailes');
     Route::get('get_videos', 'BasicController@getVideos');
     Route::get('get_communication_guides', 'BasicController@getCommunicationGuides');
     Route::post('send_contact_message', 'BasicController@sendContactMessage');

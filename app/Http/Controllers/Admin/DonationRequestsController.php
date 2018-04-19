@@ -87,8 +87,8 @@ class DonationRequestsController extends BackendController {
                     $device_type = $device->device_type == 1 ? 'and' : 'ios';
                     $Fcm = new Fcm;
                     //dd($device_type);
-                    $send=$Fcm->send($device->device_token, $notification, $device_type);
-                    dd($send);
+                    $Fcm->send($device->device_token, $notification, $device_type);
+                    
                 }
 
                 DB::commit();

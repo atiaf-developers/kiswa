@@ -197,6 +197,46 @@ class BasicController extends ApiController {
          
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
+    }
+
+    public function getActivityDetailes($id)
+    {
+        try {
+         $activity = Activity::Join('activities_translations','activities.id','=','activities_translations.activity_id')
+                                   ->where('activities_translations.locale',$this->lang_code)
+                                   ->where('activities.active',true)
+                                   ->where('activities.id',$id)
+                                   ->orderBy('activities.this_order')
+                                   ->select("activities.id", "activities.images","activities_translations.title","activities_translations.description")
+                                   ->first();
+          if (!$activity) {
+             return _api_json(new \stdClass(), ['message' => _lang('app.not_found')], 404);
+          }
+
+          return _api_json(Activity::transform($activity));
+          } catch (\Exception $e) {
+            return _api_json(new \stdClass(), ['message' => _lang('app.error_is_occured')], 400);
+        }
     }   
+
+    public function getNewsDetailes($id) {
+        try {
+            
+            $news = News::Join('news_translations','news.id','=','news_translations.news_id')
+                          ->where('news_translations.locale',$this->lang_code)
+                          ->where('news.active',true)
+                          ->where('news.id',$id)
+                          ->orderBy('news.this_order')
+                          ->select('news.id','news.images','news.created_at','news_translations.title','news_translations.description')
+                          ->first();
+
+          if (!$news) {
+             return _api_json(new \stdClass(), ['message' => _lang('app.not_found')], 404);
+          }
+            return _api_json(News::transform($news));
+        } catch (\Exception $e) {
+            return _api_json(new \stdClass(), ['message' => _lang('app.error_is_occured')], 400);
+        }
+    }
 
 }

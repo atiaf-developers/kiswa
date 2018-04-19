@@ -38,7 +38,7 @@ class NotificationsController extends ApiController {
                 $where_array['device_id'] = $device->id;
             }
             $noti = $this->getNoti($where_array);
-            return _api_json($this->handleFormateNoti($noti),['count' => $noti->count()]);
+            return _api_json($this->handleFormateNoti($noti));
         
     }
 

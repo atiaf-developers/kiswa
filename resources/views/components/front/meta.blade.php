@@ -7,16 +7,24 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>@yield('pageTitle')</title>
 
+<!-- google fonts -->
 
-<link rel="icon" href="{{url('public/front/images')}}/favicon.png" type="image/png">
-<link href="{{url('public/front/css')}}/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="{{url('public/front/css')}}/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href="{{url('public/front/css')}}/font-awesome.css" rel="stylesheet">
-
-<link rel="stylesheet" href="{{url('public/front/css')}}/jstarbox.css" type="text/css" media="screen" charset="utf-8" />
-@yield('css')
- <link rel="stylesheet" href="{{url('public/front/css')}}/my.css" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Css link -->
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/font-awesome.min.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/owl.carousel.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/owl.transitions.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/animate.min.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/lightbox.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/bootstrap.min.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/preloader.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/flexslider.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/datetimepicker.css"/>
+<link rel="stylesheet" href="{{url('public/front/css')}}/image.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/icon.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/style.css">
+<link rel="stylesheet" href="{{url('public/front/css')}}/responsive.css">
+<link rel="icon" type="image/png" sizes="32x32" href="{{url('public/front/img')}}/favicon.png">
 
 
 

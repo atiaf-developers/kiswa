@@ -6,10 +6,11 @@
 
     </head>
 
-    <body>
+    <body id="top">
 
         @include('components/front/header')
-        <div class="content">
+        <div class="wrapper">
+
             @yield('content')
 
         </div>

@@ -8,6 +8,7 @@ use App\Models\Activity;
 use App\Models\ActivityTranslation;
 use Validator;
 use DB;
+use App\Helpers\Fcm;
 
 
 class ActivitiesController extends BackendController {
@@ -90,7 +91,23 @@ class ActivitiesController extends BackendController {
                 );
             }
             ActivityTranslation::insert($activity_translations);
+            $this->create_noti($activity->id,null,5,1);
+            
             DB::commit();
+
+            $message['message_ar'] = 'نشاط جديد '.$activity_title['ar'];
+            $message['message_en'] = 'new ativity '.$activity_title['en'];
+            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 2 , 'id' =>$activity->id);
+            
+            $Fcm = new Fcm;
+            $token = '/topics/keswa_and';
+            $Fcm->send($token, $notification, 'and');
+              
+            $token = '/topics/keswa_ios';
+            $Fcm->send($token, $notification, 'ios');
+
+           
+
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
              DB::rollback();

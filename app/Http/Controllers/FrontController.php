@@ -37,7 +37,7 @@ class FrontController extends Controller {
         $this->getLangCode();
         $this->getSettings();
         $this->data['page_title'] = '';
-        $this->data['categories_chunk'] = $this->getCategories();
+       
     }
 
     private function getLangCode() {

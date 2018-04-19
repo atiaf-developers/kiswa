@@ -246,7 +246,7 @@ class DonationRequestsController extends ApiController {
             }
             $this->create_noti($request->input('request_id'),$notifier_id,$request->input('status'),$notifible_type);
             $fcm = new Fcm();
-            $notification = ['title' => 'Keswa','body' => $message];
+            $notification = ['title' => 'Keswa','body' => $message , 'type' => 1];
             if ($donation_request->device_type == 1) {
                 $fcm->send($donation_request->device_token, $notification, 'and');
             }

@@ -1,157 +1,335 @@
-@extends('layouts.home')
+@extends('layouts.front')
 
 @section('pageTitle',$page_title)
 
-@section('css')
-<link href="{{url('public/front/css')}}/coreSlider.css" rel="stylesheet">
-@endsection
+
 @section('js')
 
-<script src=" {{ url('public/front/js') }}/coreSlider.js"></script>
-<script src=" {{ url('public/front/scripts') }}/home.js"></script>
 @endsection
 
 
 
 @section('content')
-<!--banner-->
-<div class="banner-w3">
-    <div class="demo-1">            
-        <div id="example1" class="core-slider core-slider__carousel example_1">
-            <div class="core-slider_viewport">
-                <div class="core-slider_list">
-                    @foreach($slider as $one)
-                    <div class="core-slider_item">
-                        <img src="{{$one->image}}" class="img-responsive" alt="">
-                    </div>
-                    @endforeach
 
-                </div>
-            </div>
-            <div class="core-slider_nav">
-                <div class="core-slider_arrow core-slider_arrow__right"></div>
-                <div class="core-slider_arrow core-slider_arrow__left"></div>
-            </div>
-            <div class="core-slider_control-nav"></div>
-        </div>
-    </div>
-
-
-</div>	
-<!--banner-->
-<!--content-->
-<div class="content">
-    <div class="offers">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="tittle1">أحدث العروض</h3>
+   <section id="banner">
                     <div class="container">
                         <div class="row">
-                            <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="2500">
-                                <div class="carousel-inner">
-                                    @foreach($games_offers as $one)
-                                    <div class="item {{$loop->first?'active':''}}">
-                                        <div class="carousel-col">
-                                            <div class="block department-grid">
-                                                <img src="{{$one->image}}" class="img-responsive" alt="" />
-                                                <div class="details">
-                                                    <h2>عرض جديد</h2>
-                                                    <span><del style="color:#1461b8;">{{$one->price}} {{$currency_sign}}</del></span><span>{{$one->discount_price}} {{$currency_sign}}</span>
-                                                    <!--<h5>12 عدد المشاهدات <i class="fa fa-eye"></i></h5>-->
-                                                    <p>{{$one->title}}</p>
-                                                    <a href="{{$one->url}}" style="float:left; ">المزيد</a>
-                                                </div>
+                            <div class="col-md-12">
+                                <div class="block">
+                                    <h1> مرحباً بكم في مشروع الاستفادة من فائض الملابس المستعملة</h1>
+                                    <h2> يمكنك الأن انشاء طلب توصيل لتحديد موعد لقدوم المندوب اليك واستلام تبرعك</h2>
+                                    <div class="buttons">
+                                       <a href="order.php" class="btn btn-learn">انشاء طلب توصيل</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scrolldown">
+                        <a id="scroll" href="#features" class="scroll"></a>
+                    </div>
+        </section>
+        <section id="features">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="title">
+                                        <h2>عن كسوة</h2>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <img src="{{url('public/front/img')}}/about-bg.png" class="img-responsive" alt="" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <p class="wow fadeInUp" data-wow-delay=".3s">
+                                                    هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي
+                                                    القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها
+                                                    . ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً
+                                                    عن استخدام "هنا يوجد محتوى نصي، هنا يوجد محتوى نصي" فتجعلها تبدو (أي الأحرف) وكأنها نص مقروء.
+                                                    العديد من برامح النشر المكتبي وبرامح تحرير صفحات الويب تستخدم لوريم إيبسوم بشكل إفتراضي كنموذج عن النص،
+                                                    وإذا قمت بإدخال "lorem ipsum" في أي محرك بحث ستظهر العديد من المواقع الحديثة العهد في نتائج البحث.
+                                                    على مدى السنين ظهرت نسخ جديدة ومختلفة من نص لوريم إيبسوم، أحياناً عن طريق الصدفة، وأحياناً عن عمد كإدخال بعض العبارات الفكاهية إليها. 
+                                                </p>
+                                                <a href="aboutus.php"><i class="fa fa-angle-double-left"></i>المزيد</a>
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
-
                                 </div>
-
-                                <!-- Controls -->
-                                <div class="left carousel-control">
-                                    <a href="#carousel" role="button" data-slide="prev">
-                                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
+                            </div>
+                        </div>
+                    </div>
+        </section>
+            
+            
+        <section id="blog">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h2>الأخبار والفعاليات</h2>
+                                </div>
+                                <div id="blog-post" class="owl-carousel">
+                                    <div class="block wow fadeInLeft" data-wow-delay=".3s">
+                                        <img src="{{url('public/front/img')}}/p1.jpg" alt="" class="img-responsive">
+                                        <div class="content">
+                                            <h4>عنوان الخبر</h4>
+                                            <small>18-4-2014</small>
+                                            <p>
+                                                هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                            </p>
+                                            <a href="blog-details.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                                        </div>
+                                    </div>
+                                    <div class="block wow zoomIn" data-wow-delay=".3s">
+                                        <img src="{{url('public/front/img')}}/p2.jpg" alt="" class="img-responsive">
+                                        <div class="content">
+                                            <h4>عنوان الخبر</h4>
+                                            <small>19-4-2014</small>
+                                            <p>
+                                                هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                            </p>
+                                            <a href="blog-details.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                                        </div>
+                                    </div>
+                                    <div class="block wow fadeInRight" data-wow-delay=".3s">
+                                        <img src="{{url('public/front/img')}}/p4.jpg" alt="" class="img-responsive">
+                                        <div class="content">
+                                            <h4>عنوان الخبر</h4>
+                                            <small>20-4-2014</small>
+                                            <p>
+                                                هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                            </p>
+                                            <a href="blog-details.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                                        </div>
+                                    </div>
+                                    <div class="block">
+                                        <img src="{{url('public/front/img')}}/p3.jpg" alt="" class="img-responsive">
+                                        <div class="content">
+                                            <h4>عنوان الخبر</h4>
+                                            <small>22-4-2014</small>
+                                            <p>
+                                                هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                            </p>
+                                            <a href="blog-details.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                                        </div>
+                                    </div>
+                                    <div class="block">
+                                        <img src="{{url('public/front/img')}}/p5.jpg" alt="" class="img-responsive">
+                                        <div class="content">
+                                            <h4>عنوان الخبر</h4>
+                                            <small>23-4-2014</small>
+                                            <p>
+                                                هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                            </p>
+                                            <a href="blog-details.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                                        </div>
+                                    </div>
+                            
+                </div>      
+                            </div>
+            </div>
+                    </div>
+        </section>
+        <section id="portfolio">
+                    <div class="container">
+            <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h2>معرض الصور</h2>
+                                </div>
+                                <div class="block">
+                                    <div class="recent-work-pic">
+                                        <ul id="mixed-items">
+                                            <li class="mix category-1 col-md-4">
+                                                <a class="example-image-link" href="gallery-details.php">
+                                                    <img class="img-responsive" src="{{url('public/front/img')}}/p1.jpg" alt="">
+                                                    <div class="overlay">
+                                                        <h3>اسم الألبوم</h3>
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="mix category-1 col-md-4">
+                                                <a class="example-image-link" href="gallery-details.php">
+                                                    <img class="img-responsive" src="{{url('public/front/img')}}/p2.jpg" alt="">
+                                                    <div class="overlay">
+                                                        <h3>اسم الألبوم</h3>
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="mix category-1 col-md-4">
+                                                <a class="example-image-link" href="gallery-details.php">
+                                                    <img class="img-responsive" src="{{url('public/front/img')}}/p3.jpg" alt="">
+                                                    <div class="overlay">
+                                                        <h3>اسم الألبوم</h3>
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="mix category-1 col-md-4">
+                                                <a class="example-image-link" href="gallery-details.php">
+                                                    <img class="img-responsive" src="{{url('public/front/img')}}/p4.jpg" alt="">
+                                                    <div class="overlay">
+                                                        <h3>اسم الألبوم</h3>
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="mix category-1 col-md-4">
+                                                <a class="example-image-link" href="gallery-details.php">
+                                                    <img class="img-responsive" src="{{url('public/front/img')}}/p5.jpg" alt="">
+                                                    <div class="overlay">
+                                                        <h3>اسم الألبوم</h3>
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="mix category-1 col-md-4">
+                                                <a class="example-image-link" href="gallery-details.php">
+                                                    <img class="img-responsive" src="{{url('public/front/img')}}/p2.jpg" alt="">
+                                                    <div class="overlay">
+                                                        <h3>اسم الألبوم</h3>
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                    </ul>
+                                    </div>
+                </div>
+                            </div>
+            </div>
+                    </div>
+        </section>
+        <section id="play-video">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="block">
+                                    <h2 class="wow fadeInUp" data-wow-delay=".3s">فيديو</h2>
+                                    <a href="https://vimeo.com/198705025" class="html5lightbox" data-width=800 data-height=400>
+                                        <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s"></div>
                                     </a>
-                                </div>
-                                <div class="right carousel-control">
-                                    <a href="#carousel" role="button" data-slide="next">
-                                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
+                                    <a href="videos.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
+                                        المزيد من الفيدوهات
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-    <div class="department">
-        <div class="container">
-            <h3 class="tittle1">الأقسام</h3>
-            @foreach($categories_chunk as $chunk)
-            <div class="department-grids">
-                @foreach($chunk as $one)
-                <div class="col-md-4">
-                    <div class="department-grid">
-                        <img src="{{$one->image}}" class="img-responsive" alt="" />
-                        <h2><a href="{{$one->url}}">{{$one->title}}</a></h2>
-                    </div>
-                </div>
-
-                @endforeach
-                <div class="clearfix"></div>
-            </div>
-            @endforeach
-
-        </div>
-    </div>
-
-    <!--accessories-->
-    <div class="accessories-w3l">
-        <div class="container">
-            <h1>من نحن</h1>
-            <h3 class="tittle">{{$settings_translations->about}}</h3>
-            <div class="button">
-                <a href="{{_url('about-us')}}" class="button1"> مشاهدة المزيد</a>
-            </div>
-        </div>
-    </div>
-    <!--accessories-->
-    <div class="latest-w3">
-        <div class="container">
-            <h3 class="tittle1">أفضل الألعاب</h3>
-            @foreach($games_best_chunk as $chunk)
-            <div class="latest-grids">
-                @foreach($chunk as $one)
-                <div class="col-md-4 latest-grid">
-                    <div class="latest-top">
-                        <a href="{{$one->url}}">
-                            <img  src="{{$one->image}}" class="img-responsive"  alt="" />
-                            <div class="latest-text">
-                                <h4>{{$one->title}}</h4>
+        </section>
+        <section id="testimonial">
+                    <div class="container">
+                        <div class="row">
+                            <div class="title">
+                                <h2>أنشطة المؤسسة</h2>
                             </div>
-                        </a>
-                    </div>
-                </div>
-                @endforeach
-                <div class="clearfix"></div>
+                            <div class="col col-md-6">
+                                <a href="activity-details.php">
+                                    <div class="media wow fadeInLeft" data-wow-delay=".3s">
+                                      <div class="media-left">
+                                          <img src="{{url('public/front/img')}}/p2.jpg" alt="">
+                                      </div>
+                                      <div class="media-body">
+                                        <h4 class="media-heading">عنوان النشاط</h4>
+                                        <p>
+                                             هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                        </p>
+                                      </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col col-md-6 right">
+                                <a href="activity-details.php">
+                                    <div class="media wow fadeInRight" data-wow-delay=".3s">
+                                      <div class="media-left">
+                                          <img src="{{url('public/front/img')}}/p2.jpg" alt="">
+                                      </div>
+                                      <div class="media-body">
+                                        <h4 class="media-heading">عنوان النشاط</h4>
+                                        <p>
+                                             هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                        </p>
+                                      </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col col-md-6 border">
+                                <a href="activity-details.php">
+                                    <div class="media wow fadeInLeft" data-wow-delay=".3s">
+                                      <div class="media-left">
+                                          <img src="{{url('public/front/img')}}/p2.jpg" alt="">
+                                      </div>
+                                      <div class="media-body">
+                                        <h4 class="media-heading">عنوان النشاط</h4>
+                                        <p>
+                                             هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                        </p>
+                                      </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col col-md-6 right border">
+                                <a href="activity-details.php">
+                                    <div class="media wow fadeInRight" data-wow-delay=".3s">
+                                      <div class="media-left">
+                                          <img src="{{url('public/front/img')}}/p2.jpg" alt="">
+                                      </div>
+                                      <div class="media-body">
+                                        <h4 class="media-heading">عنوان النشاط</h4>
+                                        <p>
+                                             هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.
+                                        </p>
+                                      </div>
+                                    </div>
+                                </a>
+                            </div>
             </div>
-            @endforeach
-     
-        </div>
-    </div>
-    <!--new-arrivals-->
-</div>
-<!--content-->
-
+                    </div>
+        </section>
+        <section id="contact-form">
+                    <div class="container">
+                        <div class="row">
+                            <div class="title">
+                                <h2>تواصل معنا</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <form class="form-group">
+                                    <label>الاسم</label>
+                                    <input type="text" class="form-control">
+                                    <label>البريد الالكترونى</label>
+                                    <input type="text" class="form-control">
+                                    <label>نوع الرسالة</label>
+                                    <select class="form-control">
+                                        <option selected>اقتراح</option>
+                                        <option>شكوى</option>
+                                        <option>استفسار</option>
+                                    </select>
+                                    <label>الرسالة</label>
+                                    <textarea class="form-control" rows="3"></textarea>
+                                    <button class="btn btn-default" type="submit">ارسال</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 col">
+                                <p>
+                                    هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً عن استخدام "هنا يوجد محتوى نصي، هنا يوجد محتوى نصي" فتجعلها تبدو (أي الأحرف) وكأنها نص مقروء. 
+                                </p>
+                                <p><i class="fa fa-phone"></i> 00966123458967 - 00966123458969 </p> 
+                                <p><i class="fa fa-envelope-o"></i> info@keswa.com </p>                             
+                                <p><i class="fa fa-map-marker"></i> المملكة العربية السعودية </p>
+                                <div class="app">
+                                    <h3>حمل التطبيق الآن<i class="fa fa-download"></i> </h3>
+                                    <a href="#"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
+                                    <a href="#"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </section>
 
 
 @endsection

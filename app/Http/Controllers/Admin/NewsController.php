@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\NewsTranslation;
 use Validator;
 use DB;
+use App\Helpers\Fcm;
 
 
 class NewsController extends BackendController {
@@ -91,10 +92,26 @@ class NewsController extends BackendController {
                 );
             }
             NewsTranslation::insert($news_translations);
+
+            $this->create_noti($news->id,null,6,1);
             DB::commit();
+
+            $message['message_ar'] = 'خبر جديد '.$news_title['ar'];
+            $message['message_en'] = 'new news '.$news_title['en'];
+            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 3 , 'id' =>$news->id);
+            
+            $Fcm = new Fcm;
+            $token = '/topics/keswa_and';
+            $Fcm->send($token, $notification, 'and');
+              
+            $token = '/topics/keswa_ios';
+            $Fcm->send($token, $notification, 'ios');
+
+
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
              DB::rollback();
+             dd($ex);
             return _json('error', _lang('app.error_is_occured'), 400);
         }
     }
