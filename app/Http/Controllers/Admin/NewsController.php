@@ -54,7 +54,7 @@ class NewsController extends BackendController {
     public function store(Request $request) {
 
         $columns_arr = array(
-            'title' => 'required',
+            'title' => 'required|unique:news_translations,title',
             'description' => 'required'
         );
         $lang_rules = $this->lang_rules($columns_arr);
@@ -73,6 +73,7 @@ class NewsController extends BackendController {
                 $images[] = News::upload($one, 'news', true);
             }
             $news = new News;
+            $news->slug = str_slug($request->input('title')['en']);
             $news->active = $request->input('active');
             $news->this_order = $request->input('this_order');
             $news->images = json_encode($images);
@@ -172,7 +173,7 @@ class NewsController extends BackendController {
         
         
        $columns_arr = array(
-            'title' => 'required',
+            'title' => 'required|unique:news_translations,title,'.$id .',news_id',
             'description' => 'required'
         );
         $lang_rules = $this->lang_rules($columns_arr);
@@ -197,7 +198,7 @@ class NewsController extends BackendController {
                     $images[$key] = News::upload($one, 'news', true);
                 }
             }
-
+            $news->slug = str_slug($request->input('title')['en']);
             $news->active = $request->input('active');
             $news->this_order = $request->input('this_order');
             $news->images = json_encode($images);

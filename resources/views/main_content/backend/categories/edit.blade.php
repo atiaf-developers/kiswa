@@ -33,7 +33,7 @@
                 @foreach ($languages as $key => $value)
 
                 <div class="form-group form-md-line-input col-md-6">
-                    <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="{{  $category_title_translations["$key"] }}">
+                    <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="{{  $translations["$key"]->title }}">
                     <label for="title">{{_lang('app.title') }} {{ _lang('app. '.$key.'') }}</label>
                     <span class="help-block"></span>
                 </div>
@@ -59,7 +59,7 @@
                     @foreach ($languages as $key => $value)
 
                     <div class="form-group form-md-line-input col-md-6">
-                        <textarea  class="form-control" id="description[{{ $key }}]" name="description[{{ $key }}]" cols="30" rows="10">{{  $category_description_translations["$key"] }}</textarea>
+                        <textarea  class="form-control" id="description[{{ $key }}]" name="description[{{ $key }}]" cols="30" rows="10">{{  $translations["$key"]->description }}</textarea>
                         <label for="description">{{_lang('app.description') }} {{ _lang('app. '.$key.'') }}</label>
                         <span class="help-block"></span>
                     </div>
@@ -101,7 +101,7 @@
                     <label class="control-label">{{_lang('app.image')}}</label>
 
                     <div class="image_box">
-                        @if ($activity->image)
+                        @if ($category->image)
                             <img src="{{url('public/uploads/categories').'/'.$category->image}}" width="100" height="80" class="image" />
                         @else
                            <img src="{{url('no-image.png')}}" width="100" height="80" class="image" />

@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\AdminNotification;
 use App\Models\Device;
 use App\Models\Noti;
+use App\Models\News;
+use App\Models\Activity;
 use DB;
 
 class NotificationsController extends ApiController {
@@ -53,10 +55,10 @@ class NotificationsController extends ApiController {
         }
         else if (isset($where_array['device_id']))
          {
-
             $notifications->where('n.notifier_id', $where_array['device_id']);
             $notifications->where('n_o.notifiable_type', 3);
         }
+        $notifications->orWhere('n.notifier_id', null);
         $notifications->orderBy('n_o.created_at', 'DESC');
         $result = $notifications->get();
         $result = $notifications->paginate($this->limit);
@@ -68,16 +70,48 @@ class NotificationsController extends ApiController {
     private function handleFormateNoti($noti) {
         $result = array();
         if ($noti->count() > 0) {
+            
+
             foreach ($noti as $one) {
+
                 $obj = new \stdClass();
                 $obj->noti_id = $one->id;
                 $obj->id = $one->entity_id;
                 $obj->title = '';
-                $obj->body = _lang('app.'.Noti::$status_text[$one->entity_type_id]);
                 $obj->type = $one->entity_type_id;
                 $obj->created_at = date('d/m/Y   g:i A', strtotime($one->created_at));
                 $obj->read_status = $one->read_status;
+
+                if ($one->entity_type_id == 5) {
+                     $activity = Activity::Join('activities_translations','activities.id','=','activities_translations.activity_id')
+                                   ->where('activities_translations.locale',$this->lang_code)
+                                   ->where('activities.active',true)
+                                   ->where('activities.id',$one->entity_id)
+                                   ->select("activities_translations.title")
+                                   ->first();
+                     if (!$activity) {
+                         continue;
+                     }
+                     $message = _lang('app.new_activity').' '.$activity->title;
+                }
+                else if ($one->entity_type_id == 6) {
+                    $news = News::Join('news_translations','news.id','=','news_translations.news_id')
+                          ->where('news_translations.locale',$this->lang_code)
+                          ->where('news.active',true)
+                          ->where('news.id',$one->entity_id)
+                          ->select('news_translations.title')
+                          ->first();
+                    if (!$news) {
+                         continue;
+                     }
+                     $message = _lang('app.new_news').' '.$news->title;
+                }
+                else{
+                     $message = _lang('app.'.Noti::$status_text[$one->entity_type_id]);
+                }
+                $obj->body = $message;
                 $result[] = $obj;
+
             }
         }
         return $result;

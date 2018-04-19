@@ -22,6 +22,18 @@ class Activity extends MyModel {
         return $transformer;
     }
 
+    public static function transformHome($item) {
+        $transformer = new \stdClass();
+        $transformer->slug = $item->slug;
+        $transformer->title = $item->title;
+        $transformer->description =  mb_strimwidth($item->description, 0, 300, '...');
+        $prefixed_array = preg_filter('/^/', url('public/uploads/activities') . '/', json_decode($item->images));
+        $transformer->images = $prefixed_array;
+
+        return $transformer;
+    }
+
+
     protected static function boot() {
         parent::boot();
 

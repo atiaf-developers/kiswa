@@ -206,7 +206,6 @@ class BasicController extends ApiController {
                                    ->where('activities_translations.locale',$this->lang_code)
                                    ->where('activities.active',true)
                                    ->where('activities.id',$id)
-                                   ->orderBy('activities.this_order')
                                    ->select("activities.id", "activities.images","activities_translations.title","activities_translations.description")
                                    ->first();
           if (!$activity) {
@@ -226,7 +225,6 @@ class BasicController extends ApiController {
                           ->where('news_translations.locale',$this->lang_code)
                           ->where('news.active',true)
                           ->where('news.id',$id)
-                          ->orderBy('news.this_order')
                           ->select('news.id','news.images','news.created_at','news_translations.title','news_translations.description')
                           ->first();
 

@@ -63,6 +63,7 @@ class CategoriesController extends BackendController {
         if ($request->parent_id != 0) {
             $columns_arr ['description'] = 'required';
         }
+      
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
         $validator = Validator::make($request->all(), $this->rules);
@@ -76,6 +77,7 @@ class CategoriesController extends BackendController {
           
 
             $category = new Category;
+            $category->slug = str_slug($request->input('title')['en']);
             $category->active = $request->input('active');
             $category->this_order = $request->input('this_order');
             $category->parent_id = $request->input('parent_id');
@@ -179,9 +181,10 @@ class CategoriesController extends BackendController {
         );
         if ($category->parent_id != 0) {
             $columns_arr ['description'] = 'required';
-            $columns_arr ['image'] = 'required|image|mimes:gif,png,jpeg|max:1000';
         }
-
+        if (!$request->file('image')) {
+            unset($this->rules['image']);
+        }
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
         $validator = Validator::make($request->all(), $this->rules);
@@ -194,7 +197,7 @@ class CategoriesController extends BackendController {
 
         DB::beginTransaction();
         try {
-
+            $category->slug = str_slug($request->input('title')['en']);
             $category->active = $request->input('active');
             $category->this_order = $request->input('this_order');
             if ($request->file('image')) {

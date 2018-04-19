@@ -54,7 +54,7 @@ class ActivitiesController extends BackendController {
     public function store(Request $request) {
 
         $columns_arr = array(
-            'title' => 'required',
+            'title' => 'required|unique:activities_translations,title',
             'description' => 'required'
         );
         $lang_rules = $this->lang_rules($columns_arr);
@@ -72,6 +72,7 @@ class ActivitiesController extends BackendController {
                 $images[] = Activity::upload($one, 'activities', true);
             }
             $activity = new Activity;
+            $activity->slug = str_slug($request->input('title')['en']);
             $activity->active = $request->input('active');
             $activity->this_order = $request->input('this_order');
             $activity->images = json_encode($images);
@@ -168,7 +169,7 @@ class ActivitiesController extends BackendController {
         $this->rules['images.0'] = 'image|mimes:gif,png,jpeg|max:1000';
        
        $columns_arr = array(
-            'title' => 'required',
+            'title' => 'required|unique:activities_translations,title,'.$id .',activity_id',
             'description' => 'required'
         );
         $lang_rules = $this->lang_rules($columns_arr);
@@ -193,7 +194,7 @@ class ActivitiesController extends BackendController {
                     $images[$key] = Activity::upload($one, 'activities', true);
                 }
             }
-
+            $activity->slug = str_slug($request->input('title')['en']);
             $activity->active = $request->input('active');
             $activity->this_order = $request->input('this_order');
             $activity->images = json_encode($images);

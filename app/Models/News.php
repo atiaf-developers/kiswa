@@ -26,6 +26,21 @@ class News extends MyModel
 	}
 
 
+	public static function transformHome($item)
+	{
+		$transformer = new \stdClass();
+		$transformer->slug = $item->slug;
+		$transformer->title = $item->title;
+		$transformer->description = mb_strimwidth($item->description, 0, 300, '...');
+		$prefixed_array = preg_filter('/^/', url('public/uploads/news') . '/', json_decode($item->images));
+		$transformer->images = $prefixed_array;
+		$transformer->created_at = date('d/m/Y',strtotime($item->created_at));
+
+       return $transformer;
+		
+	}
+
+
 
 	protected static function boot() {
 		parent::boot();

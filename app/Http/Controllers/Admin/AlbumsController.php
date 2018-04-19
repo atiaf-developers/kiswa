@@ -62,6 +62,7 @@ class AlbumsController extends BackendController {
         DB::beginTransaction();
         try {
             $album = new Album;
+            $album->slug = str_slug($request->input('title')['en']);
             $album->active = $request->input('active');
             $album->this_order = $request->input('this_order');
             
@@ -151,7 +152,7 @@ class AlbumsController extends BackendController {
 
         DB::beginTransaction();
         try {
-
+            $album->slug = str_slug($request->input('title')['en']);
             $album->active = $request->input('active');
             $album->this_order = $request->input('this_order');
             

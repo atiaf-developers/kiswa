@@ -49,7 +49,7 @@ class VideosController extends BackendController {
     public function store(Request $request) {
 
         $columns_arr = array(
-            'title' => 'required',
+            'title' => 'required|unique:videos_translations,title',
         );
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
@@ -62,6 +62,7 @@ class VideosController extends BackendController {
         DB::beginTransaction();
         try {
             $video = new Video;
+            $video->slug = str_slug($request->input('title')['en']);
             $video->active = $request->input('active');
             $video->this_order = $request->input('this_order');
             $video->url = $request->input('url');
@@ -140,7 +141,7 @@ class VideosController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
        $columns_arr = array(
-            'title' => 'required',
+            'title' => 'required|unique:videos_translations,title,'.$id .',video_id',
         );
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
@@ -154,7 +155,7 @@ class VideosController extends BackendController {
 
         DB::beginTransaction();
         try {
-
+            $video->slug = str_slug($request->input('title')['en']);
             $video->active = $request->input('active');
             $video->this_order = $request->input('this_order');
             $video->url = $request->input('url');
