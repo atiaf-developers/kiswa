@@ -3,7 +3,6 @@
 <script src="{{url('public/front/js')}}/bootstrap.min.js"></script>
 <script src="{{url('public/front/js')}}/lightbox.js"></script>
 <script src="{{url('public/front/js')}}/owl.carousel.min.js"></script>
-<script src="{{url('public/front/js')}}/html5lightbox.js"></script>
 <script src="{{url('public/front/js')}}/wow.min.js"></script>
 <script src="{{url('public/front/js')}}/jquery.scrollUp.js"></script>
 <script src="{{url('public/front/js')}}/jquery.nav.js"></script>

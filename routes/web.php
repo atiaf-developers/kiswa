@@ -26,7 +26,7 @@ if (in_array($currentLanguageCode, $languages)) {
         return redirect()->to($defaultLanguageCode);
     });
 
- 
+
     Route::group(['namespace' => 'Front', 'prefix' => $currentLanguageCode], function () use($currentLanguageCode) {
         app()->setLocale($currentLanguageCode);
         Route::get('/', 'HomeController@index')->name('home');
@@ -44,9 +44,9 @@ if (in_array($currentLanguageCode, $languages)) {
 
         Route::get('login/facebook', 'Auth\RegisterController@redirectToProvider')->name('login/facebook');
         Route::get('login/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
-        
+
         Route::get('complete-registeration', 'Auth\RegisterController@showCompleteRegistrationForm')->name('complete_register');
-        
+
 
         Route::get('about-us', 'StaticController@about_us')->name('about_us');
         Route::get('usage-and-conditions', 'StaticController@usage_coditions')->name('usage_conditions');
@@ -59,16 +59,11 @@ if (in_array($currentLanguageCode, $languages)) {
         Route::get('games', 'PropertyController@games');
         Route::get('game/{slug}', 'PropertyController@game_details');
         Route::get('game/{slug}/reserve', 'PropertyController@game_reserve');
-       
 
 
-        /*************************** user ***************/
-        Route::get('customer/reservations','ReservationsController@index')->name('reservations');
 
-
-        
-        
-
+        /*         * ************************* user ************** */
+        Route::get('game/{slug}/reserve', 'PropertyController@game_reserve');
     });
 } else {
     Route::get('/' . $currentLanguageCode, function () use($defaultLanguageCode) {
@@ -83,7 +78,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('/error', 'AdminController@error')->name('admin.error');
     Route::get('/change_lang', 'AjaxController@change_lang')->name('ajax.change_lang');
 
-     Route::get('profile', 'ProfileController@index');
+    Route::get('profile', 'ProfileController@index');
     Route::patch('profile', 'ProfileController@update');
 
 
@@ -106,13 +101,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::resource('videos', 'VideosController');
 
     Route::get('settings', 'SettingsController@index');
-  
+
     // Route For Container Moduel {Start}
     Route::resource('container', 'ContainersController');
     Route::post('container/data', 'ContainersController@data');
     // Route For Container Moduel {End}
-
-
     // Route For Users Moduel {Start}
     Route::resource('users', 'UsersController');
     Route::post('users/data', 'UsersController@data');
@@ -133,13 +126,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('locations/data', 'LocationsController@data');
 
 
- 
-   
-    
+
+
+
 
     Route::post('admins/data', 'AdminsController@data');
-   
- Route::resource('contact_messages', 'ContactMessagesController');
+
+    Route::resource('contact_messages', 'ContactMessagesController');
     Route::post('contact_messages/data', 'ContactMessagesController@data');
 
     Route::post('categories/data', 'CategoriesController@data');
@@ -150,11 +143,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('activities/data', 'ActivitiesController@data');
     Route::post('news/data', 'NewsController@data');
     Route::post('album_images/data', 'AlbumImagesController@data');
-   
 
-    
 
- 
+
+
+
 
 
 

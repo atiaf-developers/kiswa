@@ -74,7 +74,7 @@
                             <p>
                                 {{ $one->description }}
                             </p>
-                            <a href="blog-details.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                            <a href="{{ $one->url }}" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
                         </div>
                     </div>
                     @endforeach
@@ -124,8 +124,8 @@
             <div class="col-md-12">
                 <div class="block">
                     <h2 class="wow fadeInUp" data-wow-delay=".3s">فيديو</h2>
-                    <a href="https://vimeo.com/198705025" class="html5lightbox" data-width=800 data-height=400>
-                        <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s"></div>
+                    <a id="video" video-url="https://www.youtube.com/watch?v=4REytytTm2c" style="cursor: pointer;">
+                        <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: zoomIn;"></div>
                     </a>
                     <a href="videos.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
                         المزيد من الفيدوهات
