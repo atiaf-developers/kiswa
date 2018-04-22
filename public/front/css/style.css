@@ -277,7 +277,7 @@ header .social a:hover{
 .menu a:before {
   content: "";
   position: absolute;
-  right: 16px;
+  right: 23px;
   bottom: 12px;
   width: 0;
   height: 1px;
@@ -305,6 +305,43 @@ header .social a:hover{
 }
 .navbar-nav > li{
     float: right;
+}
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+    background: none;
+}
+.dropdown-menu > li > a{
+    text-align: right;
+}
+nav .caret{
+    margin: 0 5px;
+}
+.navbar-nav > li > a{
+    padding: 15px 25px;
+}
+.dropdown-menu > li > a{
+    padding: 10px 20px;
+    border-bottom: 1px solid #f6f6f6;
+}
+
+.dropdown-menu > li > a:hover{
+    background: #f9f9f9;
+    color: #444;
+}
+.dropdown-menu a:before{
+    display: none;
+}
+.dropdown-menu{
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+ul.dropdown-menu{
+    max-height: 300px;
+    max-width: 350px;
+    overflow: auto;
+}
+.navbar-nav > li > .dropdown-menu{
+    direction: rtl;
 }
 /* =================
    Home page style
@@ -420,8 +457,9 @@ header .social a:hover{
     color:#0f9ac8;
 }
 #features img{
-    width:100%;
     float: right;
+    height:470px;
+    max-width: 100%;
 }
 #features p{
     font-size: 16px;
@@ -875,7 +913,18 @@ i.fa-flag-o{
   background: #fff;
   color: #0f9ac8 ;
 }
-
+.pagination{
+	margin-top:60px;
+}
+.pager li > a, .pager li > span{
+	border: 2px solid #0f9ac8;
+        color: #444;
+}
+.pager li > a:hover , .pager li > span:hover{
+	border: 2px solid #0f9ac8;
+	background: #0f9ac8;
+	color: #fff;
+}
 
 #pricing-table .block .btn-buy {
     opacity: 0;
@@ -939,7 +988,8 @@ i.fa-flag-o{
   border-color: #0f9ac8 ;
 }
 #contact-form p:first-child{
-    padding: 10px 0 ;
+    padding: 10px 5px;
+    font-size: 16px;
 }
 #contact-form p{
     padding: 10px 0;
@@ -1117,6 +1167,21 @@ footer span{
 #blog-post .content .btn-read:hover, #news .news-area .box .btn-read:hover{
     background: #0c86ae;
 }
+a.read-more{
+    background: #0f9ac8;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    display: block;
+    margin: 0 auto;
+    width: 13%;
+    text-align: center;
+    font-weight: bold;
+}
+a.read-more:hover{
+    background: #0c86ae;
+}
 /* =====================
    Blog Page
    ===================== */
@@ -1132,7 +1197,7 @@ footer span{
 }
 
 
-#blog-left .block span{
+#profile .block span{
   display: inline-block;
   color: #0f9ac8 ;
   font-size: 15px ;
@@ -1140,11 +1205,11 @@ footer span{
   padding: 0 7px;
 }
 
-#blog-left .block .first-child{
+#profile .block .first-child{
     margin: 5.5% 0 ;
 }
 
-#blog-left .block p{
+#profile .block p{
     font-size: 16px;
     color: #444;
     line-height: 23px;
@@ -1202,26 +1267,27 @@ footer span{
   text-decoration: none;
 }
 
-#blog-left .block .blog-comment{
-  padding: 25px ;
+#profile .block .blog-comment{
+  padding: 15px ;
   background-color: #f6f6f6;
   display: block;
   width:100%;
   float: right;
   border-radius: 7px;
   margin: 10px 0;
+  text-align: right;
 }
-#blog-left .block .blog-comment  img{
-    width:70px;
-    height:70px;
+#profile .block .blog-comment  img{
+    width:60px;
+    height:60px;
     margin: 0 auto;
     display: block;
 }
-#blog-left .block .blog-comment .comment-text{
+#profile .block .blog-comment .comment-text{
     float:right;
     padding-right:30px;
 }
-#blog-left .block .blog-comment .comment-text a{
+#profile .block .blog-comment .comment-text a{
   color: #444;
   margin: 0 0 10px;
   font-family: myFirstFont;
@@ -1231,7 +1297,7 @@ footer span{
   font-weight: 500;
 }
 
-#blog-left .block .blog-comment .comment-text span{
+#profile .block .blog-comment .comment-text span{
   font-size: 11px;
   line-height: 20px;
   display: inline-block;
@@ -1254,25 +1320,25 @@ footer span{
     margin: 0 0 0 5.5%;
 }
 
-#blog-left .blog-comment-main{
+#profile .blog-comment-main{
   padding-bottom: 7%;
   margin-bottom: 7%;
   border-bottom: 4px solid #0f9ac8 ;
 }
 
-#blog-left .blog-comment-main .blog-comment .comment-img{
+#profile .blog-comment-main .blog-comment .comment-img{
     float: left;
     margin-right: 35px;
     margin-top: 10px;
     max-width: 100px;
 }
 
-#blog-left .blog-comment-main .comment-text{
+#profile .blog-comment-main .comment-text{
   overflow: hidden;
 }
 
-#blog-left .blog-comment-main .comment-text .title,
-#blog-left .blog-comment-main .comment-text span{
+#profile .blog-comment-main .comment-text .title,
+#profile .blog-comment-main .comment-text span{
   color: #444;
   font-size: 14px;
   line-height: 24px;
@@ -1283,20 +1349,20 @@ footer span{
   padding: 0;
 }
 
-#blog-left .blog-comment-main .comment-text .title:after{
+#profile .blog-comment-main .comment-text .title:after{
     content: "/";
     padding: 0 10px;
     font-weight: 500;
 }
 
-#blog-left .blog-comment-main .comment-text p{
+#profile .blog-comment-main .comment-text p{
   margin: 2% 0;
   font-size: 13px;
   color: #626262;
   line-height: 23px;
 }
 
-#blog-left .blog-comment-main .comment-text .btn{
+#profile .blog-comment-main .comment-text .btn{
   font-size: 9px;
   padding: 4px 12px 3px;
   border: 2px solid #0f9ac8 ;
@@ -1561,6 +1627,10 @@ footer span{
 	text-decoration:none;
         font-weight: bold;
 }
+.form-w3agile a.save{
+    width: 40%;
+    margin: 10px auto 0;
+}
 
 .form-w3agile .a-login, .form-w3agile .a-signin{
 	margin:10px 0;
@@ -1633,7 +1703,15 @@ footer span{
     width: 100px;
     height: 100px;
 }
-
+.form-w3agile h3.h3-dir{
+    direction: ltr;
+}
+.form-w3agile a.change-num{
+    color:#444;
+}
+.form-w3agile a.change-num:hover{
+    color:#0c86ae;
+}
 #login .login-area .margin{
     margin:40px 0;
 }
@@ -1954,6 +2032,10 @@ width: 100%;
 #profile table td:nth-child(odd){
 	font-weight:bold;
 }
+
+#profile .form-w3agile label.col-form-label{
+    line-height: 60px;
+}
 /*==================
  ERROR  PAGE
 ====================*/
@@ -2049,6 +2131,12 @@ width: 100%;
         float: none;
         margin-top:10px;
     }
+    .dropdown-menu > li > a,.navbar-nav .open .dropdown-menu > li > a{
+        border-bottom: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: none;
+    }
 }
 @media screen and (max-width: 600px) {
     header .col-md-4{
@@ -2076,4 +2164,129 @@ width: 100%;
 }
 @media screen and (max-width: 480px) {
     
+}
+
+/*
+    GitHub URL: https://github.com/gucastiliao/video-popup-js
+*/
+
+.videopopupjs{
+    background-color:#000;
+    background-color:rgba(0,0,0,0.6);
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:99999;
+    text-align: start!important;
+}
+.videopopupjs--hide{
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: videoPopupJsHide;
+    animation-name: videoPopupJsHide;
+}
+.videopopupjs__close{
+    width:30px;
+    height:30px;
+    cursor:pointer;
+    display:block;
+    margin-bottom:10px;
+    color:rgba(255, 255, 255, 0.59);
+}
+.videopopupjs__close:after{
+    width:30px;
+    height:30px;
+    display:block;
+    text-align:center;
+    content:'X';
+    font-family:'Verdana';
+    border-radius:50%;
+    background:#333;
+    line-height:2.2;
+    font-size:13px;
+}
+.videopopupjs__close:hover{
+    opacity:0.5;
+}
+.videopopupjs--animation{
+    opacity: 0;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: videoPopupJs;
+    animation-name: videoPopupJs;
+}
+.videopopupjs__content{
+    margin:0 auto;
+    height:100%;
+    height:500px;
+    width:100%;
+    margin-top:5%;
+}
+.videopopupjs__content iframe{
+    width:100%;
+    height:100%;
+}
+.videopopupjs__block--notfound{
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    width:100%;
+    height:500px;
+    background-color:#fff;
+    text-align:center;
+    vertical-align: middle;
+    line-height: 500px;
+    font-family:'Arial';
+    font-size:20px;
+}
+@media(max-width: 768px){
+    .videopopupjs__content{
+        max-width:90%!important;
+    }
+}
+@-webkit-keyframes videoPopupJs{
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes videoPopupJs{
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes videoPopupJsHide{
+    0%{
+        opacity: 1;
+    }
+
+    100%{
+        opacity: 0;
+    }
+}
+
+@keyframes videoPopupJsHide{
+    0%{
+        opacity: 1;
+    }
+
+    100%{
+        opacity: 0;
+    }
 }

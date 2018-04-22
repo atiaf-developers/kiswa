@@ -5,11 +5,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="social">
-                                    <a href="#"><span class="fa fa-facebook"></span></a>
-                                    <a href="#"><span class="fa fa-twitter"></span></a>
-                                    <a href="#"><span class="fa fa-google-plus"></span></a>
-                                    <a href="#"><span class="fa fa-youtube"></span></a>
-                                    <a href="#"><span class="fa fa-instagram"></span></a>
+                                    <a href="{{ $settings['social_media']->facebook }}"><span class="fa fa-facebook"></span></a>
+                                    <a href="{{ $settings['social_media']->twitter }}"><span class="fa fa-twitter"></span></a>
+                                    <a href="{{ $settings['social_media']->google }}"><span class="fa fa-google-plus"></span></a>
+                                    <a href="{{ $settings['social_media']->youtube }}"><span class="fa fa-youtube"></span></a>
+                                    <a href="{{ $settings['social_media']->instagram }}"><span class="fa fa-instagram"></span></a>
                                 </div>
                             </div>
 
@@ -75,15 +75,23 @@
                 </div>
                 <nav class="collapse navbar-collapse navbar-right" role="navigation">
                     <ul id="nav" class="nav navbar-nav menu">
-                        <li><a href="{{ url('/') }}">الرئيسية</a></li>
-                        <li><a href="aboutus.php">عن كسوة</a></li>
-                        <li><a href="news.php">الأخبار والفعاليات</a></li>
-                        <li><a href="activities.php">أنشطة المؤسسة</a></li>
-                        <li><a href="gallery.php">الصور</a></li>
-                        <li><a href="videos.php">الفيديوهات</a></li>
-                        <li><a href="blog.php">الجمعيات المتعاقدة مع المؤسسة</a></li>
-                        <li><a href="blog.php">الأمانات والجهات الحكومية</a></li>
-                        <li><a href="contactus.php">اتصل بنا</a></li>
+                        <li><a href="{{ url('/') }}">{{ _lang('app.home') }}</a></li>
+                        <li><a href="{{ route('about_us') }}">{{ _lang('app.about_us') }}</a></li>
+                        <li><a href="{{ route('news_events') }}">الأخبار والفعاليات</a></li>
+                        <li><a href="{{ route('corporation_activities') }}">أنشطة المؤسسة</a></li>
+                        <li><a href="{{ route('gallary') }}">الصور</a></li>
+                        <li><a href="{{ route('video_gallary') }}">الفيديوهات</a></li>
+                        <li><a href="index.php#contact-form">اتصل بنا</a></li>
+                       <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>أخرى </a> 
+
+                              <ul class="dropdown-menu">
+                                @foreach ($others as $item)
+                                    <li><a href="{{ route('others',$item->slug) }}">{{ $item->title }}</a></li>
+                                @endforeach
+                              </ul>
+                        </li>
+                        
 
                     </ul>
                 </nav>
