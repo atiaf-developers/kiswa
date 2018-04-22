@@ -17,15 +17,15 @@
                     <h1> مرحباً بكم في مشروع الاستفادة من فائض الملابس المستعملة</h1>
                     <h2> يمكنك الأن انشاء طلب توصيل لتحديد موعد لقدوم المندوب اليك واستلام تبرعك</h2>
                     <div class="buttons">
-                       <a href="order.php" class="btn btn-learn">انشاء طلب توصيل</a>
-                   </div>
-               </div>
-           </div>
-       </div>
-   </div>
-   <div class="scrolldown">
-    <a id="scroll" href="#features" class="scroll"></a>
-</div>
+                        <a href="order.php" class="btn btn-learn">انشاء طلب توصيل</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrolldown">
+        <a id="scroll" href="#features" class="scroll"></a>
+    </div>
 </section>
 <section id="features">
     <div class="container">
@@ -79,9 +79,9 @@
                     </div>
                     @endforeach
 
-                    
-                    
-                    
+
+
+
 
                 </div>      
             </div>
@@ -109,8 +109,8 @@
                                 </a>
                             </li>
                             @endforeach
-                            
-                           
+
+
                         </ul>
                     </div>
                 </div>
@@ -141,68 +141,78 @@
             <div class="title">
                 <h2>{{ _lang('app.foundation_activities') }}</h2>
             </div>
+            @if(count($activities)>0)
+            @if(isset($activities[0]))
             <div class="col col-md-6">
                 <a href="activity-details.php">
                     <div class="media wow fadeInLeft" data-wow-delay=".3s">
-                      <div class="media-left">
-                          <img src="{{ $activities[0]->images[0] }}" alt="">
-                      </div>
-                      <div class="media-body">
-                        <h4 class="media-heading">{{ $activities[0]->title }}</h4>
-                        <p>
-                        {{ $activities[0]->description }}
-                     </p>
-                 </div>
-             </div>
-         </a>
-     </div>
-     <div class="col col-md-6 right">
-        <a href="activity-details.php">
-            <div class="media wow fadeInRight" data-wow-delay=".3s">
-              <div class="media-left">
-                  <img src="{{ $activities[1]->images[0] }}" alt="">
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">{{ $activities[1]->title }}</h4>
-                <p>
-                {{ $activities[1]->description }}
-             </p>
-         </div>
-     </div>
- </a>
-</div>
-<div class="col col-md-6 border">
-    <a href="activity-details.php">
-        <div class="media wow fadeInLeft" data-wow-delay=".3s">
-          <div class="media-left">
-              <img src="{{ $activities[2]->images[0] }}" alt="">
-          </div>
-          <div class="media-body">
-            <h4 class="media-heading">{{ $activities[2]->title }}</h4>
-            <p>
-             {{ $activities[2]->description }}
-         </p>
-     </div>
- </div>
-</a>
-</div>
-<div class="col col-md-6 right border">
-    <a href="activity-details.php">
-        <div class="media wow fadeInRight" data-wow-delay=".3s">
-          <div class="media-left">
-              <img src="{{ $activities[3]->images[0]  }}" alt="">
-          </div>
-          <div class="media-body">
-            <h4 class="media-heading">{{ $activities[3]->title }}</h4>
-            <p>
-            {{ $activities[3]->description }}
-         </p>
-     </div>
- </div>
-</a>
-</div>
-</div>
-</div>
+                        <div class="media-left">
+                            <img src="{{ $activities[0]->images[0] }}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ $activities[0]->title }}</h4>
+                            <p>
+                                {{ $activities[0]->description }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+            @if(isset($activities[1]))
+            <div class="col col-md-6 right">
+                <a href="activity-details.php">
+                    <div class="media wow fadeInRight" data-wow-delay=".3s">
+                        <div class="media-left">
+                            <img src="{{ $activities[1]->images[0] }}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ $activities[1]->title }}</h4>
+                            <p>
+                                {{ $activities[1]->description }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+            @if(isset($activities[2]))
+            <div class="col col-md-6 border">
+                <a href="activity-details.php">
+                    <div class="media wow fadeInLeft" data-wow-delay=".3s">
+                        <div class="media-left">
+                            <img src="{{ $activities[2]->images[0] }}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ $activities[2]->title }}</h4>
+                            <p>
+                                {{ $activities[2]->description }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+            @if(isset($activities[3]))
+            <div class="col col-md-6 right border">
+                <a href="activity-details.php">
+                    <div class="media wow fadeInRight" data-wow-delay=".3s">
+                        <div class="media-left">
+                            <img src="{{ $activities[3]->images[0]  }}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{ $activities[3]->title }}</h4>
+                            <p>
+                                {{ $activities[3]->description }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
+            @endif
+        </div>
+    </div>
 </section>
 <section id="contact-form">
     <div class="container">

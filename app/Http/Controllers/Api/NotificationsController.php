@@ -70,8 +70,7 @@ class NotificationsController extends ApiController {
     private function handleFormateNoti($noti) {
         $result = array();
         if ($noti->count() > 0) {
-            
-
+           
             foreach ($noti as $one) {
 
                 $obj = new \stdClass();
