@@ -81,9 +81,14 @@ class DonationRequestsController extends BackendController {
                 $DonationRequest->delegate_id = $delegate;
                 $DonationRequest->status = 1;
                 $DonationRequest->save();
-                $device = Device::find($DonationRequest->device_id);
+                $device = User::join('devices','devices.id','=','users.device_id')
+                               ->where('users.id',$DonationRequest->delegate_id)
+                               ->select('devices.device_type','devices.device_token')
+                               ->first();
                 if ($device) {
-                    $notification = array('title' => _lang('app.kiswa'), 'body' => DonationRequest::$status_text[1], 'type' => 1);
+                    $message['message_ar'] = 'تم اسناد طلب تبرع جديد اليك';
+                    $message['message_en'] = 'new request for a donation has been assigned to you';
+                    $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 1);
                     $device_type = $device->device_type == 1 ? 'and' : 'ios';
                     $Fcm = new Fcm;
                     //dd($device_type);

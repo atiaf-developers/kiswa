@@ -4,7 +4,7 @@
 
 
 @section('js')
-
+  <script src=" {{ url('public/front/scripts') }}/contact.js"></script>
 @endsection
 
 @section('content')
@@ -33,7 +33,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="title">
-                        <h2>عن كسوة</h2>
+                        <h2>{{ _lang('app.about_keswa') }}</h2>
                     </div>
                     <div class="col-md-4">
                         <div class="row">
@@ -218,31 +218,46 @@
     <div class="container">
         <div class="row">
             <div class="title">
-                <h2>تواصل معنا</h2>
+                <h2>{{ _lang('app.contact_us') }}</h2>
             </div>
             <div class="col-md-6">
-                <form class="form-group">
-                    <label>الاسم</label>
-                    <input type="text" class="form-control">
-                    <label>البريد الالكترونى</label>
-                    <input type="text" class="form-control">
-                    <label>نوع الرسالة</label>
-                    <select class="form-control">
-                        <option selected>اقتراح</option>
-                        <option>شكوى</option>
-                        <option>استفسار</option>
-                    </select>
-                    <label>الرسالة</label>
-                    <textarea class="form-control" rows="3"></textarea>
-                    <button class="btn btn-default" type="submit">ارسال</button>
+                <form class="form-group" action="" method="post" id="contactus_form">
+
+                     <div class="form-group">
+                         <label class="control-label">{{ _lang('app.name') }}</label>
+                         <input type="text" class="form-control" name="name">
+                     </div>
+                    
+                     
+                     <div class="form-group">
+                        <label class="control-label">{{ _lang('app.email') }}</label>
+                        <input type="email" class="form-control" name="email">
+                     </div>
+                  
+                     
+                     <div class="form-group">
+                          <label class="control-label">{{ _lang('app.message_type') }}</label>
+                            <select class="form-control" name="type">
+                                @foreach ($types as $key => $value)
+                                    <option value="{{ $key }}">{{ _lang('app.'.$value)  }}</option>
+                                @endforeach
+                                
+                            </select>
+                     </div>
+                   
+                    
+                    <div class="form-group">
+                        <label class="control-label">{{ _lang('app.message') }}</label>
+                        <textarea class="form-control" rows="3" name="message"></textarea>
+                    </div>
+                   
+
+                    <button class="btn btn-default submit-form" type="submit">{{ _lang('app.send') }}</button>
                 </form>
             </div>
             <div class="col-md-6 col">
-                <p>
-                    هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً عن استخدام "هنا يوجد محتوى نصي، هنا يوجد محتوى نصي" فتجعلها تبدو (أي الأحرف) وكأنها نص مقروء. 
-                </p>
-                <p><i class="fa fa-phone"></i> 00966123458967 - 00966123458969 </p> 
-                <p><i class="fa fa-envelope-o"></i> info@keswa.com </p>                             
+                <p><i class="fa fa-phone"></i> {{ $settings['phone']->value }} </p> 
+                <p><i class="fa fa-envelope-o"></i> {{ $settings['email']->value }} </p>                             
                 <p><i class="fa fa-map-marker"></i> المملكة العربية السعودية </p>
                 <div class="app">
                     <h3>حمل التطبيق الآن<i class="fa fa-download"></i> </h3>

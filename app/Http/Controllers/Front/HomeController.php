@@ -9,6 +9,7 @@ use App\Models\News;
 use App\Models\Album;
 use App\Models\Activity;
 use App\Models\Video;
+use App\Models\ContactMessage;
 
 class HomeController extends FrontController {
 
@@ -20,8 +21,7 @@ class HomeController extends FrontController {
         $this->data['news'] = $this->getNews();
         $this->data['activities'] = $this->getActivities();
         $this->data['albums'] = $this->getAlbums();
-
-
+        $this->data['types'] = ContactMessage::$types;
         return $this->_view('index');
     }
 
