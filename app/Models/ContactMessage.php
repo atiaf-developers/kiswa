@@ -8,6 +8,6 @@ class ContactMessage extends MyModel {
 
     protected $table = 'contact_messages';
 
-    public static $types=['complaint','enquiry','suggestion'];
+    public static $types=['suggestion','enquiry','complaint'];
 
 }

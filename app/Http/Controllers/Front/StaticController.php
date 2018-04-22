@@ -11,13 +11,11 @@ use Validator;
 
 class StaticController extends FrontController {
 
-    private $contact_rules = array(
-        'email' => 'required|email',
-        'subject' => 'required',
+    private $contact_rules = array( 
         'message' => 'required',
+        'email' => 'required|email',
         'type' => 'required',
-        'phone' => 'required',
-        'name' => 'required',
+        'name' => 'required'
     );
 
     public function __construct() {
@@ -49,22 +47,20 @@ class StaticController extends FrontController {
             if ($request->ajax()) {
 
                 $errors = $validator->errors()->toArray();
-                return response()->json([
-                            'type' => 'error',
-                            'errors' => $errors
-                ]);
+                 return _json('error',$errors);
             } else {
                 return redirect()->back()->withInput()->withErrors($validator->errors()->toArray());
             }
         } else {
             try {
+                
                 $ContactMessage = new ContactMessage;
-                $ContactMessage->name = $request->input('name');
-                $ContactMessage->phone = $request->input('phone');
-                $ContactMessage->subject = $request->input('subject');
-                $ContactMessage->message = $request->input('message');
+                $ContactMessage->email = $request->input('email');
                 $ContactMessage->type = $request->input('type');
+                $ContactMessage->message = $request->input('message');
+                $ContactMessage->name = $request->input('name');
                 $ContactMessage->save();
+                
                 $message = _lang('app.sent_successfully');
                 if ($request->ajax()) {
                     return _json('success', $message);

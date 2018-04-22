@@ -2,7 +2,6 @@ var Contact= function () {
 
     var init = function () {
         handle_submit();
-          Map.initMap(false, false, false);
     }
 
        var handle_submit = function () {
@@ -14,18 +13,12 @@ var Contact= function () {
                 email: {
                     required: true
                 },
-                subject: {
-                    required: true
-                },
-                phone: {
-                    required: true
-                },
                 type: {
                     required: true
                 },
                 message: {
                     required: true
-                },
+                }
             },
 
             highlight: function (element) { // hightlight error inputs
@@ -43,42 +36,16 @@ var Contact= function () {
             }
 
         });
-        $('#contact-form .submit-form').click(function () {
-            var validate_2 = $('#contact-form').validate().form();
-            errorElements = errorElements1.concat(errorElements2);
-            if (validate_2) {
+       $('#contact-form .submit-form').click(function () {
+
+            if ($('#contact-form').validate().form()) {
                 $('#contact-form .submit-form').prop('disabled', true);
                 $('#contact-form .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
                 setTimeout(function () {
                     $('#contact-form').submit();
                 }, 1000);
-
             }
-            if (errorElements.length > 0) {
-                App.scrollToTopWhenFormHasError($('#contact-form'));
-            }
-
             return false;
-
-        });
-        $('#contact-form input').keypress(function (e) {
-            if (e.which == 13) {
-                var validate_2 = $('#contact-form').validate().form();
-                errorElements = errorElements1.concat(errorElements2);
-                if (validate_2) {
-                    $('#contact-form .submit-form').prop('disabled', true);
-                    $('#contact-form .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
-                    setTimeout(function () {
-                        $('#contact-form').submit();
-                    }, 1000);
-
-                }
-                if (errorElements.length > 0) {
-                    App.scrollToTopWhenFormHasError($('#contact-form'));
-                }
-
-                return false;
-            }
         });
         $('#contact-form').submit(function () {
             var formData = new FormData($(this)[0]);
