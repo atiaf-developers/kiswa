@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BackendController;
 use App\Models\Container;
 use App\Models\ContainerTranslation;
+use App\Models\ContainerAssignedHistory;
 use App\Models\User;
 use DB;
 use Validator;
 
-class ContainersController extends BackendController
-{
+class ContainersController extends BackendController {
+
     private $rules = array(
         // 'this_order' => 'required',
         'delegate_id' => 'required',
@@ -33,12 +34,12 @@ class ContainersController extends BackendController
     }
 
     public function create() {
-        $this->data['delegate']=User::where('type',2)->where('active',1)->get();
+        $this->data['delegate'] = User::where('type', 2)->where('active', 1)->get();
         return $this->_view('container/create', 'backend');
     }
 
     public function store(Request $request) {
-       
+
         $columns_arr = array(
             'title' => 'required|unique:containers_translations,title',
         );
@@ -52,7 +53,7 @@ class ContainersController extends BackendController
         }
         // dd($validator);
         DB::beginTransaction();
-        // try {
+        try {
 
             $container = new Container;
             $container->active = $request->input('active');
@@ -74,12 +75,18 @@ class ContainersController extends BackendController
                 );
             }
             ContainerTranslation::insert($location_translations);
+
+            $ContainerAssignedHistory = new ContainerAssignedHistory;
+            $ContainerAssignedHistory->container_id = $container->id;
+            $ContainerAssignedHistory->delegate_id = $request->input('delegate_id');
+            $ContainerAssignedHistory->start = date('Y-m-d');
+            $ContainerAssignedHistory->save();
             DB::commit();
             return _json('success', _lang('app.added_successfully'));
-        // } catch (\Exception $ex) {
-        //     DB::rollback();
-        //     return _json('error', _lang('app.error_is_occured'), 400);
-        // }
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return _json('error', _lang('app.error_is_occured'), 400);
+        }
     }
 
     public function edit($id) {
@@ -89,13 +96,14 @@ class ContainersController extends BackendController
         }
         $containerTranslation = ContainerTranslation::where('container_id', $id)->get();
         $title = $containerTranslation->pluck('title', 'locale')->all();
-        $this->data['delegate']=User::where('type',2)->where('active',1)->get();
+        $this->data['delegate'] = User::where('type', 2)->where('active', 1)->get();
         // $address = $containerTranslation->pluck('address', 'locale')->all();
         $this->data['data'] = $find;
         $this->data['title'] = $title;
         // $this->data['address'] = $address;
         return $this->_view('container/edit', 'backend');
     }
+
     public function update(Request $request, $id) {
         // dd($request);
         $container = Container::find($id);
@@ -116,6 +124,18 @@ class ContainersController extends BackendController
         }
         DB::beginTransaction();
         try {
+            if ($container->delegate_id != (int) $request->input('delegate_id')) {
+                //dd('here2');
+                ContainerAssignedHistory::whereNull('end')
+                        ->where('container_id', $container->id)
+                        ->where('delegate_id', $container->delegate_id)
+                        ->update(['end' => date('Y-m-d')]);
+                $ContainerAssignedHistory = new ContainerAssignedHistory;
+                $ContainerAssignedHistory->container_id = $container->id;
+                $ContainerAssignedHistory->delegate_id = $request->input('delegate_id');
+                $ContainerAssignedHistory->start = date('Y-m-d');
+                $ContainerAssignedHistory->save();
+            }
             $container->active = $request->input('active');
             $container->lat = $request->input('lat');
             $container->lng = $request->input('lng');
@@ -135,13 +155,17 @@ class ContainersController extends BackendController
                 );
                 ContainerTranslation::insert($container_translations);
             }
+
+
+            //dd('here');
             DB::commit();
             return _json('success', _lang('app.updated_successfully'));
         } catch (\Exception $ex) {
             DB::rollback();
-            return _json('error', _lang('app.error_is_occured'), 400);
+            return _json('error', $ex->getMessage(), 400);
         }
     }
+
     public function destroy($id) {
         $container = Container::find($id);
         if (!$container) {
@@ -162,12 +186,13 @@ class ContainersController extends BackendController
             }
         }
     }
+
     public function data(Request $request) {
         $containers = Container::join('containers_translations', 'containers.id', '=', 'containers_translations.container_id')
                 ->join('users', 'users.id', '=', 'containers.delegate_id')
                 ->where('containers_translations.locale', $this->lang_code)
                 ->select([
-            'containers.id', "containers_translations.title","users.username as delegate", "containers.active"
+            'containers.id', "containers_translations.title", "users.username as delegate", "containers.active"
         ]);
 
         return \Datatables::eloquent($containers)
@@ -215,4 +240,5 @@ class ContainersController extends BackendController
                         ->escapeColumns([])
                         ->make(true);
     }
+
 }

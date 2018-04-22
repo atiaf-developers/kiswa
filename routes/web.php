@@ -88,6 +88,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::resource('donation_types', 'DonationTypesController');
     Route::resource('donation_requests', 'DonationRequestsController');
+    Route::resource('delegates_report', 'DelegatesReportController');
     Route::post('donation_requests/assigned', 'DonationRequestsController@assigned');
     Route::resource('albums', 'AlbumsController');
     Route::resource('album_images', 'AlbumImagesController');
