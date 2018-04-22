@@ -42,24 +42,23 @@ if (in_array($currentLanguageCode, $languages)) {
         Route::get('edit-user-phone', 'Auth\RegisterController@showEditMobileForm')->name('edit-phone');
         Route::post('edituserphone', 'Auth\RegisterController@EditPhone')->name('editphone');
 
-        Route::get('login/facebook', 'Auth\RegisterController@redirectToProvider')->name('login/facebook');
-        Route::get('login/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
-
-        Route::get('complete-registeration', 'Auth\RegisterController@showCompleteRegistrationForm')->name('complete_register');
-
-
         Route::get('about-us', 'StaticController@about_us')->name('about_us');
-        Route::get('usage-and-conditions', 'StaticController@usage_coditions')->name('usage_conditions');
-        Route::get('policy', 'StaticController@policy')->name('policy');
-        Route::get('contact-us', 'StaticController@contact_us')->name('contact_us');
-        Route::get('offers', 'StaticController@offers')->name('offers');
-        Route::post('contact_us', 'StaticController@sendContactMessage')->name('contact');
-        Route::get('categories', 'PropertyController@categories');
-        Route::get('category/{slug}', 'PropertyController@category_details');
-        Route::get('games', 'PropertyController@games');
-        Route::get('game/{slug}', 'PropertyController@game_details');
-        Route::get('game/{slug}/reserve', 'PropertyController@game_reserve');
 
+        Route::get('news-and-events','NewsController@index')->name('news_events');
+        Route::get('news-and-events/{slug}','NewsController@show')->name('show_news');
+
+        Route::get('corporation-activities','ActivitiesController@index')->name('corporation_activities');
+        Route::get('corporation-activities/{slug}','ActivitiesController@show')->name('show_corporation_activities');
+        
+        Route::get('gallary','AlbumsController@index')->name('gallary');
+        Route::get('gallary/{slug}','AlbumsController@show')->name('show_gallary');
+        
+        Route::get('video-gallary','VideosController@index')->name('video_gallary');
+
+        Route::get('others/{slug}','OthersController@index')->name('others');
+        Route::get('others/{section}/{slug}','OthersController@show')->name('show_others');
+        
+        
 
 
         /*         * ************************* user ************** */

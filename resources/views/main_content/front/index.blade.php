@@ -67,14 +67,14 @@
                 <div id="blog-post" class="owl-carousel">
                     @foreach ($news as $one)
                     <div class="block wow zoomIn" data-wow-delay=".3s">
-                        <img src="{{ $one->images[0] }}" alt="" class="img-responsive">
+                        <img src="{{ $one->image }}" alt="" class="img-responsive">
                         <div class="content">
                             <h4>{{ $one->title }}</h4>
                             <small>{{ $one->created_at }}</small>
                             <p>
                                 {{ $one->description }}
                             </p>
-                            <a href="{{ $one->url }}" class="btn btn-read"><i class="fa fa-angle-double-left"></i>المزيد</a>
+                            <a href="{{ route('show_news',$one->slug) }}" class="btn btn-read"><i class="fa fa-angle-double-left"></i>{{ _lang('app.more') }}</a>
                         </div>
                     </div>
                     @endforeach
@@ -100,8 +100,8 @@
                         <ul id="mixed-items">
                             @foreach ($albums as $one)
                             <li class="mix category-1 col-md-4">
-                                <a class="example-image-link" href="gallery-details.php">
-                                    <img class="img-responsive" src="{{ $one->images[0] }}" alt="">
+                                <a class="example-image-link" href="">
+                                    <img class="img-responsive" src="{{ $one->image }}" alt="">
                                     <div class="overlay">
                                         <h3>{{ $one->title }}</h3>
                                         <i class="fa fa-search"></i>
@@ -123,12 +123,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2 class="wow fadeInUp" data-wow-delay=".3s">فيديو</h2>
-                    <a id="video" video-url="https://www.youtube.com/watch?v=4REytytTm2c" style="cursor: pointer;">
+                    <h2 class="wow fadeInUp" data-wow-delay=".3s">{{ $video->title }}</h2>
+                    <a id="video" video-url="{{ $video->url }}" style="cursor: pointer;">
                         <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: zoomIn;"></div>
                     </a>
-                    <a href="videos.php" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
-                        المزيد من الفيدوهات
+                    <a href="" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
+                       {{ _lang('app.more') }}
                     </a>
                 </div>
             </div>
@@ -144,10 +144,10 @@
             @if(count($activities)>0)
             @if(isset($activities[0]))
             <div class="col col-md-6">
-                <a href="activity-details.php">
+                <a href="">
                     <div class="media wow fadeInLeft" data-wow-delay=".3s">
                         <div class="media-left">
-                            <img src="{{ $activities[0]->images[0] }}" alt="">
+                            <img src="{{ $activities[0]->image }}" alt="">
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">{{ $activities[0]->title }}</h4>
@@ -161,10 +161,10 @@
             @endif
             @if(isset($activities[1]))
             <div class="col col-md-6 right">
-                <a href="activity-details.php">
+                <a href="">
                     <div class="media wow fadeInRight" data-wow-delay=".3s">
                         <div class="media-left">
-                            <img src="{{ $activities[1]->images[0] }}" alt="">
+                            <img src="{{ $activities[1]->image }}" alt="">
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">{{ $activities[1]->title }}</h4>
@@ -178,10 +178,10 @@
             @endif
             @if(isset($activities[2]))
             <div class="col col-md-6 border">
-                <a href="activity-details.php">
+                <a href="">
                     <div class="media wow fadeInLeft" data-wow-delay=".3s">
                         <div class="media-left">
-                            <img src="{{ $activities[2]->images[0] }}" alt="">
+                            <img src="{{ $activities[2]->image }}" alt="">
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">{{ $activities[2]->title }}</h4>
@@ -195,10 +195,10 @@
             @endif
             @if(isset($activities[3]))
             <div class="col col-md-6 right border">
-                <a href="activity-details.php">
+                <a href="">
                     <div class="media wow fadeInRight" data-wow-delay=".3s">
                         <div class="media-left">
-                            <img src="{{ $activities[3]->images[0]  }}" alt="">
+                            <img src="{{ $activities[3]->image  }}" alt="">
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">{{ $activities[3]->title }}</h4>

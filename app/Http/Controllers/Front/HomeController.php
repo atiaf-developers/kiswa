@@ -21,7 +21,9 @@ class HomeController extends FrontController {
         $this->data['news'] = $this->getNews();
         $this->data['activities'] = $this->getActivities();
         $this->data['albums'] = $this->getAlbums();
+        $this->data['video'] = $this->getVideo();
         $this->data['types'] = ContactMessage::$types;
+       
         return $this->_view('index');
     }
 
@@ -62,12 +64,19 @@ class HomeController extends FrontController {
                                    ->limit(6)
                                    ->get();
 
-            return Album::transformCollection($albums,'Home');
+        return Album::transformCollection($albums,'Home');
     }
 
-    private function getVideos()
+    private function getVideo()
     {
-    	
+    	$video = Video::Join('videos_translations','videos.id','=','videos_translations.video_id')
+                                   ->where('videos_translations.locale',$this->lang_code)
+                                   ->where('videos.active',true)
+                                   ->orderBy('videos.this_order')
+                                   ->select("videos.id","videos_translations.title",'videos.url')
+                                   ->first();
+
+        return $video;
     }
 
 

@@ -53,7 +53,19 @@ class Album extends MyModel {
         $transformer = new \stdClass();
         $transformer->slug = $item->slug;
         $transformer->title = $item->title;
-       $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
+
+        $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
+        $album_image =  static::rmv_prefix($album_images[0]);
+
+        $prefixed_image = url('public/uploads/albums') . '/m_'. $album_image;
+        $transformer->image = $prefixed_image;
+        return $transformer;
+    }
+
+    public static function transformDetailes($item) {
+        $transformer = new \stdClass();
+        $transformer->title = $item->title;
+        $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
         foreach ($album_images as $key => $value) {
             $album_images[$key] =  static::rmv_prefix($value);
         }
