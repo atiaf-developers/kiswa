@@ -15,6 +15,8 @@ use App\Models\DonationType;
 use App\Models\ContactMessage;
 use App\Models\Activity;
 use App\Models\Video;
+use App\Models\Device;
+use App\Models\Noti;
 use App\Models\Album;
 use App\Helpers\Fcm;
 use Carbon\Carbon;
@@ -22,12 +24,12 @@ use DB;
 
 class BasicController extends ApiController {
 
-    private $contact_rules = array( 
+    private $contact_rules = array(
         'message' => 'required',
         'email' => 'required|email',
         'type' => 'required',
         'name' => 'required'
-    ); 
+    );
 
     public function getToken(Request $request) {
         $token = $request->header('authorization');
@@ -54,17 +56,15 @@ class BasicController extends ApiController {
 
     public function getSettings() {
         try {
-        $settings = Setting::select('name','value')->get()->keyBy('name');
-        $settings['social_media'] = json_decode($settings['social_media']->value);
-        $settings['info'] = SettingTranslation::where('locale', $this->lang_code)->first();
-            
+            $settings = Setting::select('name', 'value')->get()->keyBy('name');
+            $settings['social_media'] = json_decode($settings['social_media']->value);
+            $settings['info'] = SettingTranslation::where('locale', $this->lang_code)->first();
+
             return _api_json($settings);
         } catch (\Exception $e) {
             return _api_json(new \stdClass(), ['message' => $e->getMessage()], 400);
         }
     }
-
-  
 
     public function sendContactMessage(Request $request) {
         $validator = Validator::make($request->all(), $this->contact_rules);
@@ -88,29 +88,28 @@ class BasicController extends ApiController {
 
     public function getNews() {
         try {
-            
-            $news = News::Join('news_translations','news.id','=','news_translations.news_id')
-                          ->where('news_translations.locale',$this->lang_code)
-                          ->where('news.active',true)
-                          ->orderBy('news.this_order')
-                          ->select('news.id','news.images','news.created_at','news_translations.title','news_translations.description')
-                          ->paginate($this->limit);
+
+            $news = News::Join('news_translations', 'news.id', '=', 'news_translations.news_id')
+                    ->where('news_translations.locale', $this->lang_code)
+                    ->where('news.active', true)
+                    ->orderBy('news.this_order')
+                    ->select('news.id', 'news.images', 'news.created_at', 'news_translations.title', 'news_translations.description')
+                    ->paginate($this->limit);
             return _api_json(News::transformCollection($news));
         } catch (\Exception $e) {
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
 
-
     public function getCategories() {
         try {
-            $categories = Category::Join('categories_translations','categories.id','=','categories_translations.category_id')
-                                   ->where('categories_translations.locale',$this->lang_code)
-                                   ->where('categories.active',true)
-                                   ->where('categories.parent_id',0)
-                                   ->orderBy('categories.this_order')
-                                   ->select("categories.id", "categories.image","categories_translations.title")
-                                   ->get();
+            $categories = Category::Join('categories_translations', 'categories.id', '=', 'categories_translations.category_id')
+                    ->where('categories_translations.locale', $this->lang_code)
+                    ->where('categories.active', true)
+                    ->where('categories.parent_id', 0)
+                    ->orderBy('categories.this_order')
+                    ->select("categories.id", "categories.image", "categories_translations.title")
+                    ->get();
 
             return _api_json(Category::transformCollection($categories));
         } catch (\Exception $e) {
@@ -120,13 +119,13 @@ class BasicController extends ApiController {
 
     public function getCategory(Request $request) {
         try {
-            $categories = Category::Join('categories_translations','categories.id','=','categories_translations.category_id')
-                                   ->where('categories_translations.locale',$this->lang_code)
-                                   ->where('categories.active',true)
-                                   ->where('categories.parent_id',$request->category_id)
-                                   ->orderBy('categories.this_order')
-                                   ->select("categories.id", "categories.image","categories_translations.title","categories_translations.description")
-                                   ->paginate();
+            $categories = Category::Join('categories_translations', 'categories.id', '=', 'categories_translations.category_id')
+                    ->where('categories_translations.locale', $this->lang_code)
+                    ->where('categories.active', true)
+                    ->where('categories.parent_id', $request->category_id)
+                    ->orderBy('categories.this_order')
+                    ->select("categories.id", "categories.image", "categories_translations.title", "categories_translations.description")
+                    ->paginate();
 
             return _api_json(Category::transformCollection($categories));
         } catch (\Exception $e) {
@@ -134,16 +133,15 @@ class BasicController extends ApiController {
         }
     }
 
-
     public function getDonationTypes() {
         try {
 
-            $donation_types = DonationType::Join('donation_types_translations','donation_types.id','=','donation_types_translations.donation_type_id')
-                                   ->where('donation_types_translations.locale',$this->lang_code)
-                                   ->where('donation_types.active',true)
-                                   ->orderBy('donation_types.this_order')
-                                   ->select("donation_types.id","donation_types_translations.title")
-                                   ->get();
+            $donation_types = DonationType::Join('donation_types_translations', 'donation_types.id', '=', 'donation_types_translations.donation_type_id')
+                    ->where('donation_types_translations.locale', $this->lang_code)
+                    ->where('donation_types.active', true)
+                    ->orderBy('donation_types.this_order')
+                    ->select("donation_types.id", "donation_types_translations.title")
+                    ->get();
 
             return _api_json($donation_types);
         } catch (\Exception $e) {
@@ -153,12 +151,12 @@ class BasicController extends ApiController {
 
     public function getActivities() {
         try {
-            $activities = Activity::Join('activities_translations','activities.id','=','activities_translations.activity_id')
-                                   ->where('activities_translations.locale',$this->lang_code)
-                                   ->where('activities.active',true)
-                                   ->orderBy('activities.this_order')
-                                   ->select("activities.id", "activities.images","activities_translations.title","activities_translations.description")
-                                   ->paginate($this->limit);
+            $activities = Activity::Join('activities_translations', 'activities.id', '=', 'activities_translations.activity_id')
+                    ->where('activities_translations.locale', $this->lang_code)
+                    ->where('activities.active', true)
+                    ->orderBy('activities.this_order')
+                    ->select("activities.id", "activities.images", "activities_translations.title", "activities_translations.description")
+                    ->paginate($this->limit);
 
             return _api_json(Activity::transformCollection($activities));
         } catch (\Exception $e) {
@@ -168,12 +166,12 @@ class BasicController extends ApiController {
 
     public function getVideos() {
         try {
-            $videos = Video::Join('videos_translations','videos.id','=','videos_translations.video_id')
-                                   ->where('videos_translations.locale',$this->lang_code)
-                                   ->where('videos.active',true)
-                                   ->orderBy('videos.this_order')
-                                   ->select("videos.id", "videos.youtube_url","videos_translations.title")
-                                   ->paginate($this->limit);
+            $videos = Video::Join('videos_translations', 'videos.id', '=', 'videos_translations.video_id')
+                    ->where('videos_translations.locale', $this->lang_code)
+                    ->where('videos.active', true)
+                    ->orderBy('videos.this_order')
+                    ->select("videos.id", "videos.youtube_url", "videos_translations.title")
+                    ->paginate($this->limit);
 
             return _api_json(Video::transformCollection($videos));
         } catch (\Exception $e) {
@@ -181,60 +179,59 @@ class BasicController extends ApiController {
         }
     }
 
-
-
     public function getAlbums() {
         try {
-            $albums = Album::Join('albums_translations','albums.id','=','albums_translations.album_id')
-                                   ->where('albums_translations.locale',$this->lang_code)
-                                   ->where('albums.active',true)
-                                   ->orderBy('albums.this_order')
-                                   ->select("albums.id","albums_translations.title")
-                                   ->paginate($this->limit);
+            $albums = Album::Join('albums_translations', 'albums.id', '=', 'albums_translations.album_id')
+                    ->where('albums_translations.locale', $this->lang_code)
+                    ->where('albums.active', true)
+                    ->orderBy('albums.this_order')
+                    ->select("albums.id", "albums_translations.title")
+                    ->paginate($this->limit);
 
             return _api_json(Album::transformCollection($albums));
         } catch (\Exception $e) {
-         
+
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
 
-    public function getActivityDetailes($id)
-    {
+    public function getActivityDetailes($id) {
         try {
-         $activity = Activity::Join('activities_translations','activities.id','=','activities_translations.activity_id')
-                                   ->where('activities_translations.locale',$this->lang_code)
-                                   ->where('activities.active',true)
-                                   ->where('activities.id',$id)
-                                   ->select("activities.id", "activities.images","activities_translations.title","activities_translations.description")
-                                   ->first();
-          if (!$activity) {
-             return _api_json(new \stdClass(), ['message' => _lang('app.not_found')], 404);
-          }
+            $activity = Activity::Join('activities_translations', 'activities.id', '=', 'activities_translations.activity_id')
+                    ->where('activities_translations.locale', $this->lang_code)
+                    ->where('activities.active', true)
+                    ->where('activities.id', $id)
+                    ->select("activities.id", "activities.images", "activities_translations.title", "activities_translations.description")
+                    ->first();
+            if (!$activity) {
+                return _api_json(new \stdClass(), ['message' => _lang('app.not_found')], 404);
+            }
 
-          return _api_json(Activity::transform($activity));
-          } catch (\Exception $e) {
+            return _api_json(Activity::transform($activity));
+        } catch (\Exception $e) {
             return _api_json(new \stdClass(), ['message' => _lang('app.error_is_occured')], 400);
         }
-    }   
+    }
 
     public function getNewsDetailes($id) {
         try {
-            
-            $news = News::Join('news_translations','news.id','=','news_translations.news_id')
-                          ->where('news_translations.locale',$this->lang_code)
-                          ->where('news.active',true)
-                          ->where('news.id',$id)
-                          ->select('news.id','news.images','news.created_at','news_translations.title','news_translations.description')
-                          ->first();
 
-          if (!$news) {
-             return _api_json(new \stdClass(), ['message' => _lang('app.not_found')], 404);
-          }
+            $news = News::Join('news_translations', 'news.id', '=', 'news_translations.news_id')
+                    ->where('news_translations.locale', $this->lang_code)
+                    ->where('news.active', true)
+                    ->where('news.id', $id)
+                    ->select('news.id', 'news.images', 'news.created_at', 'news_translations.title', 'news_translations.description')
+                    ->first();
+
+            if (!$news) {
+                return _api_json(new \stdClass(), ['message' => _lang('app.not_found')], 404);
+            }
             return _api_json(News::transform($news));
         } catch (\Exception $e) {
             return _api_json(new \stdClass(), ['message' => _lang('app.error_is_occured')], 400);
         }
     }
+
+    
 
 }

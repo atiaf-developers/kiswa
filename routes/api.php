@@ -34,27 +34,26 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('get_videos', 'BasicController@getVideos');
     Route::get('get_communication_guides', 'BasicController@getCommunicationGuides');
     Route::post('send_contact_message', 'BasicController@sendContactMessage');
-    
-       
-    Route::post('donation_requests','DonationRequestsController@store');
 
-    
+
+    Route::post('donation_requests', 'DonationRequestsController@store');
+
+
     Route::post('login', 'LoginController@login');
     Route::post('register', 'RegisterController@register');
     Route::post('send_verification_code', 'RegisterController@sendVerificationCode');
 
     Route::get('setting', 'BasicController@getSettings');
     Route::get('notifications', 'NotificationsController@index');
-
+    Route::get('noti_count', 'NotificationsController@getUnReadNoti');
     Route::group(['middleware' => 'jwt.auth'], function () {
 
         Route::post('user/update', 'UserController@update');
         Route::post('rate', 'BasicController@rate');
-        Route::get('donation_requests','DonationRequestsController@index');
-        Route::post('change_request_status','DonationRequestsController@status');
-        Route::get('containers','ContainersController@index');
-        Route::get('log_dump','ContainersController@Logdump');
-        Route::post('unload_container','ContainersController@unload_container');
-      
+        Route::get('donation_requests', 'DonationRequestsController@index');
+        Route::post('change_request_status', 'DonationRequestsController@status');
+        Route::get('containers', 'ContainersController@index');
+        Route::get('log_dump', 'ContainersController@Logdump');
+        Route::post('unload_container', 'ContainersController@unload_container');
     });
 });
