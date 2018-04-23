@@ -1,3 +1,5 @@
+var currentTab = 0;
+var activation_code = false;
 var Login = function () {
 
     var init = function () {
@@ -7,18 +9,15 @@ var Login = function () {
         handle_change_password();
         handle_activation_code();
         handle_edit_phone();
+        showTab(currentTab);
 
 
     }
     var handle_login = function () {
         $("#login-form").validate({
             rules: {
-                email: {
+                username: {
                     required: true,
-                },
-                password: {
-                    required: true,
-                    minlength: 6,
                 }
             },
 
@@ -197,27 +196,24 @@ var Login = function () {
 
 
                     if (data.type == 'success') {
-
-                        $('#forgotPasswordForm .submit-form').html(lang.send_request);
-                        $('#alert-message').removeClass('alert-danger').addClass('alert-success').fadeIn(500).delay(3000).fadeOut(2000);
-                        var message = '<i class="fa fa-check" aria-hidden="true"></i> <span>' + data.message + '</span> ';
-                        $('#alert-message').html(message);
-
+                        $('.alert-danger').hide();
+                        $('.alert-success').show().find('.message').html(data.message);
 
                     } else {
-                        $('#forgotPasswordForm .submit-form').prop('disabled', false);
-                        $('#forgotPasswordForm .submit-form').html(lang.send_request);
-                        if (typeof data.errors === 'object') {
+                        $('#register-form .submit-form').prop('disabled', false);
+                        $('#register-form .submit-form').html(lang.register);
+                        if (typeof data.errors !== 'undefined') {
+                            console.log(data.errors);
                             for (i in data.errors)
                             {
                                 $('[name="' + i + '"]')
-                                        .closest('.form-group').addClass('has-error').removeClass("has-info");
-                                $('#' + i).closest('.form-group').find(".help-block").html(data.errors[i])
+                                        .closest('.form-group').addClass('has-error').removeClass("has-success");
+                                $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(data.errors[i][0])
                             }
-                        } else {
-                            $('#alert-message').removeClass('alert-success').addClass('alert-danger').fadeIn(500).delay(3000).fadeOut(2000);
-                            var message = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span>' + data.message + '</span> ';
-                            $('#alert-message').html(message);
+                        }
+                        if (typeof data.message !== 'undefined') {
+                            $('.alert-success').hide();
+                            $('.alert-danger').show().find('.message').html(data.message);
                         }
                     }
 
@@ -316,27 +312,31 @@ var Login = function () {
                 success: function (data)
                 {
                     console.log(data);
-                    $('#changePasswordForm .submit-form').prop('disabled', false);
-                    $('#changePasswordForm .submit-form').html(lang.send);
-                    if (data.type == 'success') {
-                        window.location.href = config.url + '/login';
-
+                     if (data.type == 'success') {
+//                        $('.alert-danger').hide();
+//                        $('.alert-success').show().find('.message').html(data.message);
+                        setTimeout(function () {
+                            window.location.href = config.url + '/login';
+                        }, 3000);
 
                     } else {
-
-                        if (typeof data.errors === 'object') {
+                        $('#register-form .submit-form').prop('disabled', false);
+                        $('#register-form .submit-form').html(lang.register);
+                        if (typeof data.errors !== 'undefined') {
+                            console.log(data.errors);
                             for (i in data.errors)
                             {
                                 $('[name="' + i + '"]')
-                                        .closest('.form-group').addClass('has-error').removeClass("has-info");
-                                $('#' + i).parent().find(".help-block").html(data.errors[i])
+                                        .closest('.form-group').addClass('has-error').removeClass("has-success");
+                                $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(data.errors[i][0])
                             }
-                        } else {
-                            $('#alert-message').removeClass('alert-success').addClass('alert-danger').fadeIn(500).delay(3000).fadeOut(2000);
-                            var message = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span>' + data.message + '</span> ';
-                            $('#alert-message').html(message);
+                        }
+                        if (typeof data.message !== 'undefined') {
+                            $('.alert-success').hide();
+                            $('.alert-danger').show().find('.message').html(data.message);
                         }
                     }
+                  
 
 
                 },
@@ -351,7 +351,7 @@ var Login = function () {
         });
 
     }
-    var handle_register = function () {
+    var handle_register2 = function () {
         $("#register-form").validate({
             rules: {
                 username: {
@@ -700,6 +700,173 @@ var Login = function () {
         });
 
     }
+      var handle_register = function () {
+        $("#regForm").validate({
+            //ignore: "",
+            rules: {
+//                name: {
+//                    required: true
+//                },
+//                reservation_date: {
+//                    required: true
+//                },
+//                reservation_time: {
+//                    required: true
+//                },
+//                payment_method: {
+//                    required: true
+//                },
+//                email: {
+//                    required: true,
+//                    email: true
+//                },
+//                phone: {
+//                    required: true
+//                },
+//                lat: {
+//                    required: true
+//                },
+//                lng: {
+//                    required: true
+//                },
+
+            },
+
+            highlight: function (element) { // hightlight error inputs
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                $(element).closest('.form-group').find('.help-block').html('');
+
+            },
+            errorPlacement: function (error, element) {
+                errorElements1.push(element);
+                $(element).closest('.form-group').find('.help-block').html($(error).html());
+            }
+
+        });
+
+        $('#regForm').submit(function () {
+            var formData = new FormData($(this)[0]);
+            formData.append('step', currentTab + 1);
+            if (activation_code) {
+                formData.append('ajax_code', activation_code);
+            }
+            $.ajax({
+                url: config.url + "/register",
+                type: 'POST',
+                dataType: 'json',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data)
+                {
+                    console.log(data);
+
+
+                    if (data.type == 'success') {
+                        $('#nextBtn').prop('disabled', false);
+                        $('#nextBtn').html(lang.next);
+                        var step = data.data.step;
+                        console.log(currentTab);
+                        if (step == 3) {
+                            $('.next2').hide();
+                            $('.alert-danger').hide();
+                            $('.alert-success').show().find('.message').html(data.data.message);
+                        } else if (step == 1) {
+                            activation_code = data.data.activation_code;
+
+                        } else {
+
+                        }
+                        var hideTab = currentTab;
+                        currentTab = currentTab + 1;
+                        $('.tab:eq(' + hideTab + ')').hide();
+                        showTab(currentTab);
+
+
+//                        var hideTabe = currentTab - 1;
+//                        $('.tab:eq(' + hideTabe + ')').hide();
+//                        showTab(currentTab);
+
+
+
+                    } else {
+                        $('#nextBtn').prop('disabled', false);
+                        $('#nextBtn').html(lang.next);
+
+                        if (typeof data.errors !== 'undefined') {
+
+                            for (i in data.errors)
+                            {
+                                var message = data.errors[i][0];
+                                if (i.startsWith('code')) {
+                                    var key_arr = i.split('.');
+                                    var key_text = key_arr[0] + '[' + key_arr[1] + ']';
+                                    i = key_text;
+                                } else if (i.startsWith('activation_code')) {
+                                    $('.msg-error').show();
+                                    $('#activation-code-message').html(message);
+                                    continue;
+                                }
+                                $('[name="' + i + '"]')
+                                        .closest('.form-group').addClass('has-error').removeClass("has-success");
+                                $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(message)
+                            }
+                        }
+                        if (typeof data.message !== 'undefined') {
+                            $('.alert-success').hide();
+                            $('.alert-danger').show().find('.message').html(data.message);
+                        }
+                    }
+
+
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $('#nextBtn').prop('disabled', false);
+                    $('#nextBtn').html(lang.next);
+                    App.ajax_error_message(xhr);
+
+                },
+            });
+
+            return false;
+        });
+
+    }
+      var showTab = function (n) {
+        // This function will display the specified tab of the form...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        //... and fix the Previous/Next buttons:
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "احجز";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "التالى";
+        }
+        //... and run a function that will display the correct step indicator:
+        fixStepIndicator(n)
+    }
+
+    var fixStepIndicator = function (n) {
+        // This function removes the "active" class of all steps...
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class on the current step:
+        x[n].className += " active";
+    }
 
     return {
         init: function () {
@@ -712,6 +879,32 @@ var Login = function () {
 
             App.emptyForm();
         },
+          nextPrev: function (ele, n) {
+            var type = $(ele).data('type');
+            var x = document.getElementsByClassName("tab");
+            var validate = $('#regForm').validate().form();
+            if (type == 'next' && !validate) {
+                return false;
+            } else {
+                if (type == 'next') {
+                    $(ele).prop('disabled', true);
+                    $(ele).html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+                    setTimeout(function () {
+                        $('#regForm').submit();
+                    }, 1000);
+
+                    return false;
+                } else {
+                    var hideTab = currentTab;
+                    currentTab = currentTab - 1;
+                    $('.tab:eq(' + hideTab + ')').hide();
+                    showTab(currentTab);
+                }
+            }
+
+
+
+        }
     }
 
 }();

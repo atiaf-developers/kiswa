@@ -13,5 +13,6 @@
 <script src="{{url('public/front/js/additional-methods.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript" src="{{ url('public/front/js/bootbox.min.js') }}"></script>
 <script src="{{ url('public/front/scripts/app.js') }}"></script>
+<script src="{{ url('public/front/scripts/push_notification.js') }}"></script>
 
 @yield('js')

@@ -15,8 +15,7 @@ class LoginController extends FrontController {
     use AuthenticatesUsers;
 
     private $rules = array(
-        'email' => 'required',
-        'password' => 'required|min:6'
+        'username' => 'required',
     );
 
     public function __construct() {
@@ -28,7 +27,7 @@ class LoginController extends FrontController {
         return $this->_view('auth/login');
     }
 
-  public function login(Request $request) {
+    public function login(Request $request) {
         $validator = Validator::make($request->all(), $this->rules);
         if ($validator->fails()) {
             if ($request->ajax()) {
@@ -42,15 +41,19 @@ class LoginController extends FrontController {
                 return redirect()->back()->withInput($request->only('email'))->withErrors($validator->errors()->toArray());
             }
         } else {
-            $email = $request->input('email');
+            $username = $request->input('username');
             $password = $request->input('password');
-            $User = $this->checkAuth($email);
+            $User = $this->checkAuth($username);
             $is_logged_in = false;
             if ($User) {
-    
+                $is_logged_in = true;
+                if ($password) {
                     if (password_verify($password, $User->password)) {
                         $is_logged_in = true;
+                    } else {
+                        $is_logged_in = false;
                     }
+                }
             }
             if ($is_logged_in) {
                 Auth::guard('web')->login($User);
@@ -76,9 +79,9 @@ class LoginController extends FrontController {
         return redirect('/login');
     }
 
-    private function checkAuth($email) {
-       $user=User::where('email',$email)->first();
-       //dd($user);
+    private function checkAuth($username) {
+        $user = User::where('username', $username)->first();
+        //dd($user);
         return $user;
     }
 

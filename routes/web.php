@@ -29,7 +29,7 @@ if (in_array($currentLanguageCode, $languages)) {
 
     Route::group(['namespace' => 'Front', 'prefix' => $currentLanguageCode], function () use($currentLanguageCode) {
         app()->setLocale($currentLanguageCode);
-         app()->setLocale($currentLanguageCode);
+        app()->setLocale($currentLanguageCode);
         Route::get('/', 'HomeController@index')->name('home');
         Route::get('getRegionByCity/{id}', 'AjaxController@getRegionByCity');
         Route::get('getAddress/{id}', 'AjaxController@getAddress');
@@ -46,39 +46,45 @@ if (in_array($currentLanguageCode, $languages)) {
         Route::get('about-us', 'StaticController@about_us')->name('about_us');
 
 
-        Route::get('news-and-events','NewsController@index')->name('news_events');
-        Route::get('news-and-events/{slug}','NewsController@show')->name('show_news');
+        Route::get('news-and-events', 'NewsController@index')->name('news_events');
+        Route::get('news-and-events/{slug}', 'NewsController@show')->name('show_news');
 
-        Route::get('corporation-activities','ActivitiesController@index')->name('corporation_activities');
-        Route::get('corporation-activities/{slug}','ActivitiesController@show')->name('show_corporation_activities');
-        
-        Route::get('gallary','AlbumsController@index')->name('gallary');
-        Route::get('gallary/{slug}','AlbumsController@show')->name('show_gallary');
-        
-        Route::get('video-gallary','VideosController@index')->name('video_gallary');
+        Route::get('corporation-activities', 'ActivitiesController@index')->name('corporation_activities');
+        Route::get('corporation-activities/{slug}', 'ActivitiesController@show')->name('show_corporation_activities');
 
+        Route::get('gallary', 'AlbumsController@index')->name('gallary');
+        Route::get('gallary/{slug}', 'AlbumsController@show')->name('show_gallary');
 
-
-        Route::get('news-and-events','NewsController@index')->name('news_events');
-        Route::get('news-and-events/{slug}','NewsController@show')->name('show_news');
-
-        Route::get('corporation-activities','ActivitiesController@index')->name('corporation_activities');
-        Route::get('corporation-activities/{slug}','ActivitiesController@show')->name('show_corporation_activities');
-        
-        Route::get('gallary','AlbumsController@index')->name('gallary');
-        Route::get('gallary/{slug}','AlbumsController@show')->name('show_gallary');
-        
-        Route::get('video-gallary','VideosController@index')->name('video_gallary');
+        Route::get('video-gallary', 'VideosController@index')->name('video_gallary');
 
 
-        Route::get('others/{slug}','OthersController@index')->name('others');
-        Route::get('others/{section}/{slug}','OthersController@show')->name('show_others');
-        
-        
+
+        Route::get('news-and-events', 'NewsController@index')->name('news_events');
+        Route::get('news-and-events/{slug}', 'NewsController@show')->name('show_news');
+
+        Route::get('corporation-activities', 'ActivitiesController@index')->name('corporation_activities');
+        Route::get('corporation-activities/{slug}', 'ActivitiesController@show')->name('show_corporation_activities');
+
+        Route::get('gallary', 'AlbumsController@index')->name('gallary');
+        Route::get('gallary/{slug}', 'AlbumsController@show')->name('show_gallary');
+
+        Route::get('video-gallary', 'VideosController@index')->name('video_gallary');
+
+
+        Route::get('others/{slug}', 'OthersController@index')->name('others');
+        Route::get('others/{section}/{slug}', 'OthersController@show')->name('show_others');
+
+        Route::get('donation-request', 'DonationRequestsController@showDonationRequestForm');
+        Route::post('donation-request', 'DonationRequestsController@submitDonationRequestForm');
+        Route::post('user/edit', 'UserController@edit');
 
 
         /*         * ************************* user ************** */
-        Route::get('game/{slug}/reserve', 'PropertyController@game_reserve');
+        Route::group(['namespace' => 'Customer', 'prefix' => 'customer'], function () {
+            Route::get('dashboard', 'DashboardController@index');
+            Route::get('user/edit', 'UserController@showEditForm');
+            Route::post('user/edit', 'UserController@edit');
+        });
     });
 } else {
     Route::get('/' . $currentLanguageCode, function () use($defaultLanguageCode) {
@@ -153,7 +159,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
     Route::post('categories/data', 'CategoriesController@data');
     Route::post('videos/data', 'VideosController@data');
-     Route::post('donation_types/data', 'DonationTypesController@data');
+    Route::post('donation_types/data', 'DonationTypesController@data');
     Route::post('albums/data', 'AlbumsController@data');
     Route::post('donation_requests/data', 'AlbumsController@data');
     Route::post('activities/data', 'ActivitiesController@data');

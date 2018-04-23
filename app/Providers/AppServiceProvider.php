@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\Input;
 class AppServiceProvider extends ServiceProvider {
 
     /**
@@ -51,6 +51,11 @@ class AppServiceProvider extends ServiceProvider {
                 }
             }
             return false;
+        });
+        Validator::extend('upload_count', function($attribute, $value, $parameters) {
+            //$files = Input::file($value);
+            dd($attribute);
+            return (count($files) <= $parameters[1]) ? true : false;
         });
 
         Schema::defaultStringLength(191);

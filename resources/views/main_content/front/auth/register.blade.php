@@ -8,74 +8,129 @@
 
 @section('content')
 
-<div class="login">
+<section id="login">
     <div class="container">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="form-w3agile">
-                <h3>مستخدم جديد</h3>
-                <form action="" novalidate="novalidate" class="contactus" id="register-form">
-                      {{ csrf_field() }}
-                    <div class="row">
-                        <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
-                            <div class="col-md-12">
-                                <input type="text" id="username" name="username" class="form-control" maxlength="100"  value="" placeholder="الاسم" >
-                                <span class="help-block">
-                                    @if ($errors->has('username'))
-                                    {{ $errors->first('username') }}
-                                    @endif
-                                </span>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="title">
+                    <h2>انشاء حساب جديد</h2>
+                </div>
+                <div class="login-area">
+                    <form id="regForm">
+                        {{ csrf_field() }}
+                        <img class="user" src="img/signin1.png" alt="" >
+                        <!-- One "tab" for each step in the form: -->
+                        <div class="tab form-group">
+                            <h3>ادخل رقم جوالك لانشاء حساب جديد</h3>
+                            <div class="tab-details">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="row">
+                                                <p class="num-code">+966</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-10 form-group">
+                                            <input type="text" class="form-control" name="mobile" id="mobile">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div class="col-md-12">
-                                <input type="email" id="email" name="email" class="form-control" maxlength="100"  value="" placeholder="البريد الالكترونى" >
-                                <span class="help-block">
-                                    @if ($errors->has('email'))
-                                    {{ $errors->first('email') }}
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div class="col-md-12">
-                                <input type="password" id="password" name="password" class="form-control" maxlength="100"  value="" placeholder="كلمة السر">
-                                <span class="help-block">
-                                    @if ($errors->has('password'))
-                                    {{ $errors->first('password') }}
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group {{ $errors->has('confirm_password') ? ' has-error' : '' }}">
-                            <div class="col-md-12">
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" maxlength="100"  value="" placeholder="اعادة كلمة السر">
-                                <span class="help-block">
-                                    @if ($errors->has('confirm_password'))
-                                    {{ $errors->first('confirm_password') }}
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input type="submit" data-loading-text="Loading..." class="submit-form btn btn-default btn-lg" value="تسجيل">
-                        </div>
-                    </div>
 
-                </form>
-                <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
-                <div class="alert alert-danger" style="display:{{Session('errorMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span class="message">{{Session::get('errorMessage')}}</span></div>
+                        <div class="tab">
+                            <div class="row form-w3agile">
+                                <h3 class="h3-dir"> ستصلك رسالة نصية بكود التفعيل على رقم الجوال الخاص بك 00966123456789 <a href="#" class="change-num">تغيير الرقم</a></h3>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[0]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[1]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[2]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[3]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="msg-error" style="display: none;">
+                                    <span id="activation-code-message" ></span>
+                                </div>
+                                <a class="a-signin" href="#" ><strong>ارسال الكود مرة أخرى</strong></a>
+                            </div>
+                        </div>
+                        <div class="tab dir form-group">
+                            <h3>استكمال البيانات</h3>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="text" class="form-control" name="name" placeholder="الاسم">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="text" class="form-control" name="username" placeholder="اسم المستخدم">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="text" class="form-control" name="email" placeholder="البريد الالكترونى - اختياري">
+                                        <span class="help-block"></span>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="password" class="form-control" name="password" placeholder="كلمة السر">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="password" class="form-control" name="confirm_password" placeholder="إعادة كلمة السر">
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="tab">
+                            <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
+                            <div class="alert alert-danger" style="display:{{Session('errorMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span class="message">{{Session::get('errorMessage')}}</span></div>
+                        </div>
+                        <div class="next2">
+                            <button type="button" id="nextBtn" data-type="next" onclick="Login.nextPrev(this, 1)">التالى</button>
+                            <button type="button" id="prevBtn" data-type="prev" onclick="Login.nextPrev(this, -1)">السابق</button>
+                        </div>
+                        <!-- Circles which indicates the steps of the form: -->
+                        <div class="steps">
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 
 

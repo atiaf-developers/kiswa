@@ -17,7 +17,7 @@
                     <h1> مرحباً بكم في مشروع الاستفادة من فائض الملابس المستعملة</h1>
                     <h2> يمكنك الأن انشاء طلب توصيل لتحديد موعد لقدوم المندوب اليك واستلام تبرعك</h2>
                     <div class="buttons">
-                        <a href="order.php" class="btn btn-learn">انشاء طلب توصيل</a>
+                        <a href="{{_url('donation-request')}}" class="btn btn-learn">انشاء طلب توصيل</a>
                     </div>
                 </div>
             </div>

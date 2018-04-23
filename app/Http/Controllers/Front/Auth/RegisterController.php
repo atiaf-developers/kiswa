@@ -27,9 +27,17 @@ class RegisterController extends FrontController {
 use RegistersUsers;
 
     protected $redirectTo = '/activation';
-    private $rules = array(
+    private $step_one_rules = array(
+        'mobile' => 'required|unique:users',
+    );
+    private $step_two_rules = array(
+        'code.*' => 'required',
+    );
+    private $step_three_rules = array(
+        'name' => 'required',
         'username' => 'required|unique:users',
-        'email' => 'required|email|unique:users',
+        'email' => 'email',
+        'mobile' => 'required|unique:users',
         'password' => 'required|min:6',
         'confirm_password' => 'required|same:password',
     );
@@ -49,36 +57,56 @@ use RegistersUsers;
     }
 
     public function register(Request $request) {
-        //dd('here');
-        $validator = Validator::make($request->all(), $this->rules);
+        //dd($request->all());
+        $mobile='966'+$request->input('step');
+        $request->merge(['mobile' => $mobile]);
+        $step = $request->input('step');
+        //dd($step);
+        if ($step == 1) {
+            $rules = $this->step_one_rules;
+        } else if ($step == 2) {
+            $rules = $this->step_two_rules;
+        } else if ($step == 3) {
+            $rules = $this->step_three_rules;
+        } else {
+            return _json('error', _lang('app.error_is_occured'));
+        }
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors()->toArray();
-            if ($request->ajax()) {
-                return _json('error', $this->errors);
-            } else {
-                return redirect()->back()->withInput($request->all())->withErrors($this->errors);
-            }
+            return _json('error', $this->errors);
         }
-
-        try {
-            $User = new User;
-            $User->username = $request->input('username');
-            $User->email = $request->input('email');
-            $User->password = bcrypt($request->input('password'));
-            $User->save();
-            $message = _lang('app.registered_done_successfully');
-            if ($request->ajax()) {
-                return _json('success', $message);
+        if ($step == 1) {
+            $activation_code = Random(4);
+            $message = _lang('app.verification_code_is') . ' ' . $activation_code;
+            return _json('success', ['step' => $step, 'activation_code' => $activation_code]);
+        } else if ($step == 2) {
+            $form_code = implode('', $request->input('code'));
+            $ajax_code = $request->input('ajax_code');
+            //dd($ajax_code);
+            if ($ajax_code != $form_code) {
+                return _json('error', ['activation_code' => [_lang('app.code_is_wrong')]]);
             } else {
-                return redirect()->back()->withInput($request->all())->with(['successMessage' => $message]);
+                return _json('success', ['step' => $step]);
             }
-        } catch (\Exception $ex) {
-            dd($ex->getMessage());
-            $message = _lang('app.error_is_occured');
-            if ($request->ajax()) {
+        } else if ($step == 3) {
+            try {
+                $User = new User;
+                $User->name = $request->input('name');
+                $User->username = $request->input('username');
+                $User->mobile = $request->input('mobile');
+                if ($request->input('email')) {
+                    $User->email = $request->input('email');
+                }
+                $User->password = bcrypt($request->input('password'));
+                $User->save();
+                //dd($User);
+                $message = _lang('app.registered_done_successfully');
+                return _json('success', ['step'=>$step,'message'=>$message]);
+            } catch (\Exception $ex) {
+                dd($ex->getMessage());
+                $message = _lang('app.error_is_occured');
                 return _json('error', $message);
-            } else {
-                return redirect()->back()->withInput($request->all())->with(['errorMessage' => $message]);
             }
         }
     }

@@ -1643,8 +1643,11 @@ a.read-more:hover{
     text-align: center;
     font-size: 16px;
     text-decoration: underline;
-    margin: 25px 0 10px;
+    margin: 0;
     padding-top: 15px;  
+    display: block;
+    width: 100%;
+    float: left;
 }
 .form-w3agile label{
     text-align: right;
@@ -1680,6 +1683,31 @@ a.read-more:hover{
     color:#fff;
     opacity: 10;
     font-size: 28px;
+}
+.msg-error{
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+    padding-top: 15px;
+    display: block;
+    width: 100%;
+    float: left;
+}
+.msg-error  span{
+    margin: 0 20px;
+    width: 100%;
+    padding: 7px 50px;
+    background: #ffdddd;
+    border-radius: 7px;
+    color: #f00;
+}
+p.num-code{
+    margin: 10px 0;
+    text-align: right;
+    padding: 5px 0;
+    font-size: 18px;
+    color: #0f9ac8;
+    font-weight: bold;
 }
 .dtp_modal-digits{
     margin-top: 20px;
@@ -2106,6 +2134,9 @@ width: 100%;
     .logo-mobadra, .logo-keswa{
         float:left;
         width:50%;
+    }
+    p.num-code{
+        text-align: center;
     }
 }
 @media screen and (max-width: 767px) {
