@@ -97,16 +97,29 @@ class UsersController extends BackendController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show(Request $request,$id) {
+        
+        
+            $User = User::find($id);
+            
 
-        $User = User::find($id);
-
-        if ($User != null) {
-            // $User=User::transform($User);
-            return _json('success', $User);
-        } else {
-            return _json('error', _lang('app.error_is_occured'));
-        }
+            if ($User != null) {
+                if ($request->ajax()) {
+                    return _json('success', $User);
+                }
+                
+                $this->data['user'] = $User;
+                return $this->_view('worker/show', 'backend');
+                
+                
+            } else {
+                if ($request->ajax()) {
+                    return _json('error', _lang('app.error_is_occured'));
+                }
+                return $this->err404();
+            }
+        
+        
     }
 
     /**
@@ -228,7 +241,14 @@ class UsersController extends BackendController {
                             if (\Permissions::check($this->ruels_page, 'edit')) {
                                 $back .= '<li>';
                                 $back .= '<a href="" onclick = "'.$js.'.edit(this);return false;" data-id = "' . $item->id . '">';
-                                $back .= '<i class = "icon-docs"></i>' . _lang('app.show_data');
+                                $back .= '<i class = "icon-docs"></i>' . _lang('app.edit');
+                                $back .= '</a>';
+                                $back .= '</li>';
+                            }
+                            if (\Permissions::check($this->ruels_page, 'open') && $item->type == 2) {
+                                $back .= '<li>';
+                                $back .= '<a href="'.route('users.show',$item->id).'?type=delegates" onclick = "" data-id = "' . $item->id . '">';
+                                $back .= '<i class = "icon-docs"></i>' . _lang('app.show');
                                 $back .= '</a>';
                                 $back .= '</li>';
                             }

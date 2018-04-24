@@ -19,6 +19,8 @@ class SettingsController extends BackendController {
         'setting.social_media.instagram' => 'required',
         'setting.social_media.google' => 'required',
         'setting.social_media.youtube' => 'required',
+        'setting.store.android' => 'required',
+        'setting.store.ios' => 'required',
     );
 
     public function index() {
@@ -27,6 +29,7 @@ class SettingsController extends BackendController {
         // dd($this->data['settings']);
         if($this->data['settings']){
             $this->data['settings']['social_media']=json_decode($this->data['settings']['social_media']->value);
+            $this->data['settings']['store']=json_decode($this->data['settings']['store']->value);
         }
         
         //dd($this->data['settings']['social_media']);
@@ -59,10 +62,12 @@ class SettingsController extends BackendController {
             try {
                 $setting = $request->input('setting');
                 foreach($setting as $key=>$value){
-                    if($key=='social_media'){
+                    if($key=='social_media' || $key=='store'){
+
                         Setting::updateOrCreate(
                         ['name' => $key], ['value' => json_encode($value)]);
-                    }else{
+                    }
+                   else{
                         Setting::updateOrCreate(
                             ['name' => $key], ['value' => $value]);
                     }

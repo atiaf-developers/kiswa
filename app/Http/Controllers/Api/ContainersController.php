@@ -7,6 +7,7 @@ use App\Http\Controllers\ApiController;
 use Validator;
 use App\Models\Container;
 use App\Models\UnloadContainer;
+use App\Models\ContainerAssignedHistory;
 use DatePeriod;
 use DateTime;
 use DateInterval;
@@ -71,6 +72,7 @@ class ContainersController extends ApiController {
     }
 
     public function Logdump(Request $req) {
+        $User = $this->auth_user();
         $rules = array(
             'container_id' => 'required',
         );
@@ -83,12 +85,15 @@ class ContainersController extends ApiController {
         if (!$startDate) {
             $startDate = date('Y-m-d', strtotime(date('Y-m-d')));
         }
+
+        $last_assign_date = ContainerAssignedHistory::where('container_id',$req->container_id)->where('delegate_id',$User->id)->where('end',null)->first();
+
         $start = new DateTime($startDate);
-        $end = new DateTime(date('Y-m-d', strtotime('1-3-2018')));
+        $end = new DateTime(date('Y-m-d', strtotime($last_assign_date->start)));
         $diff = $end->diff($start);
         $interval = \DateInterval::createFromDateString('-1 day');
         $dateRange = new \DatePeriod($start, $interval, $diff->days);
-        $User = $this->auth_user();
+        
         $days = 10;
         $Pageination_date = strtotime("-" . $days . " days", strtotime($start->format('Y-m-d')));
 

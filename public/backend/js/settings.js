@@ -34,6 +34,12 @@ var Settings = function() {
                 'setting[social_media][youtube]': {
                     required: true
                 },
+                'setting[store][android]': {
+                    required: true
+                },
+                'setting[store][ios]': {
+                    required: true
+                },
                 about_image: {
                     accept: "image/*",
                     filesize: 1000 * 1024

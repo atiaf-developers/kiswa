@@ -28,7 +28,7 @@ class User extends Authenticatable {
         $transformer = new \stdClass();
         $transformer->name = $item->name;
         $transformer->username = $item->username;
-        $transformer->email = $item->email;
+        $transformer->email = $item->email ? $item->email : "";
         $transformer->mobile = $item->mobile;
         if ($item->image) {
             $transformer->image = url('public/uploads/users').'/'.$item->image;

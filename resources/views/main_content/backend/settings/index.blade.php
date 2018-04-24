@@ -36,6 +36,16 @@
                     <label for="email">{{_lang('app.email') }}</label>
                     <span class="help-block"></span>
                 </div>
+                <div class="form-group form-md-line-input col-md-6">
+                    <input type="text" class="form-control" id="setting[store][android]" name="setting[store][android]" value="{{ isset($settings['store']->android) ? $settings['store']->android :'' }}">
+                    <label for="">{{_lang('app.android_url') }}</label>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group form-md-line-input col-md-6">
+                    <input type="text" class="form-control" id="setting[store][ios]" name="setting[store][ios]" value="{{ isset($settings['store']->ios) ? $settings['store']->ios :'' }}">
+                    <label for="phone">{{_lang('app.ios_url') }}</label>
+                    <span class="help-block"></span>
+                </div>
                 {{--  <div class="form-group col-md-2">
                     <label class="control-label">{{_lang('app.about_image')}}</label>
 

@@ -66,6 +66,7 @@ class FrontController extends Controller {
         $this->data['settings'] = Setting::get()->keyBy('name');
         $this->_settings = $this->data['settings'];
         $this->data['settings']['social_media'] = json_decode($this->data['settings']['social_media']->value);
+        $this->data['settings']['store'] = json_decode($this->data['settings']['store']->value);
         $this->data['settings_translations'] = SettingTranslation::where('locale', $this->lang_code)->first();
         //dd($this->data['settings']);
     }

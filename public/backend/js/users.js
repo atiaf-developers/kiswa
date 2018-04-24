@@ -401,9 +401,6 @@ var Users = function() {
 
                     }
                     $('#addEditUsers').modal('show');
-                    $('#location').css('display', 'block');
-                    
-                    }
                     
                 }
             });
