@@ -267,8 +267,8 @@
                 <p><i class="fa fa-map-marker"></i> المملكة العربية السعودية </p>
                 <div class="app">
                     <h3>حمل التطبيق الآن<i class="fa fa-download"></i> </h3>
-                    <a href="#"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
-                    <a href="#"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
+                    <a href="{{ $settings['store']->ios }}"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
+                    <a href="{{ $settings['store']->android }}"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
                 </div>
             </div>
         </div>
