@@ -43,6 +43,7 @@ class DelegatesReportController extends BackendController {
                     $this->data[$key] = $value;
                 }
             }
+            //dd($this->data['from']);
         }
         //dd($this->getLog($request));
         $this->data['log'] = $this->getLog($request);
@@ -63,7 +64,6 @@ class DelegatesReportController extends BackendController {
         $this->data['status_arr'] = DonationRequest::$status_text;
         return $this->_view('delegates_report.view', 'backend');
     }
-
 
     private function getDelagates() {
         $Users = User::select('id', "username")->where('type', 2)->get();
@@ -95,8 +95,9 @@ class DelegatesReportController extends BackendController {
     }
 
     private function getLog($request) {
-        $start = "2018-04-1";
-        $end = "2018-04-17";
+        $start = $request->input('from');
+        $end = $request->input('to');
+        $delegate = $request->input('delegate');
         if ($request->input('page')) {
             $current_page = $request->input('page');
         } else {
@@ -114,29 +115,33 @@ class DelegatesReportController extends BackendController {
                 break;
             }
 
-            $days[$start] = $this->getDelagateContainer(10, $start);
+            $days[$start] = $this->getDelagateContainer($delegate, $start);
             $start = date('Y-m-d', strtotime('+1 day', strtotime($start)));
 
             $count++;
         }
+        //dd($allDays);
+        if ($request->all()) {
+            $paginator = new LengthAwarePaginator(
+                    $days, count($allDays), $this->limit, $current_page, ['path' => $request->url()]);
 
-        $paginator = new LengthAwarePaginator(
-                $days, count($allDays), $this->limit, $current_page, ['path' => $request->url()]);
-
-        return $paginator;
+            return $paginator->appends($request->all());
+        } else {
+            return collect([]);
+        }
     }
 
     private function getDelagateContainer($delegate_id, $date) {
-        $delegates_report = ContainerAssignedHistory::join('containers', function ($join) use($date,$delegate_id){
-            $join->on('containers.id', '=', 'container_assigned_history.container_id')
-                    ->where('container_assigned_history.delegate_id',$delegate_id)
-                   ->whereRaw("CASE WHEN container_assigned_history.end IS NULL THEN container_assigned_history.start <='$date' ELSE container_assigned_history.start <= '$date' and container_assigned_history.end >= '$date' END ");
-        });
+        $delegates_report = ContainerAssignedHistory::join('containers', function ($join) use($date, $delegate_id) {
+                    $join->on('containers.id', '=', 'container_assigned_history.container_id')
+                            ->where('container_assigned_history.delegate_id', $delegate_id)
+                            ->whereRaw("CASE WHEN container_assigned_history.end IS NULL THEN container_assigned_history.start <='$date' ELSE container_assigned_history.start <= '$date' and container_assigned_history.end >= '$date' END ");
+                });
         $delegates_report->join('containers_translations as trans', function ($join) {
             $join->on('containers.id', '=', 'trans.container_id')
                     ->where('trans.locale', $this->lang_code);
         });
-        $delegates_report->leftJoin('unloaded_containers', function ($join) use($date,$delegate_id) {
+        $delegates_report->leftJoin('unloaded_containers', function ($join) use($date, $delegate_id) {
             $join->on('containers.id', '=', 'unloaded_containers.container_id')
                     ->where('unloaded_containers.date_of_unloading', $date)
                     ->where('unloaded_containers.delegate_id', $delegate_id);
@@ -147,10 +152,11 @@ class DelegatesReportController extends BackendController {
         $delegates_report->groupBy("containers.id");
         return $delegates_report->get();
     }
+
     private function getDelagateContainer2($delegate_id, $date) {
         $delegates_report = Container::join('users', 'users.id', '=', 'containers.delegate_id');
         $delegates_report->join('containers_translations as trans', 'containers.id', '=', 'trans.container_id');
-        $delegates_report->leftJoin('unloaded_containers', function ($join) use($date,$delegate_id) {
+        $delegates_report->leftJoin('unloaded_containers', function ($join) use($date, $delegate_id) {
             $join->on('containers.id', '=', 'unloaded_containers.container_id')
                     ->where('unloaded_containers.date_of_unloading', $date)
                     ->where('unloaded_containers.delegate_id', $delegate_id);

@@ -77,6 +77,7 @@ if (in_array($currentLanguageCode, $languages)) {
         Route::get('donation-request', 'DonationRequestsController@showDonationRequestForm');
         Route::post('donation-request', 'DonationRequestsController@submitDonationRequestForm');
         Route::post('user/edit', 'UserController@edit');
+        Route::post('contact-us', 'StaticController@sendContactMessage');
 
 
         /*         * ************************* user ************** */

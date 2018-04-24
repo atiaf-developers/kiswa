@@ -76,7 +76,7 @@
                 <li><a href="{{ route('corporation_activities') }}">أنشطة المؤسسة</a></li>
                 <li><a href="{{ route('gallary') }}">الصور</a></li>
                 <li><a href="{{ route('video_gallary') }}">الفيديوهات</a></li>
-                <li><a href="index.php#contact-form">اتصل بنا</a></li>
+                <li><a href="{{ _url('') }}#contact-form">اتصل بنا</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>أخرى </a> 
 

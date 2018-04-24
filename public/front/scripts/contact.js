@@ -5,7 +5,7 @@ var Contact= function () {
     }
 
        var handle_submit = function () {
-        $("#contact-form").validate({
+        $("#contacts-form").validate({
             rules: {
                 name: {
                     required: true
@@ -36,21 +36,20 @@ var Contact= function () {
             }
 
         });
-       $('#contact-form .submit-form').click(function () {
-
-            if ($('#contact-form').validate().form()) {
-                $('#contact-form .submit-form').prop('disabled', true);
-                $('#contact-form .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+       $('#contacts-form .submit-form').click(function () {
+            if ($('#contacts-form').validate().form()) {
+                $('#contacts-form .submit-form').prop('disabled', true);
+                $('#contacts-form .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
                 setTimeout(function () {
-                    $('#contact-form').submit();
+                    $('#contacts-form').submit();
                 }, 1000);
             }
             return false;
         });
-        $('#contact-form').submit(function () {
+        $('#contacts-form').submit(function () {
             var formData = new FormData($(this)[0]);
             $.ajax({
-                url: config.url + "/contact_us",
+                url: config.url + "/contact-us",
                 type: 'POST',
                 dataType: 'json',
                 data: formData,
@@ -62,18 +61,16 @@ var Contact= function () {
                 {
                     console.log(data);
 
-                    $('#contact-form .submit-form').prop('disabled', false);
-                    $('#contact-form .submit-form').html(lang.contact_now);
+                    $('#contacts-form .submit-form').prop('disabled', false);
+                    $('#contacts-form .submit-form').html(lang.send);
                     if (data.type == 'success') {
                         $('.alert-danger').hide();
                         $('.alert-success').show().find('.message').html(data.message);
-                        setTimeout(function () {
-                            window.location.href = config.url + '/login';
-                        }, 3000);
+//                        setTimeout(function () {
+//                            window.location.href = config.url + '/login';
+//                        }, 3000);
 
                     } else {
-                        $('#contact-form .submit-form').prop('disabled', false);
-                        $('#contact-form .submit-form').html(lang.contact);
                         if (typeof data.errors !== 'undefined') {
                             console.log(data.errors);
                             for (i in data.errors)
@@ -92,8 +89,8 @@ var Contact= function () {
 
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    $('#contact-form .submit-form').prop('disabled', false);
-                    $('#contact-form .submit-form').html(lang.contact);
+                    $('#contacts-form .submit-form').prop('disabled', false);
+                    $('#contacts-form .submit-form').html(lang.send);
                     App.ajax_error_message(xhr);
 
                 },

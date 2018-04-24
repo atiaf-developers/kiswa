@@ -31,6 +31,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-10 form-group">
+                                            <input type="hidden"  name="dial_code" value="966">
                                             <input type="text" class="form-control" name="mobile" id="mobile">
                                             <span class="help-block"></span>
                                         </div>
@@ -42,7 +43,7 @@
                      
                         <div class="tab">
                             <div class="row form-w3agile">
-                                <h3 class="h3-dir"> ستصلك رسالة نصية بكود التفعيل على رقم الجوال الخاص بك 00966123456789 <a href="#" class="change-num">تغيير الرقم</a></h3>
+                                <h3 class="h3-dir"> ستصلك رسالة نصية بكود التفعيل على رقم الجوال الخاص بك <span id="mobile-message"></span> <a href="#" class="change-num">تغيير الرقم</a></h3>
                                 <div class="form-group col-sm-3 inputbox">
                                     <input type="text" class="form-control text-center" name="code[0]" placeholder="0">
                                     <span class="help-block"></span>

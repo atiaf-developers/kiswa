@@ -4,7 +4,7 @@
 
 
 @section('js')
-  <script src=" {{ url('public/front/scripts') }}/contact.js"></script>
+<script src=" {{ url('public/front/scripts') }}/contact.js"></script>
 @endsection
 
 @section('content')
@@ -128,7 +128,7 @@
                         <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: zoomIn;"></div>
                     </a>
                     <a href="" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
-                       {{ _lang('app.more') }}
+                        {{ _lang('app.more') }}
                     </a>
                 </div>
             </div>
@@ -221,39 +221,45 @@
                 <h2>{{ _lang('app.contact_us') }}</h2>
             </div>
             <div class="col-md-6">
-                <form class="form-group" action="" method="post" id="contactus_form">
+                <form method="post" id="contacts-form">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label class="control-label">{{ _lang('app.name') }}</label>
+                        <input type="text" class="form-control" name="name">
+                        <span class="help-block"></span>
+                    </div>
 
-                     <div class="form-group">
-                         <label class="control-label">{{ _lang('app.name') }}</label>
-                         <input type="text" class="form-control" name="name">
-                     </div>
-                    
-                     
-                     <div class="form-group">
+
+                    <div class="form-group">
                         <label class="control-label">{{ _lang('app.email') }}</label>
                         <input type="email" class="form-control" name="email">
-                     </div>
-                  
-                     
-                     <div class="form-group">
-                          <label class="control-label">{{ _lang('app.message_type') }}</label>
-                            <select class="form-control" name="type">
-                                @foreach ($types as $key => $value)
-                                    <option value="{{ $key }}">{{ _lang('app.'.$value)  }}</option>
-                                @endforeach
-                                
-                            </select>
-                     </div>
-                   
-                    
+                        <span class="help-block"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label">{{ _lang('app.message_type') }}</label>
+                        <select class="form-control" name="type">
+                            <option value="">{{_lang('app.choose')}}</option>
+                            @foreach ($types as $key => $value)
+                            <option value="{{ $key }}">{{ _lang('app.'.$value)  }}</option>
+                            @endforeach
+
+                        </select>
+                        <span class="help-block"></span>
+                    </div>
                     <div class="form-group">
                         <label class="control-label">{{ _lang('app.message') }}</label>
                         <textarea class="form-control" rows="3" name="message"></textarea>
+                        <span class="help-block"></span>
                     </div>
-                   
 
-                    <button class="btn btn-default submit-form" type="submit">{{ _lang('app.send') }}</button>
+
+                    <button class="btn btn-default submit-form" type="button">{{ _lang('app.send') }}</button>
                 </form>
+                <div class="clearfix"></div>
+                <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
+                <div class="alert alert-danger" style="display:{{Session('errorMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span class="message">{{Session::get('errorMessage')}}</span></div>
             </div>
             <div class="col-md-6 col">
                 <p><i class="fa fa-phone"></i> {{ $settings['phone']->value }} </p> 

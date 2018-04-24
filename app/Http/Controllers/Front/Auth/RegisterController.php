@@ -58,8 +58,8 @@ use RegistersUsers;
 
     public function register(Request $request) {
         //dd($request->all());
-        $mobile='966'+$request->input('step');
-        $request->merge(['mobile' => $mobile]);
+//        $mobile='966'+$request->input('step');
+//        $request->merge(['mobile' => $mobile]);
         $step = $request->input('step');
         //dd($step);
         if ($step == 1) {
@@ -94,7 +94,7 @@ use RegistersUsers;
                 $User = new User;
                 $User->name = $request->input('name');
                 $User->username = $request->input('username');
-                $User->mobile = $request->input('mobile');
+                $User->mobile = $request->input('dial_code').$request->input('mobile');
                 if ($request->input('email')) {
                     $User->email = $request->input('email');
                 }

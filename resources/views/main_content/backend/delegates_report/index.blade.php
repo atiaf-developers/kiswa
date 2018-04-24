@@ -26,7 +26,7 @@
                         <div class="col-sm-9 inputbox">
 
                             <input type="date" class="form-control" placeholder=""  name="from" value="{{ (isset($from)) ? $from :'' }}">
-
+                            <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group col-md-4">
@@ -34,6 +34,7 @@
                         <div class="col-sm-9 inputbox">
 
                             <input type="date" class="form-control" placeholder=""  name="to" value="{{ (isset($to)) ? $to :'' }}">
+                            <span class="help-block"></span>
 
                         </div>
                     </div>
@@ -46,6 +47,7 @@
                                 <option {{ (isset($delegate) && $delegate==$one->id) ?'selected':''}} value="{{$one->id}}">{{$one->username}}</option>
                                 @endforeach
                             </select>
+                            <span class="help-block"></span>
                         </div>
                     </div>
 
@@ -53,7 +55,7 @@
                 </div>
                 <div class="row">
 
-                    
+
 
 
 
@@ -98,11 +100,15 @@
                         <tr>
                             <td>{{$day}}</td>
                             <td>
+                                @if($containers->count()>0)
                                 @foreach($containers as $one)
                                 @php $class=$one->date_of_unloading?'label-success':'label-danger'; @endphp
                                 <p class="label label-sm {{$class}}">{{$one->container_title}}</p>
-                     
+
                                 @endforeach
+                                @else
+                                <span>{{_lang('app.no_containers_assigned_at_this_day')}}</span>
+                                @endif
                             </td>
 
                         </tr>
