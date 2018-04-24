@@ -18,7 +18,7 @@
                 <div class="login-area">
                     <form id="regForm">
                         {{ csrf_field() }}
-                        <img class="user" src="img/signin1.png" alt="" >
+                        <img class="user" src="{{ url('public/front/img') }}/signin1.png" alt="" >
                         <!-- One "tab" for each step in the form: -->
                         <div class="tab form-group">
                             <h3>ادخل رقم جوالك لانشاء حساب جديد</h3>
@@ -39,6 +39,7 @@
                             </div>
                         </div>
 
+                     
                         <div class="tab">
                             <div class="row form-w3agile">
                                 <h3 class="h3-dir"> ستصلك رسالة نصية بكود التفعيل على رقم الجوال الخاص بك 00966123456789 <a href="#" class="change-num">تغيير الرقم</a></h3>

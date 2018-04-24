@@ -12,31 +12,7 @@
 @endsection
 
 @section('content')
-<div class="modal fade" id="getLocation" role="dialog">
-    <div class="modal-dialog">
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">حدد موقعك على الخريطة</h4>
-            </div>
-            <div class="modal-body">
-
-
-
-                <input id="pac-input" class="controls" type="text"
-                       placeholder="Enter a location" style="height: 30px;width: 30%;">
-                <div id="map" style="height: 500px; width:100%;"></div>
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog">
 
@@ -61,121 +37,172 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="title">
-                    <h2>انشاء طلب توصيل</h2>
+                    <h2>انشاء حساب جديد</h2>
                 </div>
                 <div class="login-area">
                     <div class="form-w3agile margin">
-                        <form class="contactus" novalidate id="donation-request-form" method="post" action="{{_url('donation-request')}}">
+                        <form id="regForm">
                             {{ csrf_field() }}
                             <img class="user" src="{{ url('public/front/img') }}/order.png" alt="" >
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>نوع التبرع</label>
-                                        <select class="form-control" name="donation_type">
-                                            <option value="">{{_lang('app.choose')}}</option>
-                                            @foreach($donation_types as $one)
-                                            <option value="{{$one->id}}">{{$one->title}}</option>
-                                            @endforeach
+                            <!-- One "tab" for each step in the form: -->
+                            <div class="tab">
+                                <h3>ادخل رقم جوالك لانشاء حساب جديد</h3>
+                                <div class="tab-details">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label class="control-label color">نوع التبرع</label>
+                                                <select class="form-control" name="donation_type">
+                                                    <option value="">{{_lang('app.choose')}}</option>
+                                                    @foreach($donation_types as $one)
+                                                    <option value="{{$one->id}}">{{$one->title}}</option>
+                                                    @endforeach
 
-                                        </select>
-                                        <span class="help-block">
-                                            @if ($errors->has('name'))
-                                            {{ $errors->first('name') }}
-                                            @endif
-                                        </span>
+                                                </select>
+                                                <span class="help-block">
+                                                    @if ($errors->has('name'))
+                                                    {{ $errors->first('name') }}
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                    <div class="row">
+                                        <div class="form-group"> 
+                                            <div class="col-md-12">
+                                                <label class="control-label color">تفاصيل نصية</label>
+                                                <textarea class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
+                                                <span class="help-block">
+                                                    @if ($errors->has('description'))
+                                                    {{ $errors->first('description') }}
+                                                    @endif
+                                                </span>
 
-                            <div class="row">
-                                <div class="form-group"> 
-                                    <div class="col-md-12">
-                                        <label>تفاصيل نصية</label>
-                                        <textarea class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
-                                        <span class="help-block">
-                                            @if ($errors->has('description'))
-                                            {{ $errors->first('description') }}
-                                            @endif
-                                        </span>
-
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group"> 
-                                    <div class="col-md-12">
-                                        <div>
-                                            <label>تحديد موعد للاستلام</label>
-                                            <div  class="form-control" id="appropriate_time"> </div>
-                                            <input type="hidden" id="result" name="appropriate_time" value="" />
-                                            <span class="help-block">
-                                                @if ($errors->has('appropriate_time'))
-                                                {{ $errors->first('appropriate_time') }}
-                                                @endif
-                                            </span>
+                                    <div class="row">
+                                        <div class="form-group"> 
+                                            <div class="col-md-12">
+                                                <div>
+                                                    <label>تحديد موعد للاستلام</label>
+                                                    <div  class="form-control" id="appropriate_time"> </div>
+                                                    <input type="hidden" id="result" name="appropriate_time" value="" />
+                                                    <span class="help-block">
+                                                        @if ($errors->has('appropriate_time'))
+                                                        {{ $errors->first('appropriate_time') }}
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>ارفاق 4 من الصور</label>
+                                                <input type="file" name="images[]" id="images" multiple>
+                                                <span class="help-block"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>ارفاق 4 من الصور</label>
-                                        <input type="file" name="images[]" id="images" multiple>
+                            <div class="tab">
+                                @if(!$User)
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>{{_lang('app.name')}}</label>
+                                            <input type="text" class="form-control " name="name">
+                                            <span class="help-block"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="form-group col-md-12">
-                                    <input type="hidden" id="lat" name="lat">
-                                    <input type="hidden" id="lng" name="lng">
-                                    <a href="#" class="button-login btn btn-lg map-button" onclick="DonationRequest.getLocation()">حدد موقعك على الخريطة</a>
-                                    <span class="help-block"></span>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>{{_lang('app.mobile')}}</label>
+                                            <input type="hidden" name="code" value="966">
+                                            <input type="text" class="form-control " name="mobile">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                @endif
 
-                            <p>يمكنك إنشاء طلب توصيل بدون تسجيل الدخول ولكن سوف نحتاج الاسم ورقم الهاتف</p>
+                                <div class="row">
+
+                                    <div class="form-group col-md-12">
+                                        <input type="hidden" id="lat" name="lat">
+                                        <input type="hidden" id="lng" name="lng">
+                                        <span class="help-block"></span>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input id="pac-input" class="controls" type="text"
+                                               placeholder="Enter a location" style="height: 30px;width: 30%;">
+                                        <div id="map" style="height: 500px; width:100%;"></div>
+                                    </div>
+
+                                </div>
+
+                            </div>
                             @if(!$User)
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>{{_lang('app.name')}}</label>
-                                        <input type="text" class="form-control " name="name">
+                            <div class="tab">
+                                <div class="row form-w3agile">
+                                    <h3 class="h3-dir"> ستصلك رسالة نصية بكود التفعيل على رقم الجوال الخاص بك 00966123456789 <a href="#" class="change-num">تغيير الرقم</a></h3>
+                                    <div class="form-group col-sm-3 inputbox">
+                                        <input type="text" class="form-control text-center" name="code[0]" placeholder="0">
                                         <span class="help-block"></span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>{{_lang('app.mobile')}}</label>
-                                        <input type="text" class="form-control " name="mobile">
+                                    <div class="form-group col-sm-3 inputbox">
+                                        <input type="text" class="form-control text-center" name="code[1]" placeholder="0">
                                         <span class="help-block"></span>
                                     </div>
+                                    <div class="form-group col-sm-3 inputbox">
+                                        <input type="text" class="form-control text-center" name="code[2]" placeholder="0">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="form-group col-sm-3 inputbox">
+                                        <input type="text" class="form-control text-center" name="code[3]" placeholder="0">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="msg-error" style="display: none;">
+                                        <span id="activation-code-message" ></span>
+                                    </div>
+                                    <a class="a-signin" href="#" ><strong>ارسال الكود مرة أخرى</strong></a>
                                 </div>
                             </div>
                             @endif
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button class="button-login btn btn-lg submit-form">ارسال</button>
-                                </div>
-                            </div>
 
+                            <div class="tab">
+                                <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
+                                <div class="alert alert-danger" style="display:{{Session('errorMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span class="message">{{Session::get('errorMessage')}}</span></div>
+                            </div>
+                            <div class="next2">
+                                <button type="button" id="nextBtn" data-type="next" onclick="DonationRequest.nextPrev(this, 1)">التالى</button>
+                                <button type="button" id="prevBtn" data-type="prev" onclick="DonationRequest.nextPrev(this, -1)">السابق</button>
+                            </div>
+                            <!-- Circles which indicates the steps of the form: -->
+                            <div class="steps">
+                                <span class="step"></span>
+                                <span class="step"></span>
+                                @if(!$User)
+                                <span class="step"></span>
+                                @endif
+                                <span class="step"></span>
+                            </div>
                         </form>
-                        <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
-                        <div class="alert alert-danger" style="display:{{Session('errorMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span class="message">{{Session::get('errorMessage')}}</span></div>
                     </div>
+
 
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
 
 @endsection
