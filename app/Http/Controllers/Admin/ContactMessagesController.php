@@ -62,7 +62,7 @@ class ContactMessagesController extends BackendController {
     }
 
     public function data() {
-        $blog = ContactMessage::select(['id', 'phone', 'type', 'name', 'created_at']);
+        $blog = ContactMessage::select(['id', 'email', 'type', 'name', 'created_at']);
 
         return \Datatables::eloquent($blog)
                         ->addColumn('options', function ($item) {

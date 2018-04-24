@@ -31,7 +31,7 @@ var Contact= function () {
 
             },
             errorPlacement: function (error, element) {
-                errorElements1.push(element);
+               
                 $(element).closest('.form-group').find('.help-block').html($(error).html());
             }
 

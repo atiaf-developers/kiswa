@@ -66,7 +66,7 @@
                     
                     <th>{{ _lang('app.type')}}</th>
                     <th>{{ _lang('app.name')}}</th>
-                    <th>{{ _lang('app.phone')}}</th>
+                    <th>{{ _lang('app.email')}}</th>
                     <th>{{ _lang('app.created_at')}}</th>
                     <th></th>
                 </tr>

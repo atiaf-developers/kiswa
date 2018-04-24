@@ -53,7 +53,7 @@ var Contact_messages = function () {
                 {"data": "input", orderable: false},
                 {"data": "type"},
                 {"data": "name"},
-                {"data": "phone"},
+                {"data": "email"},
                 {"data": "created_at"},
                 {"data": "options", orderable: false,searchable:false }
             ],

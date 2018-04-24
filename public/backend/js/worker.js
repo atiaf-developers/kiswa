@@ -6,6 +6,7 @@ var Worker = function() {
     var init = function() {
         //alert('heree');
         $.extend(lang, new_lang);
+        Map.initMap(false, false, false, false);
         //console.log(lang);
         handleRecords();
         handleDatatables();

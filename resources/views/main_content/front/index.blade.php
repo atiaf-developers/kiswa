@@ -127,7 +127,7 @@
                     <a id="video" video-url="{{ $video->url }}" style="cursor: pointer;">
                         <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: zoomIn;"></div>
                     </a>
-                    <a href="" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
+                    <a href="{{ route('video_gallary') }}" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
                        {{ _lang('app.more') }}
                     </a>
                 </div>
