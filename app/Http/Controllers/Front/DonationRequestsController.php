@@ -229,7 +229,7 @@ class DonationRequestsController extends FrontController {
             $donation_request->mobile = $this->User->mobile;
         } else {
             $donation_request->name = $request->input('name');
-            $donation_request->mobile = $request->input('mobile');
+            $donation_request->mobile = $request->input('dial_code').$request->input('mobile');
         }
         $donation_request->save();
     }

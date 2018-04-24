@@ -98,6 +98,7 @@ var DonationRequest = function () {
                                 $('.alert-danger').hide();
                                 $('.alert-success').show().find('.message').html(data.data.message);
                             } else if (step == 2) {
+                                $('#mobile-message').html($('#mobile').val());
                                 activation_code = data.data.activation_code;
 
                             }

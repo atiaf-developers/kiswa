@@ -14,7 +14,6 @@
 <input type="hidden" name="lat" id="lat" value="{{ $user->lat}}">
 <input type="hidden" name="lng" id="lng" value="{{ $user->lng }}">
 
-<div class="row">
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-6">
@@ -25,7 +24,7 @@
                         <div class="caption">
                             <i class="fa fa-cogs"></i>{{ _lang('app.basic_info')}}
                         </div>
-                       
+
                     </div>
                     <div class="portlet-body">
                         <div class="table-scrollable">
@@ -55,67 +54,68 @@
                                 </tbody>
                             </table>
                         </div>
-                       
 
 
-                        
+
+
                         <ul class="list-inline blog-images">
-                          
+
                             <li>
                                 <a class="fancybox-button" data-rel="fancybox-button" title="390 x 220 - keenthemes.com" href="{{ url("public/uploads/users/$user->image") }}">
                                     <img style="width: 100px;height: 100px;" alt="" src="{{ url("public/uploads/users/$user->image") }}">
                                 </a>
                             </li>
-                           
+
                         </ul>
 
-                        
+
                     </div>
                 </div>
                 <!-- END SAMPLE TABLE PORTLET-->
 
 
             </div>
-            
-        <div class="col-md-6">
-            <!-- BEGIN SAMPLE TABLE PORTLET-->
-            <div class="portlet box red">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-cogs"></i>{{ _lang('app.location')}}
-                    </div>
-                    <!--                    <div class="tools">
-                                            <a href="javascript:;" class="collapse" data-original-title="" title="">
-                                            </a>
-                    
-                                            <a href="javascript:;" class="remove" data-original-title="" title="">
-                                            </a>
-                                        </div>-->
-                </div>
-                <div class="portlet-body">
 
-                    <div class="maplarger">
-<!--                            <input id="pac-input" class="controls" type="text"
-                               placeholder="Enter a location">-->
-                        <div id="map" style="height: 300px; width:100%;"></div>
-                                                <div id="infowindow-content">
-                                                        <span id="place-name"  class="title"></span><br>
-                                                        Place ID <span id="place-id"></span><br>
-                                                        <span id="place-address"></span>
-                                                    </div>
+            <div class="col-md-6">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-cogs"></i>{{ _lang('app.location')}}
+                        </div>
+                        <!--                    <div class="tools">
+                                                <a href="javascript:;" class="collapse" data-original-title="" title="">
+                                                </a>
+                        
+                                                <a href="javascript:;" class="remove" data-original-title="" title="">
+                                                </a>
+                                            </div>-->
+                    </div>
+                    <div class="portlet-body">
+
+                        <div class="maplarger">
+    <!--                            <input id="pac-input" class="controls" type="text"
+                                   placeholder="Enter a location">-->
+                            <div id="map" style="height: 300px; width:100%;"></div>
+                            <div id="infowindow-content">
+                                <span id="place-name"  class="title"></span><br>
+                                Place ID <span id="place-id"></span><br>
+                                <span id="place-address"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!-- END SAMPLE TABLE PORTLET-->
             </div>
-            <!-- END SAMPLE TABLE PORTLET-->
         </div>
     </div>
 
 
-<script>
-    var new_lang = {
-       
-    };
-    
-</script>
+    <script>
+var new_lang = {
 
-@endsection
+};
+
+    </script>
+
+    @endsection

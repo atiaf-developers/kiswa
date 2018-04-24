@@ -123,7 +123,7 @@
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <label>{{_lang('app.mobile')}}</label>
-                                            <input type="hidden" name="code" value="966">
+                                            <input type="hidden"  name="dial_code" value="966">
                                             <input type="text" class="form-control " name="mobile">
                                             <span class="help-block"></span>
                                         </div>
