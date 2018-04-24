@@ -12,7 +12,12 @@ use Validator;
 use DB;
 
 class UserController extends ApiController {
+   
 
+    private $location_rules = array(
+        'lat' => 'required',
+        'lng' => 'required'
+    );
     public function __construct() {
         parent::__construct();
     }
@@ -91,6 +96,27 @@ class UserController extends ApiController {
                 return _api_json(new \stdClass(), ['message' => $message], 400);
             }
         }
+    }
+
+    public function updateLocation(Request $request)
+    {
+        $validator = Validator::make($request->all(), $this->location_rules);
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            return _api_json('', ['errors' => $errors], 400);
+        }
+        try {
+            $user = $this->auth_user();
+            $user->lat = $request->lat;
+            $user->lng = $request->lng;
+            $user->save();
+            return _api_json('');
+        } catch (\Exception $e) {
+            $message = _lang('app.error_is_occured');
+            return _api_json('', ['message' => $message], 400);
+        }
+        
+
     }
 
 }

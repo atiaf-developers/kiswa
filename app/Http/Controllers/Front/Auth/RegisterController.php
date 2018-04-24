@@ -100,11 +100,10 @@ use RegistersUsers;
                 }
                 $User->password = bcrypt($request->input('password'));
                 $User->save();
-                //dd($User);
                 $message = _lang('app.registered_done_successfully');
                 return _json('success', ['step'=>$step,'message'=>$message]);
             } catch (\Exception $ex) {
-                dd($ex->getMessage());
+                
                 $message = _lang('app.error_is_occured');
                 return _json('error', $message);
             }

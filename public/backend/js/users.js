@@ -375,7 +375,7 @@ var Users = function() {
             init();
         },
         edit: function(t) {
-
+            var delegate = false;
             var id = $(t).attr("data-id");
             My.editForm({
                 element: t,
@@ -387,6 +387,9 @@ var Users = function() {
                     My.setModalTitle('#addEditUsers', lang.edit_user);
 
                     for (i in data.message) {
+                        if (i == 'type' && data.message[i] == 2) {
+                            delegate = true;
+                        }
                         if (i == 'password') {
                             continue;
                         } else if (i == 'image') {
@@ -398,6 +401,10 @@ var Users = function() {
 
                     }
                     $('#addEditUsers').modal('show');
+                    $('#location').css('display', 'block');
+                    
+                    }
+                    
                 }
             });
 

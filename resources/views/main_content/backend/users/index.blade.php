@@ -3,6 +3,7 @@
 @section('pageTitle', _lang('app.users'))
 
 @section('js')
+
 <script src="{{url('public/backend/js')}}/users.js" type="text/javascript"></script>
 @endsection
 @section('content')
@@ -69,7 +70,7 @@
                             <input type="file" name="user_image" id="user_image" style="display:none;">
                             <div class="help-block"></div>
                         </div>
-
+                       
                         <div class="clearfix"></div>
                     </div>
 

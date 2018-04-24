@@ -393,12 +393,8 @@ var Worker = function() {
                     }
 
                     $('#addEditWorker').modal('show');
-                    // $("#addEditWorker").on("shown.bs.modal", function () {
-                    //   initMap();
-                    //   google.maps.event.trigger(map, 'resize');
-                    // });
                     $('#addEditWorker').on('shown.bs.modal', function() {
-                        Map.initMap(true, true, true, false);
+                        Map.initMap(false, false, false, false);
                         google.maps.event.trigger(map, 'resize');
 
                     });

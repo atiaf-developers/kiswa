@@ -55,5 +55,6 @@ Route::group(['namespace' => 'Api'], function () {
         Route::get('containers', 'ContainersController@index');
         Route::get('log_dump', 'ContainersController@Logdump');
         Route::post('unload_container', 'ContainersController@unload_container');
+        Route::post('update_location','UserController@updateLocation');
     });
 });

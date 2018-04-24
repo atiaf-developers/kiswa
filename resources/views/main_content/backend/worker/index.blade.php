@@ -3,16 +3,14 @@
 @section('pageTitle', _lang('app.worker'))
 
 @section('js')
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWYbhmg32SNq225SO1jRHA2Bj6ukgAQtA&libraries=places&language={{App::getLocale()}}"></script>
+
 <script src="{{url('public/backend/js')}}/map.js" type="text/javascript"></script>
+
 
 <script src="{{url('public/backend/js')}}/worker.js" type="text/javascript"></script>
 
-<!-- <script src="{{url('public')}}/gmaps.js" type="text/javascript"></script> -->
-
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUyHUMEdN1Fjbj4z8Ig8MZIxl9meBW2Go"></script> -->
 @endsection
 @section('content')
 
@@ -73,6 +71,18 @@
                             </div>
                             <input type="file" name="user_image" id="user_image" style="display:none;" readonly="">
                             <div class="help-block"></div>
+                        </div>
+
+                        <input value="" type="hidden" id="lat" name="lat">
+                        <input value="" type="hidden" id="lng" name="lng">
+                        <span class="help-block utbox"></span>
+                        <div class="maplarger"  >
+                                    
+                                     <div id="map" style="height: 500px; width:100%;"></div>
+                                     <div id="infowindow-content">
+                                        <span id="place-name"  class="title"></span><br>
+                                        <span id="place-address"></span>
+                                    </div>
                         </div>
                        
 
