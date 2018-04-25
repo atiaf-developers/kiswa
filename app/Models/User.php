@@ -43,7 +43,10 @@ class User extends Authenticatable {
     protected static function boot() {
         parent::boot();
 
-        static::deleting(function($user) {
+        static::deleted(function($user) {
+            if ($user->user_image != 'default.png') {
+                User::deleteUploaded('users',$user->user_image);
+            }
             
         });
     }

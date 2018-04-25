@@ -13,7 +13,7 @@ class AlbumImagesController extends BackendController {
     private $rules = array(
         'album_id' => 'required',
         'image' => 'required|image|mimes:gif,png,jpeg|max:1000',
-        'this_order' => 'required',
+        
     );
     public function __construct() {
 
@@ -52,8 +52,9 @@ class AlbumImagesController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+         $this->rules['this_order'] = "required|unique:album_images,this_order,Null,id,album_id,{$request->album_id}";
         $validator = Validator::make($request->all(), $this->rules);
-
+       
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return _json('error', $errors);
@@ -119,8 +120,8 @@ class AlbumImagesController extends BackendController {
         else{
             unset( $this->rules['image']);
         }
-       
       
+        $this->rules['this_order'] = "required|unique:album_images,this_order,{$id},id,album_id,{$request->album_id}";
         $validator = Validator::make($request->all(), $this->rules);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();

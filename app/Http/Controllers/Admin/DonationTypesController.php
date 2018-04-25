@@ -14,7 +14,7 @@ class DonationTypesController extends BackendController {
 
     private $rules = array(
         'active' => 'required',
-        'this_order' => 'required'
+        'this_order' => 'required|unique:donation_types'
     );
 
     public function __construct() {
@@ -140,6 +140,7 @@ class DonationTypesController extends BackendController {
             'title' => 'required|unique:donation_types_translations,title,'.$id .',donation_type_id',
         );
         $lang_rules = $this->lang_rules($columns_arr);
+        $this->rules['this_order'] = 'required|unique:donation_types,this_order,'.$id;
         $this->rules = array_merge($this->rules, $lang_rules);
 
         $validator = Validator::make($request->all(), $this->rules);

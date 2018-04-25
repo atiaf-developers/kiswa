@@ -7,7 +7,11 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWYbhmg32SNq225SO1jRHA2Bj6ukgAQtA&libraries=places&language={{App::getLocale()}}"></script>
 
 <script src="{{url('public/backend/js')}}/map.js" type="text/javascript"></script>
-<script src="{{url('public/backend/js')}}/worker.js" type="text/javascript"></script>
+
+<script>
+    Map.initMap(false, false, false, false);
+</script>
+
 
 @endsection
 @section('content')

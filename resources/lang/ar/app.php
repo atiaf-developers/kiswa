@@ -757,6 +757,14 @@ return [
 
     //AymanBassiony
     'common_questions'=>'أسئله شائعه',
+    'new_activity' => 'فاعلية جديدة',
+    'new_news' => 'خبر جديد',
+    'donation_type' => 'نوع التبرع',
+    'the_delegate_is_coming_to_you_to_receive_the_donation' => 'المندوب قادم اليك لاستلام التبرع',
+    'the_delegate_has_arrived_to_receive_the_donation'      => 'لقد وصل المندوب لاستلام التبرع',
+    'the_donation_was_received_by_the_delegate'   => 'لقد تم استلام التبرع عن طريق المندوب',
+    'request_has_been_sent_successfully' => 'لقد تم ارسال الطلب بنجاح',
+
 
     
 ];

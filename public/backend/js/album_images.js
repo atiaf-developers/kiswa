@@ -217,6 +217,7 @@ var AlbumImages = function () {
         },
         empty: function () {
             $('#id').val(0);
+            $('#image').val('');
             $('.image_box').html('<img src="' + config.url + '/no-image.png" class="image" width="150" height="80" />');
             $('#active').find('option').eq(0).prop('selected', true);
             $('.has-error').removeClass('has-error');

@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BackendController;
 use App\Models\Activity;
 use App\Models\ActivityTranslation;
-use App\Events\Noti;
 use Validator;
 use DB;
 use App\Helpers\Fcm;
+
 
 class ActivitiesController extends BackendController {
 
@@ -20,7 +20,7 @@ class ActivitiesController extends BackendController {
         'images.3' => 'image|mimes:gif,png,jpeg|max:1000',
         'images.4' => 'image|mimes:gif,png,jpeg|max:1000',
         'active' => 'required',
-        'this_order' => 'required'
+        'this_order' => 'required|unique:activities'
     );
 
     public function __construct() {
@@ -76,9 +76,9 @@ class ActivitiesController extends BackendController {
             $activity->active = $request->input('active');
             $activity->this_order = $request->input('this_order');
             $activity->images = json_encode($images);
-
+            
             $activity->save();
-
+            
             $activity_translations = array();
             $activity_title = $request->input('title');
             $activity_description = $request->input('description');
@@ -86,34 +86,32 @@ class ActivitiesController extends BackendController {
             foreach ($this->languages as $key => $value) {
                 $activity_translations[] = array(
                     'locale' => $key,
-                    'title' => $activity_title[$key],
+                    'title'  => $activity_title[$key],
                     'description' => $activity_description[$key],
                     'activity_id' => $activity->id
                 );
             }
             ActivityTranslation::insert($activity_translations);
-            $this->create_noti($activity->id, null, 5, 1);
-
+            $this->create_noti($activity->id,null,5,1);
+            
             DB::commit();
 
-            $message['message_ar'] = 'نشاط جديد ' . $activity_title['ar'];
-            $message['message_en'] = 'new ativity ' . $activity_title['en'];
-            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 2, 'id' => $activity->id);
-
+            $message['message_ar'] = 'نشاط جديد '.$activity_title['ar'];
+            $message['message_en'] = 'new ativity '.$activity_title['en'];
+            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 2 , 'id' =>$activity->id);
+            
             $Fcm = new Fcm;
             $token = '/topics/keswa_and';
             $Fcm->send($token, $notification, 'and');
-
+              
             $token = '/topics/keswa_ios';
             $Fcm->send($token, $notification, 'ios');
 
-            $message = _lang('app.new_activity') . ' ' . $activity_title[$this->lang_code];
-            $url = _url('corporation-activities/' . $activity->slug);
-            event(new Noti(['user_id' => null, 'type' => 6, 'body' => $message, 'url' => $url]));
-            //dd('here');
+           
+
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
-            DB::rollback();
+             DB::rollback();
             return _json('error', _lang('app.error_is_occured'), 400);
         }
     }
@@ -147,8 +145,8 @@ class ActivitiesController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
         $activity->images = json_decode($activity->images);
-        $this->data['translations'] = ActivityTranslation::where('activity_id', $id)->get()->keyBy('locale');
-
+        $this->data['translations'] = ActivityTranslation::where('activity_id',$id)->get()->keyBy('locale');
+        
         $this->data['activity'] = $activity;
 
         return $this->_view('activities/edit', 'backend');
@@ -169,9 +167,9 @@ class ActivitiesController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
         $this->rules['images.0'] = 'image|mimes:gif,png,jpeg|max:1000';
-
-        $columns_arr = array(
-            'title' => 'required|unique:activities_translations,title,' . $id . ',activity_id',
+       $this->rules['this_order'] = 'required|unique:activities,this_order,'.$id;
+       $columns_arr = array(
+            'title' => 'required|unique:activities_translations,title,'.$id .',activity_id',
             'description' => 'required'
         );
         $lang_rules = $this->lang_rules($columns_arr);
@@ -190,9 +188,9 @@ class ActivitiesController extends BackendController {
             if ($request->file('images')) {
                 foreach ($request->file('images') as $key => $one) {
                     if (isset($images[$key])) {
-                        Activity::deleteUploaded('activities', $images[$key]);
+                         Activity::deleteUploaded('activities', $images[$key]);
                     }
-
+                   
                     $images[$key] = Activity::upload($one, 'activities', true);
                 }
             }
@@ -201,7 +199,7 @@ class ActivitiesController extends BackendController {
             $activity->this_order = $request->input('this_order');
             $activity->images = json_encode($images);
             $activity->save();
-
+            
             $activity_translations = array();
 
             ActivityTranslation::where('activity_id', $activity->id)->delete();
@@ -212,7 +210,7 @@ class ActivitiesController extends BackendController {
             foreach ($this->languages as $key => $value) {
                 $activity_translations[] = array(
                     'locale' => $key,
-                    'title' => $activity_title[$key],
+                    'title'  => $activity_title[$key],
                     'description' => $activity_description[$key],
                     'activity_id' => $activity->id
                 );
@@ -262,49 +260,50 @@ class ActivitiesController extends BackendController {
         ]);
 
         return \Datatables::eloquent($activities)
-                        ->addColumn('options', function ($item) {
+        ->addColumn('options', function ($item) {
 
-                            $back = "";
-                            if (\Permissions::check('activities', 'edit') || \Permissions::check('activities', 'delete')) {
-                                $back .= '<div class="btn-group">';
-                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
-                                $back .= '<i class="fa fa-angle-down"></i>';
-                                $back .= '</button>';
-                                $back .= '<ul class = "dropdown-menu" role = "menu">';
-                                if (\Permissions::check('activities', 'edit')) {
-                                    $back .= '<li>';
-                                    $back .= '<a href="' . route('activities.edit', $item->id) . '">';
-                                    $back .= '<i class = "icon-docs"></i>' . _lang('app.edit');
-                                    $back .= '</a>';
-                                    $back .= '</li>';
-                                }
+            $back = "";
+            if (\Permissions::check('activities', 'edit') || \Permissions::check('activities', 'delete')) {
+                $back .= '<div class="btn-group">';
+                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
+                $back .= '<i class="fa fa-angle-down"></i>';
+                $back .= '</button>';
+                $back .= '<ul class = "dropdown-menu" role = "menu">';
+                if (\Permissions::check('activities', 'edit')) {
+                    $back .= '<li>';
+                    $back .= '<a href="' . route('activities.edit', $item->id) . '">';
+                    $back .= '<i class = "icon-docs"></i>' . _lang('app.edit');
+                    $back .= '</a>';
+                    $back .= '</li>';
+                }
 
-                                if (\Permissions::check('activities', 'delete')) {
-                                    $back .= '<li>';
-                                    $back .= '<a href="" data-toggle="confirmation" onclick = "Activities.delete(this);return false;" data-id = "' . $item->id . '">';
-                                    $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
-                                    $back .= '</a>';
-                                    $back .= '</li>';
-                                }
+                if (\Permissions::check('activities', 'delete')) {
+                    $back .= '<li>';
+                    $back .= '<a href="" data-toggle="confirmation" onclick = "Activities.delete(this);return false;" data-id = "' . $item->id . '">';
+                    $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
+                    $back .= '</a>';
+                    $back .= '</li>';
+                }
 
-                                $back .= '</ul>';
-                                $back .= ' </div>';
-                            }
-                            return $back;
-                        })
-                        ->editColumn('active', function ($item) {
-                            if ($item->active == 1) {
-                                $message = _lang('app.active');
-                                $class = 'label-success';
-                            } else {
-                                $message = _lang('app.not_active');
-                                $class = 'label-danger';
-                            }
-                            $back = '<span class="label label-sm ' . $class . '">' . $message . '</span>';
-                            return $back;
-                        })
-                        ->escapeColumns([])
-                        ->make(true);
+                $back .= '</ul>';
+                $back .= ' </div>';
+            }
+            return $back;
+        })
+        ->editColumn('active', function ($item) {
+                          if ($item->active == 1) {
+                          $message = _lang('app.active');
+                          $class = 'label-success';
+                          } else {
+                          $message = _lang('app.not_active');
+                          $class = 'label-danger';
+                          }
+                          $back = '<span class="label label-sm ' . $class . '">' . $message . '</span>';
+                          return $back;
+                      }) 
+                      ->escapeColumns([])
+                      ->make(true);
     }
 
+              
 }

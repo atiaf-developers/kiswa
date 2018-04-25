@@ -216,17 +216,17 @@ class DonationRequestsController extends ApiController {
 
             switch ($request->status) {
                 case 2:
-                    $message['message_ar'] = "المندوب قادم اليك لاستلام الطلب";
+                    $message['message_ar'] = "المندوب قادم اليك لاستلام التبرع";
                     $message['message_en'] = "The delegate is coming to you to receive the donation";
                     break;
 
                 case 3:
-                    $message['message_ar'] = "لقد تم وصول المندوب لاستلام التبرع";
+                    $message['message_ar'] = "لقد وصل المندوب لاستلام التبرع";
                     $message['message_en'] = 'The delegate has arrived to receive the donation';
                     break;
 
                  case 4:
-                    $message['message_ar'] = "تم استلام التبرع من قبل المندوب";
+                    $message['message_ar'] = "لقد تم استلام التبرع عن طريق المندوب";
                     $message['message_en'] = 'The donation was received by the delegate';
                     break;
                 

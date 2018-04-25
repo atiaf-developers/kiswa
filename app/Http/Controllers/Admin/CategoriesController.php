@@ -13,7 +13,6 @@ class CategoriesController extends BackendController {
 
     private $rules = array(
         'active' => 'required',
-        'this_order' => 'required',
         'image' => 'required|image|mimes:gif,png,jpeg|max:1000'
     );
 
@@ -59,11 +58,12 @@ class CategoriesController extends BackendController {
         $columns_arr = array(
             'title' => 'required|unique:categories_translations,title'
         );
-
+        $parent = $request->parent_id;
+        $this->rules['this_order'] = "required|unique:categories,this_order,NULL,id,parent_id,{$parent}";
         if ($request->parent_id != 0) {
             $columns_arr ['description'] = 'required';
         }
-      
+       
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
         $validator = Validator::make($request->all(), $this->rules);
@@ -179,6 +179,10 @@ class CategoriesController extends BackendController {
         $columns_arr = array(
             'title' => 'required|unique:categories_translations,title,'.$id .',category_id'
         );
+        $parent = $request->parent_id;
+
+        $this->rules['this_order'] = "required|unique:categories,this_order,{$id},id,parent_id,{$parent}";
+
         if ($category->parent_id != 0) {
             $columns_arr ['description'] = 'required';
         }
@@ -262,6 +266,7 @@ class CategoriesController extends BackendController {
         $categories = Category::Join('categories_translations', 'categories.id', '=', 'categories_translations.category_id')
                 ->where('categories.parent_id', $parent_id)
                 ->where('categories_translations.locale', $this->lang_code)
+                ->orderBy('categories.this_order')
                 ->select([
             'categories.id', "categories_translations.title", "categories.this_order","categories.active", 'categories.level', 'categories.parent_id'
         ]);

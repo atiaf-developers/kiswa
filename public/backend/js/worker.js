@@ -6,7 +6,7 @@ var Worker = function() {
     var init = function() {
         //alert('heree');
         $.extend(lang, new_lang);
-        Map.initMap(false, false, false, false);
+        
         //console.log(lang);
         handleRecords();
         handleDatatables();
@@ -156,11 +156,7 @@ var Worker = function() {
                 mobile: {
                     required: true
                 },
-                email: {
-                    required: true,
-                    email: true,
-                },
-
+                
             },
             //messages: lang.messages,
             highlight: function(element) { // hightlight error inputs
@@ -252,7 +248,7 @@ var Worker = function() {
                             for (i in data.errors) {
                                 $('[name="' + i + '"]')
                                     .closest('.form-group').addClass('has-error');
-                                $('#' + i).closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
+                                 $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
                             }
                         } else {
                             //alert('here');
@@ -376,7 +372,7 @@ var Worker = function() {
             var id = $(t).attr("data-id");
             My.editForm({
                 element: t,
-                url: config.admin_url + '/users/' + id + '?type=clients',
+                url: config.admin_url + '/users/' + id + '?type=delegates',
                 success: function(data) {
                     console.log(data);
 
@@ -387,6 +383,9 @@ var Worker = function() {
                         if (i == 'password') {
                             continue;
                         } else if (i == 'image') {
+                            if (!data.message[i]) {
+                                data.message[i] = 'default.png'
+                            }
                             $('.user_image_box').html('<img style="height:80px;width:150px;" class="user_image"  src="' + config.public_path + '/uploads/users/' + data.message[i] + '" alt="your image" />');
                         } else {
                             $('#' + i).val(data.message[i]);
@@ -394,11 +393,7 @@ var Worker = function() {
                     }
 
                     $('#addEditWorker').modal('show');
-                    $('#addEditWorker').on('shown.bs.modal', function() {
-                        Map.initMap(false, false, false, false);
-                        google.maps.event.trigger(map, 'resize');
-
-                    });
+                   
                 }
             });
 
@@ -646,7 +641,7 @@ var Worker = function() {
             var id = $(t).attr("data-id");
             My.deleteForm({
                 element: t,
-                url: config.admin_url + '/users/' + id + '?type=clients',
+                url: config.admin_url + '/users/' + id + '?type=delegates',
                 data: { _method: 'DELETE', _token: $('input[name="_token"]').val() },
                 success: function(data) {
 
@@ -670,6 +665,8 @@ var Worker = function() {
         empty: function() {
             $('#id').val(0);
             $('#active').find('option').eq(0).prop('selected', true);
+            $('#user_image').val(null);
+            $('.user_image_box').html('<img src="' + config.url + '/no-image.png" class="user_image" width="150" height="80" />');
             $('.has-error').removeClass('has-error');
             $('.has-success').removeClass('has-success');
             $('.help-block').html('');
