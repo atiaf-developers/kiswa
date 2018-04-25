@@ -46,7 +46,7 @@
                             <img class="user" src="{{ url('public/front/img') }}/order.png" alt="" >
                             <!-- One "tab" for each step in the form: -->
                             <div class="tab">
-                                <h3>ادخل رقم جوالك لانشاء حساب جديد</h3>
+                              
                                 <div class="tab-details">
                                     <div class="row">
                                         <div class="form-group">
@@ -85,7 +85,7 @@
                                         <div class="form-group"> 
                                             <div class="col-md-12">
                                                 <div>
-                                                    <label>تحديد موعد للاستلام</label>
+                                                    <label class="control-label color">تحديد موعد للاستلام</label>
                                                     <div  class="form-control" id="appropriate_time"> </div>
                                                     <input type="hidden" id="result" name="appropriate_time" value="" />
                                                     <span class="help-block">
@@ -100,7 +100,7 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>ارفاق 4 من الصور</label>
+                                                <label class="control-label color">ارفاق 4 من الصور</label>
                                                 <input type="file" name="images[]" id="images" multiple>
                                                 <span class="help-block"></span>
                                             </div>
@@ -113,7 +113,7 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>{{_lang('app.name')}}</label>
+                                            <label class="control-label color">{{_lang('app.name')}}</label>
                                             <input type="text" class="form-control " name="name">
                                             <span class="help-block"></span>
                                         </div>
@@ -122,9 +122,9 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>{{_lang('app.mobile')}}</label>
+                                            <label class="control-label color">{{_lang('app.mobile')}}</label>
                                             <input type="hidden"  name="dial_code" value="966">
-                                            <input type="text" class="form-control " name="mobile">
+                                            <input type="text" class="form-control " name="mobile" id="mobile">
                                             <span class="help-block"></span>
                                         </div>
                                     </div>

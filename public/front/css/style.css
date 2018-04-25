@@ -1656,6 +1656,7 @@ a.read-more:hover{
     padding-right: 5px;
     font-size: 16px;
 }
+
 .form-w3agile a.map-button{
     margin: 30px 0 10px 0;
     background: #444;
@@ -1793,6 +1794,9 @@ width: 100%;
     text-align: right;
     width:100%;
     direction: rtl;
+}
+#login .login-area .tab label.color {
+    color: #0c86ae;
 }
 #login .login-area .tab .col-md-6{
     padding: 0;

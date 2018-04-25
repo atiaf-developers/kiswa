@@ -36,7 +36,6 @@ use RegistersUsers;
     private $step_three_rules = array(
         'name' => 'required',
         'username' => 'required|unique:users',
-        'email' => 'email',
         'mobile' => 'required|unique:users',
         'password' => 'required|min:6',
         'confirm_password' => 'required|same:password',
