@@ -14,5 +14,6 @@
 <script type="text/javascript" src="{{ url('public/front/js/bootbox.min.js') }}"></script>
 <script src="{{ url('public/front/scripts/app.js') }}"></script>
 <script src="{{ url('public/front/scripts/push_notification.js') }}"></script>
-
+<script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+<script src="{{ url('public/front/scripts/main.js') }}"></script>
 @yield('js')

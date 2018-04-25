@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BackendController;
 use App\Models\News;
 use App\Models\NewsTranslation;
+use App\Events\Noti;
 use Validator;
 use DB;
 use App\Helpers\Fcm;
-
 
 class NewsController extends BackendController {
 
@@ -33,6 +33,8 @@ class NewsController extends BackendController {
     }
 
     public function index(Request $request) {
+
+        //dd('here');
         return $this->_view('news/index', 'backend');
     }
 
@@ -77,9 +79,9 @@ class NewsController extends BackendController {
             $news->active = $request->input('active');
             $news->this_order = $request->input('this_order');
             $news->images = json_encode($images);
-            
+
             $news->save();
-            
+
             $news_translations = array();
             $news_title = $request->input('title');
             $news_description = $request->input('description');
@@ -87,32 +89,36 @@ class NewsController extends BackendController {
             foreach ($this->languages as $key => $value) {
                 $news_translations[] = array(
                     'locale' => $key,
-                    'title'  => $news_title[$key],
+                    'title' => $news_title[$key],
                     'description' => $news_description[$key],
                     'news_id' => $news->id
                 );
             }
             NewsTranslation::insert($news_translations);
 
-            $this->create_noti($news->id,null,6,1);
+            $this->create_noti($news->id, null, 6, 1);
             DB::commit();
 
-            $message['message_ar'] = 'خبر جديد '.$news_title['ar'];
-            $message['message_en'] = 'new news '.$news_title['en'];
-            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 3 , 'id' =>$news->id);
-            
+            $message['message_ar'] = 'خبر جديد ' . $news_title['ar'];
+            $message['message_en'] = 'new news ' . $news_title['en'];
+            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 3, 'id' => $news->id);
+
             $Fcm = new Fcm;
             $token = '/topics/keswa_and';
             $Fcm->send($token, $notification, 'and');
-              
+
             $token = '/topics/keswa_ios';
             $Fcm->send($token, $notification, 'ios');
+            
+            $message= _lang('app.new_news'). ' '.$news_title[$this->lang_code];
+            $url = _url('news-and-events/' . $news->slug);
+            event(new Noti(['user_id' => null, 'type' => 6, 'body' => $message, 'url' => $url]));
 
 
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
-             DB::rollback();
-             dd($ex);
+            DB::rollback();
+            dd($ex);
             return _json('error', _lang('app.error_is_occured'), 400);
         }
     }
@@ -146,7 +152,7 @@ class NewsController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
 
-        $this->data['translations'] = NewsTranslation::where('news_id',$id)->get()->keyBy('locale');
+        $this->data['translations'] = NewsTranslation::where('news_id', $id)->get()->keyBy('locale');
         $news->images = json_decode($news->images);
         $this->data['news'] = $news;
 
@@ -168,12 +174,12 @@ class NewsController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
 
-     
+
         unset($this->rules['images.0']);
-        
-        
-       $columns_arr = array(
-            'title' => 'required|unique:news_translations,title,'.$id .',news_id',
+
+
+        $columns_arr = array(
+            'title' => 'required|unique:news_translations,title,' . $id . ',news_id',
             'description' => 'required'
         );
         $lang_rules = $this->lang_rules($columns_arr);
@@ -188,13 +194,13 @@ class NewsController extends BackendController {
 
         DB::beginTransaction();
         try {
-             $images = json_decode($news->images);
+            $images = json_decode($news->images);
             if ($request->file('images')) {
                 foreach ($request->file('images') as $key => $one) {
                     if (isset($images[$key])) {
-                         News::deleteUploaded('news', $images[$key]);
+                        News::deleteUploaded('news', $images[$key]);
                     }
-                   
+
                     $images[$key] = News::upload($one, 'news', true);
                 }
             }
@@ -203,7 +209,7 @@ class NewsController extends BackendController {
             $news->this_order = $request->input('this_order');
             $news->images = json_encode($images);
             $news->save();
-            
+
             $news_translations = array();
 
             NewsTranslation::where('news_id', $news->id)->delete();
@@ -214,7 +220,7 @@ class NewsController extends BackendController {
             foreach ($this->languages as $key => $value) {
                 $news_translations[] = array(
                     'locale' => $key,
-                    'title'  => $news_title[$key],
+                    'title' => $news_title[$key],
                     'description' => $news_description[$key],
                     'news_id' => $news->id
                 );
@@ -265,50 +271,49 @@ class NewsController extends BackendController {
         ]);
 
         return \Datatables::eloquent($news)
-        ->addColumn('options', function ($item) {
+                        ->addColumn('options', function ($item) {
 
-            $back = "";
-            if (\Permissions::check('news', 'edit') || \Permissions::check('news', 'delete')) {
-                $back .= '<div class="btn-group">';
-                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
-                $back .= '<i class="fa fa-angle-down"></i>';
-                $back .= '</button>';
-                $back .= '<ul class = "dropdown-menu" role = "menu">';
-                if (\Permissions::check('news', 'edit')) {
-                    $back .= '<li>';
-                    $back .= '<a href="' . route('news.edit', $item->id) . '">';
-                    $back .= '<i class = "icon-docs"></i>' . _lang('app.edit');
-                    $back .= '</a>';
-                    $back .= '</li>';
-                }
+                            $back = "";
+                            if (\Permissions::check('news', 'edit') || \Permissions::check('news', 'delete')) {
+                                $back .= '<div class="btn-group">';
+                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
+                                $back .= '<i class="fa fa-angle-down"></i>';
+                                $back .= '</button>';
+                                $back .= '<ul class = "dropdown-menu" role = "menu">';
+                                if (\Permissions::check('news', 'edit')) {
+                                    $back .= '<li>';
+                                    $back .= '<a href="' . route('news.edit', $item->id) . '">';
+                                    $back .= '<i class = "icon-docs"></i>' . _lang('app.edit');
+                                    $back .= '</a>';
+                                    $back .= '</li>';
+                                }
 
-                if (\Permissions::check('news', 'delete')) {
-                    $back .= '<li>';
-                    $back .= '<a href="" data-toggle="confirmation" onclick = "News.delete(this);return false;" data-id = "' . $item->id . '">';
-                    $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
-                    $back .= '</a>';
-                    $back .= '</li>';
-                }
+                                if (\Permissions::check('news', 'delete')) {
+                                    $back .= '<li>';
+                                    $back .= '<a href="" data-toggle="confirmation" onclick = "News.delete(this);return false;" data-id = "' . $item->id . '">';
+                                    $back .= '<i class = "icon-docs"></i>' . _lang('app.delete');
+                                    $back .= '</a>';
+                                    $back .= '</li>';
+                                }
 
-                $back .= '</ul>';
-                $back .= ' </div>';
-            }
-            return $back;
-        })
-        ->editColumn('active', function ($item) {
-                          if ($item->active == 1) {
-                          $message = _lang('app.active');
-                          $class = 'label-success';
-                          } else {
-                          $message = _lang('app.not_active');
-                          $class = 'label-danger';
-                          }
-                          $back = '<span class="label label-sm ' . $class . '">' . $message . '</span>';
-                          return $back;
-                      }) 
-                      ->escapeColumns([])
-                      ->make(true);
+                                $back .= '</ul>';
+                                $back .= ' </div>';
+                            }
+                            return $back;
+                        })
+                        ->editColumn('active', function ($item) {
+                            if ($item->active == 1) {
+                                $message = _lang('app.active');
+                                $class = 'label-success';
+                            } else {
+                                $message = _lang('app.not_active');
+                                $class = 'label-danger';
+                            }
+                            $back = '<span class="label label-sm ' . $class . '">' . $message . '</span>';
+                            return $back;
+                        })
+                        ->escapeColumns([])
+                        ->make(true);
     }
 
-              
 }

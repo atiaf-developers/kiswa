@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Noti;
 
 class UserController extends FrontController {
 
@@ -22,7 +23,7 @@ class UserController extends FrontController {
     }
 
     public function edit(Request $request) {
-        $User= $this->User;
+        $User = $this->User;
         if ($request->input('password')) {
             $this->edit_rules['password'] = "required";
             $this->edit_rules['confirm_password'] = "required|same:password";
@@ -76,6 +77,15 @@ class UserController extends FrontController {
                 return redirect()->back()->withInput($request->all())->with(['errorMessage' => $message]);
             }
         }
+    }
+
+    public function notifications() {
+        $where_array['notifier_id'] = $this->User->id;
+        $where_array['notifiable_type'] = 1;
+        $this->data['noti'] = Noti::getNoti($where_array);
+        //dd($this->data['noti']);
+        $view = 'customer.notifications';
+        return $this->_view($view);
     }
 
 }

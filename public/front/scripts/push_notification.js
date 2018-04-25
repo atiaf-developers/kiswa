@@ -49,7 +49,9 @@
                         click: function (callback) {
                             notification.addEventListener('click', function () {
                                 return callback();
+
                             });
+                            notification.close();
                             return this;
                         },
                         show: function (callback) {

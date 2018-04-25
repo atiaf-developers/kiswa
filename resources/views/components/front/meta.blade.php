@@ -31,10 +31,16 @@
 <script>
     var config = {
         url: " {{ _url('') }}",
+        base_url: " {{ url('') }}",
         customer_url: " {{ _url('customer') }}",
         lang: "{{ $lang_code }}",
         lang_code: "{{ $lang_code }}",
-        isUser: "{{ $isUser }}"
+        isUser: "{{ $isUser }}",
+        pusher_app_id: "{{env('PUSHER_APP_ID')}}",
+        pusher_app_key: "{{env('PUSHER_APP_KEY')}}",
+        pusher_cluster: "{{env('PUSHER_CLUSTER')}}",
+        pusher_encrypted: true,
+        user_id: '{{$User?$User->id:false}}',
     };
 
 

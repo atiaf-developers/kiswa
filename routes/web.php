@@ -85,6 +85,7 @@ if (in_array($currentLanguageCode, $languages)) {
             Route::get('dashboard', 'DashboardController@index');
             Route::get('user/edit', 'UserController@showEditForm');
             Route::post('user/edit', 'UserController@edit');
+            Route::get('user/notifications', 'UserController@notifications');
         });
     });
 } else {

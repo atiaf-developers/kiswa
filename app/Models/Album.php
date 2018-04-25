@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Album extends MyModel {
 
     protected $table = "albums";
-
     public static $sizes = array(
         's' => array('width' => 200, 'height' => 200),
         'm' => array('width' => 400, 'height' => 400),
@@ -40,7 +39,7 @@ class Album extends MyModel {
         $transformer->title = $item->title;
         $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
         foreach ($album_images as $key => $value) {
-            $album_images[$key] =  static::rmv_prefix($value);
+            $album_images[$key] = static::rmv_prefix($value);
         }
         $prefixed_array = preg_filter('/^/', url('public/uploads/albums') . '/m_', $album_images);
         $transformer->images = $prefixed_array;
@@ -55,9 +54,9 @@ class Album extends MyModel {
         $transformer->title = $item->title;
 
         $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
-        $album_image =  static::rmv_prefix($album_images[0]);
+        $album_image = count($album_images) > 0 ? static::rmv_prefix($album_images[0]) : '';
 
-        $prefixed_image = url('public/uploads/albums') . '/m_'. $album_image;
+        $prefixed_image = url('public/uploads/albums') . '/m_' . $album_image;
         $transformer->image = $prefixed_image;
         return $transformer;
     }
@@ -67,7 +66,7 @@ class Album extends MyModel {
         $transformer->title = $item->title;
         $album_images = $item->images()->orderBy('album_images.this_order')->pluck('image')->toArray();
         foreach ($album_images as $key => $value) {
-            $album_images[$key] =  static::rmv_prefix($value);
+            $album_images[$key] = static::rmv_prefix($value);
         }
         $prefixed_array = preg_filter('/^/', url('public/uploads/albums') . '/m_', $album_images);
         $transformer->images = $prefixed_array;
