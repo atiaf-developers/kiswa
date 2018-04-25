@@ -114,7 +114,7 @@ class DonationRequestsController extends BackendController {
         $donation_requests->select([
             'donation_requests.id', "users.username", "trans.title as donation_title", "donation_requests.appropriate_time",
             "donation_requests.status", "donation_requests.created_at", "donation_requests.date", "donation_requests.lat", "donation_requests.lng",
-            "donation_requests.name", "donation_requests.mobile", "donation_requests.images"
+            "donation_requests.name", "donation_requests.mobile", "donation_requests.images", "donation_requests.description"
         ]);
         $donation_requests->where('trans.locale', $this->lang_code);
         if (!$id) {

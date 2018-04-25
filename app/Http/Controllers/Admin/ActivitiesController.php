@@ -20,7 +20,7 @@ class ActivitiesController extends BackendController {
         'images.3' => 'image|mimes:gif,png,jpeg|max:1000',
         'images.4' => 'image|mimes:gif,png,jpeg|max:1000',
         'active' => 'required',
-        'this_order' => 'required'
+        'this_order' => 'required|unique:activities'
     );
 
     public function __construct() {
@@ -167,7 +167,7 @@ class ActivitiesController extends BackendController {
             return _json('error', _lang('app.error_is_occured'), 404);
         }
         $this->rules['images.0'] = 'image|mimes:gif,png,jpeg|max:1000';
-       
+       $this->rules['this_order'] = 'required|unique:activities,this_order,'.$id;
        $columns_arr = array(
             'title' => 'required|unique:activities_translations,title,'.$id .',activity_id',
             'description' => 'required'

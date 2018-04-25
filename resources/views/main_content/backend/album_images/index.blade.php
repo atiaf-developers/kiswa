@@ -32,7 +32,7 @@
                     <div class="form-body">
 
                         <div class="form-group form-md-line-input">
-                            <input type="text" class="form-control" id="this_order" name="this_order" placeholder="{{_lang('app.this_order')}}">
+                            <input type="number" class="form-control" id="this_order" name="this_order" placeholder="{{_lang('app.this_order')}}">
                             <label for="this_order">{{_lang('app.this_order')}}</label>
                             <span class="help-block"></span>
                         </div>

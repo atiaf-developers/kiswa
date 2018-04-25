@@ -20,7 +20,7 @@ class NewsController extends BackendController {
         'images.3' => 'image|mimes:gif,png,jpeg|max:1000',
         'images.4' => 'image|mimes:gif,png,jpeg|max:1000',
         'active' => 'required',
-        'this_order' => 'required'
+        'this_order' => 'required|unique:news'
     );
 
     public function __construct() {
@@ -171,7 +171,7 @@ class NewsController extends BackendController {
      
         unset($this->rules['images.0']);
         
-        
+       $this->rules['this_order'] = 'required|unique:news,this_order,'.$id;
        $columns_arr = array(
             'title' => 'required|unique:news_translations,title,'.$id .',news_id',
             'description' => 'required'

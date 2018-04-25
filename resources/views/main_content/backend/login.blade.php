@@ -8,7 +8,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Maintenance Plus</title>
+        <title>Keswa</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #1 for " name="description" />
@@ -33,7 +33,7 @@
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.png" />
+        <link rel="shortcut icon" href="{{url('public/backend/images')}}/favicon.png" />
         <script>
             var config = {
                 admin_url: " {{ url('admin') }}",

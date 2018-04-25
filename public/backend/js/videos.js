@@ -233,6 +233,7 @@ var Videos = function () {
         empty: function () {
             $('#id').val(0);
             $('#category_icon').val('');
+            $('#youtube-iframe').html('');
             $('#active').find('option').eq(0).prop('selected', true);
             $('input[type="checkbox"]').prop('checked', false);
             $('.image_box').html('<img src="' + config.url + '/no-image.png" class="image" width="150" height="80" />');

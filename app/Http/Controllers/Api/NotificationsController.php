@@ -11,6 +11,7 @@ use App\Models\Device;
 use App\Models\Noti;
 use App\Models\News;
 use App\Models\Activity;
+use App\Models\DonationRequest;
 use DB;
 
 class NotificationsController extends ApiController {
@@ -102,12 +103,19 @@ class NotificationsController extends ApiController {
         if ($noti->count() > 0) {
 
             foreach ($noti as $one) {
-
+                 if (in_array($one->entity_type_id,[2,3,4])) {
+                     $type = 1;
+                 }
+                 else if($one->entity_type_id == 5){
+                     $type = 2;
+                 }else{
+                      $type = 3;
+                 }
                 $obj = new \stdClass();
                 $obj->noti_id = $one->id;
                 $obj->id = $one->entity_id;
                 $obj->title = '';
-                $obj->type = $one->entity_type_id;
+                $obj->type = $type;
                 $obj->created_at = date('d/m/Y   g:i A', strtotime($one->created_at));
                 $obj->read_status = $one->read_status;
 
@@ -121,7 +129,7 @@ class NotificationsController extends ApiController {
                     if (!$activity) {
                         continue;
                     }
-                    $message = _lang('app.new_activity') . ' ' . $activity->title;
+                    $message = _lang('app.new_activity') . ' \n ' . $activity->title;
                 } else if ($one->entity_type_id == 6) {
                     $news = News::Join('news_translations', 'news.id', '=', 'news_translations.news_id')
                             ->where('news_translations.locale', $this->lang_code)
@@ -132,9 +140,15 @@ class NotificationsController extends ApiController {
                     if (!$news) {
                         continue;
                     }
-                    $message = _lang('app.new_news') . ' ' . $news->title;
+                    $message = _lang('app.new_news') . ' \n ' . $news->title;
                 } else {
-                    $message = _lang('app.' . Noti::$status_text[$one->entity_type_id]);
+                    $donation_request = DonationRequest::join('donation_types','donation_types.id','=','donation_requests.donation_type_id')
+                    ->join('donation_types_translations','donation_types.id','=','donation_types_translations.donation_type_id')
+                    ->where('donation_types_translations.locale',$this->lang_code)
+                    ->where('donation_requests.id',$one->entity_id)
+                    ->select('donation_types_translations.title','donation_requests.description')
+                    ->first();
+                    $message = _lang('app.' . Noti::$status_text[$one->entity_type_id]).'\n'._lang('app.donation_type').' : '.$donation_request->title.'\n'._lang('app.detailes').' : '.$donation_request->description;
                 }
                 $obj->body = $message;
                 $result[] = $obj;

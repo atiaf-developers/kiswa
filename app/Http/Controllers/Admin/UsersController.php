@@ -16,10 +16,9 @@ class UsersController extends BackendController {
     private $rules = array(
         'fullname' => 'required',
         'username' => 'required|unique:users,username',
-        'email' => 'required|email|unique:users,email',
         'mobile' => 'required|unique:users,mobile',
         'password' => 'required',
-        'user_image' => 'required|image|mimes:gif,png,jpeg|max:1000',
+       
     );
     private $ruels_page;
     public function __construct() {
@@ -66,13 +65,21 @@ class UsersController extends BackendController {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        if ($request->input('email')) {
+            $this->rules['email'] = 'required|email|unique:users,email';
+        }
+        if ($request->file('user_image')) {
+             $this->rules['user_image'] = 'required|image|mimes:gif,png,jpeg|max:1000';
+            
+        }
         $validator = Validator::make($request->all(), $this->rules);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return _json('error', $errors);
         } else {
-            $image=User::upload($request->file('user_image'), 'users',true);
+         
+            try {
             $User = new User;
             $User->name = $request->input('fullname');
             $User->username = $request->input('username');
@@ -81,11 +88,13 @@ class UsersController extends BackendController {
             $User->password = bcrypt($request->input('password'));
             $User->active = $request->input('active');
             $User->type = $request->input('type');
-            $User->image = $image;
-            try {
+            if ($request->file('user_image')) {
+                  $User->image = User::upload($request->file('user_image'), 'users',true);
+            }
+          
                 $User->save();
                 return _json('success', _lang('app.added_successfully'));
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 return _json('error', _lang('app.error_is_occured'));
             }
         }
@@ -150,8 +159,11 @@ class UsersController extends BackendController {
         if ($request->file('user_image')) {
             $rules['user_image'] = 'required|image|mimes:gif,png,jpeg|max:1000';
         }
+        if ($request->input('email')) {
+            $rules['email'] = "required|unique:users,email,$User->id";
+        }
         $rules['username'] = "required|unique:users,username,$User->id";
-        $rules['email'] = "required|unique:users,email,$User->id";
+       
         $rules['mobile'] = "required|unique:users,mobile,$User->id";
         if ($request->input('password') === null) {
             unset($rules['password']);
@@ -171,11 +183,8 @@ class UsersController extends BackendController {
             $User->active = $request->input('active');
             if ($request->file('user_image')) {
                 $old_image = $User->user_image;
-                $file = public_path("uploads/users/$old_image");
-                if (!is_dir($file)) {
-                    if (file_exists($file)) {
-                        unlink($file);
-                    }
+                if ($old_image != 'default.png') {
+                    User::deleteUploaded('users',$old_image);
                 }
                 $User->image = User::upload($request->file('user_image'), 'users',true);
             }
@@ -202,20 +211,15 @@ class UsersController extends BackendController {
         }
         try {
 
-            $files = array(
-                public_path("uploads/users/$User->image"),
-            );
-            foreach ($files as $file) {
-                if (!is_dir($file)) {
-                    if (file_exists($file)) {
-                        unlink($file);
-                    }
-                }
-            }
             $User->delete();
             return _json('success', _lang('app.deleted_successfully'));
-        } catch (Exception $ex) {
-            return _json('error', _lang('app.error_is_occured'));
+        } catch (\Exception $ex) {
+
+            if ($ex->getCode() == 23000) {
+                return _json('error', _lang('app.this_record_can_not_be_deleted_for_linking_to_other_records'), 400);
+            } else {
+                return _json('error', _lang('app.error_is_occured'), 400);
+            }
         }
     }
     public function data(Request $request) {
@@ -283,6 +287,9 @@ class UsersController extends BackendController {
                     return $back;
                 })
                 ->addColumn('image', function ($item) {
+                   if (!$item->image) {
+                       $item->image = 'default.png';
+                   }
                     $back = '<img src="' . url('public/uploads/users/' . $item->image) . '" style="height:64px;width:64px;"/>';
                     return $back;
                 })

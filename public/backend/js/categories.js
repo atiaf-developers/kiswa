@@ -25,11 +25,13 @@ var Categories = function () {
                 data: {parent_id:parent_id,_token: $('input[name="_token"]').val()},
             },
             "columns": [
-//                    {"data": "user_input", orderable: false, "class": "text-center"},
                 {"data": "title","name":"categories_translations.title"},
                 {"data": "active","name":"categories.active",searchable: false},
                 {"data": "this_order","name":"categories.this_order"},
                 {"data": "options", orderable: false, searchable: false}
+            ],
+             "order": [
+                [2, "asc"]
             ],
 
             "oLanguage": {"sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json'}

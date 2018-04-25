@@ -20,11 +20,13 @@ class News extends MyModel {
     }
 
     public static function transform($item) {
+        $lang = static::getLangCode();
         $transformer = new \stdClass();
         $transformer->title = $item->title;
         $transformer->description = $item->description;
         $prefixed_array = preg_filter('/^/', url('public/uploads/news') . '/', json_decode($item->images));
         $transformer->images = $prefixed_array;
+        $transformer->url = url("$lang/news-and-events/$item->slug");
         $transformer->created_at = date('d/m/Y', strtotime($item->created_at));
 
         return $transformer;

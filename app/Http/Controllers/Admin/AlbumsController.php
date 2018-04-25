@@ -14,7 +14,7 @@ class AlbumsController extends BackendController {
 
     private $rules = array(
         'active' => 'required',
-        'this_order' => 'required'
+        'this_order' => 'required|unique:albums'
     );
 
     public function __construct() {
@@ -52,6 +52,7 @@ class AlbumsController extends BackendController {
             
         );
         $lang_rules = $this->lang_rules($columns_arr);
+      
         $this->rules = array_merge($this->rules, $lang_rules);
 
         $validator = Validator::make($request->all(), $this->rules);
@@ -140,6 +141,7 @@ class AlbumsController extends BackendController {
        $columns_arr = array(
             'title' => 'required|unique:albums_translations,title,'.$id .',album_id',
         );
+        $this->rules['this_order'] = 'required|unique:albums,this_order,'.$id;
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
 

@@ -15,7 +15,7 @@ class VideosController extends BackendController {
     private $rules = array(
         'url' => 'required|url',
         'active' => 'required',
-        'this_order' => 'required'
+        'this_order' => 'required|unique:videos'
     );
 
     public function __construct() {
@@ -51,6 +51,7 @@ class VideosController extends BackendController {
         $columns_arr = array(
             'title' => 'required|unique:videos_translations,title',
         );
+
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
 
@@ -143,6 +144,7 @@ class VideosController extends BackendController {
        $columns_arr = array(
             'title' => 'required|unique:videos_translations,title,'.$id .',video_id',
         );
+        $this->rules['this_order'] = 'required|unique:videos,this_order,'.$id;
         $lang_rules = $this->lang_rules($columns_arr);
         $this->rules = array_merge($this->rules, $lang_rules);
 

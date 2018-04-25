@@ -210,8 +210,6 @@ var Container = function () {
                 data: {_method: 'DELETE', _token: $('input[name="_token"]').val()},
                 success: function (data) {
                     Container_grid.api().ajax.reload();
-
-
                 }
             });
 

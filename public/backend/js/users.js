@@ -158,11 +158,7 @@ var Users = function() {
                 fullname: {
                     required: true
                 },
-                email: {
-                    required: true,
-                    email: true,
-                },
-
+               
             },
             //messages: lang.messages,
             highlight: function(element) { // hightlight error inputs

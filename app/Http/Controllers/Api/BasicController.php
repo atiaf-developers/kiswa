@@ -93,10 +93,11 @@ class BasicController extends ApiController {
                     ->where('news_translations.locale', $this->lang_code)
                     ->where('news.active', true)
                     ->orderBy('news.this_order')
-                    ->select('news.id', 'news.images', 'news.created_at', 'news_translations.title', 'news_translations.description')
+                    ->select('news.id', 'news.images', 'news.created_at', 'news_translations.title', 'news_translations.description','news.slug')
                     ->paginate($this->limit);
             return _api_json(News::transformCollection($news));
         } catch (\Exception $e) {
+           
             return _api_json([], ['message' => _lang('app.error_is_occured')], 400);
         }
     }
