@@ -58,8 +58,7 @@
                         <div class="col-sm-9 inputbox">
                             <select class="form-control" name="status" id="status">
                                 <option value="">{{_lang('app.choose')}}</option>
-                                @foreach($status_arr as $key=> $one)
-                                
+                                @foreach($status_filter as $key=> $one)
                                 <option {{ (isset($status) && $status==$one) ?'selected':''}} value="{{$one}}">{{_lang('app.'.$one)}}</option>
                                 @endforeach
                             </select>
@@ -125,7 +124,7 @@
                             <td>{{$one->username}}</td>
                             <td>{{$one->donation_title}}</td>
                             <td>{{$one->appropriate_time}}</td>
-                            <td>{{isset($status_arr[$one->status])?_lang('app.'.$status_arr[$one->status]):''}}</td>
+                            <td>{{isset($status_arr[$one->status]['admin']['message_'.$lang_code])?$status_arr[$one->status]['admin']['message_'.$lang_code]:''}}</td>
               
                             <td>{{$one->created_at}}</td>
                             <td><a class="btn btn-sm btn-info" href="{{url('admin/donation_requests/'.$one->id)}}">{{_lang('app.details')}}</a></td>

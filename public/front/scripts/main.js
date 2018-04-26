@@ -14,6 +14,7 @@ var Main = function () {
         var pusher_cluster = config.pusher_cluster;
         var pusher_encrypted = config.pusher_encrypted;
         var user_id = config.user_id;
+        var isUser = config.isUser;
         var pusher = new Pusher(pusher_app_key, {
             cluster: pusher_cluster,
             encrypted: pusher_encrypted
@@ -25,18 +26,8 @@ var Main = function () {
 
         noti.bind('App\\Events\\Noti', function (data) {
             console.log(data);
-            $.notify("asdf", {
-                title: data.title,
-                body: data.body,
-                icon: config.base_url + '/public/front/img/logo.png',
-            }).click(function () {
-                window.location.href = data.url;
-            });
 
-
-
-
-            if (!user_id || data.user_id == user_id) {
+            if (isUser && (data.user_id == null || data.user_id == user_id)) {
                 $.notify("asdf", {
                     title: data.title,
                     body: data.body,

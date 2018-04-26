@@ -71,7 +71,7 @@
                                     </tr>
                                     <tr>
                                         <td>{{ _lang('app.status')}}</td>
-                                        <td>{{_lang('app.'.$status_arr[$donation_request->status])}}</td>
+                                        <td>{{isset($status_arr[$donation_request->status]['admin']['message_'.$lang_code])?$status_arr[$donation_request->status]['admin']['message_'.$lang_code]:''}}</td>
 
                                     </tr>
                                     <tr>
@@ -88,7 +88,6 @@
                             </table>
                         </div>
                         @if(count($donation_request->images)>0)
-
 
                         <h3>{{_lang('app.gallery')}}</h3>
                         <ul class="list-inline blog-images">

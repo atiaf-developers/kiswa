@@ -46,8 +46,9 @@ class DonationRequestsController extends BackendController {
         $this->data['donation_requests'] = $this->getDonationRequests($request);
         $this->data['info'] = $this->getInfo($request);
         $this->data['delegates'] = $this->getDelagates();
+        $this->data['status_filter'] = DonationRequest::$status_filter;
         $this->data['status_arr'] = DonationRequest::$status_text;
-        //dd($this->data['status'] );
+        //dd($this->data['status_arr'][0]['admin']['message_'.$this->lang_code]);
         return $this->_view('donation_requests.index', 'backend');
     }
 

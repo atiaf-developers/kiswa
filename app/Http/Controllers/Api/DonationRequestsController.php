@@ -9,6 +9,7 @@ use App\Helpers\AUTHORIZATION;
 use App\Models\User;
 use App\Models\Device;
 use App\Models\DonationRequest;
+use App\Events\Noti;
 use DB;
 use App\Helpers\Fcm;
 
@@ -203,57 +204,47 @@ class DonationRequestsController extends ApiController {
                 return _api_json(new \stdClass(), ['errors' => $errors], 400);
             }
 
-            $donation_request = DonationRequest::join('devices','devices.id','=','donation_requests.device_id')
-                                             ->leftJoin('users','users.device_id','=','devices.id')
-                                             ->where('donation_requests.id',$request->input('request_id'))
-                                             ->select('donation_requests.*','devices.device_token','devices.device_type','users.id as user_id')
-                                             ->first();
+            $donation_request = DonationRequest::join('devices', 'devices.id', '=', 'donation_requests.device_id')
+                    ->leftJoin('users', 'users.device_id', '=', 'devices.id')
+                    ->where('donation_requests.id', $request->input('request_id'))
+                    ->select('donation_requests.*', 'devices.device_token', 'devices.device_type', 'users.id as user_id')
+                    ->first();
 
             if (!$donation_request) {
                 $message = _lang('app.not_found');
                 return _api_json('', ['message' => $message], 404);
             }
-
-            switch ($request->status) {
-                case 2:
-                    $message['message_ar'] = "المندوب قادم اليك لاستلام التبرع";
-                    $message['message_en'] = "The delegate is coming to you to receive the donation";
-                    break;
-
-                case 3:
-                    $message['message_ar'] = "لقد وصل المندوب لاستلام التبرع";
-                    $message['message_en'] = 'The delegate has arrived to receive the donation';
-                    break;
-
-                 case 4:
-                    $message['message_ar'] = "لقد تم استلام التبرع عن طريق المندوب";
-                    $message['message_en'] = 'The donation was received by the delegate';
-                    break;
-                
-                default:
-                     $message = [];
-                    break;
+            if (in_array($request->status, [2, 3, 4])) {
+                $message = DonationRequest::$status_text[$request->status]['client'];
+            } else {
+                $message = _lang('app.not_found');
+                return _api_json('', ['message' => $message], 404);
             }
             $donation_request->status = $request->input('status');
             $donation_request->save();
 
             if ($donation_request->user_id) {
-               $notifier_id = $donation_request->user_id;
-               $notifible_type = 1;
-            }else{
-               $notifier_id = $donation_request->device_id;
+                $notifier_id = $donation_request->user_id;
+                $notifible_type = 1;
+                $this->create_noti($request->input('request_id'), $notifier_id, $request->input('status'), $notifible_type);
+                //dd('here');
+                event(new Noti(['user_id' => $notifier_id, 'type' => 1, 'body' => $message['message_' . $this->lang_code], 'url' => null]));
+            } else {
+                $notifier_id = $donation_request->device_id;
                 $notifible_type = 3;
             }
-            $this->create_noti($request->input('request_id'),$notifier_id,$request->input('status'),$notifible_type);
+
             $fcm = new Fcm();
-            $notification = ['title' => 'Keswa','body' => $message , 'type' => 1];
+            $notification = ['title' => 'Keswa', 'body' => $message, 'type' => 1];
             if ($donation_request->device_type == 1) {
                 $fcm->send($donation_request->device_token, $notification, 'and');
+            } else {
+                $fcm->send($donation_request->device_token, $notification, 'ios');
             }
-            else{
-               $fcm->send($donation_request->device_token, $notification, 'ios');
-            }
-        return _api_json('',['message' => _lang('app.updated_successfully')]);
+
+
+
+            return _api_json('', ['message' => _lang('app.updated_successfully')]);
         } catch (\Exception $e) {
             $message = _lang('app.error_is_occured');
             return _api_json('', ['message' => $message], 400);

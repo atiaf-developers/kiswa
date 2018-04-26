@@ -12,7 +12,7 @@
 <div class="block">
     <div class="blog-comment">
         <div class="col-md-10">
-            <p>{{$one->body}}</p>
+            <p>{!!$one->body!!}</p>
             <span>{{$one->created_at}}</span>
         </div>
         <a class="col-md-2" href="{{$one->url}}">

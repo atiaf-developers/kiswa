@@ -20,7 +20,7 @@ class NotificationsController extends ApiController {
         parent::__construct();
     }
 
-    public function index(Request $request) {
+    public function index2(Request $request) {
         $user = $this->auth_user();
         if (!$user) {
             $rules['device_id'] = 'required';
@@ -48,6 +48,13 @@ class NotificationsController extends ApiController {
         $this->notiMarkAsReadByNotifier($notifier_id, $notifiable_type, 1);
         $noti = $this->getNoti($where_array);
         return _api_json($this->handleFormateNoti($noti));
+    }
+    public function index() {
+        $user = $this->auth_user();
+        $where_array['notifier_id'] = $user->id;
+        $where_array['notifiable_type'] = 1;
+        $noti = Noti::getNoti($where_array,'ForApi');
+          return _api_json($noti);
     }
 
     private function getNoti($where_array) {
