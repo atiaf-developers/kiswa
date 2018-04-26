@@ -2,12 +2,11 @@
 var DelegatesReport = function () {
 
     var init = function () {
-
-
-
         handleReport();
-
+       
     };
+
+  
     var handleReport = function () {
         $('#orders-reports').validate({
             rules: {
@@ -60,7 +59,7 @@ var DelegatesReport = function () {
                 url += '?' + query;
 
                 window.location.href = url;
-            
+
             }
             return false;
         });

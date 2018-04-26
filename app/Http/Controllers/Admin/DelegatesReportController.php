@@ -34,8 +34,9 @@ class DelegatesReportController extends BackendController {
     }
 
     public function index(Request $request) {
-        //$pdf = PDF::loadView('pdf.document', []);
-        // dd($pdf);
+        //dd($this->getDailyLog());
+        $type = $request->input('type');
+
         if ($request->all()) {
             foreach ($request->all() as $key => $value) {
 
@@ -45,14 +46,32 @@ class DelegatesReportController extends BackendController {
             }
             //dd($this->data['from']);
         }
-        //dd($this->getLog($request));
-        $this->data['log'] = $this->getLog($request);
-        //dd( $this->data['delegates_report'] );
-        $this->data['delegates'] = $this->getDelagates();
-        return $this->_view('delegates_report.index', 'backend');
+        if ($type == 1) {
+            $this->data['log'] = $this->getDailyLog($request);
+            return $this->_view('delegates_report.daily', 'backend');
+        } else if ($type == 2) {
+            $this->data['log'] = $this->getPeriodLog($request);
+            $this->data['delegates'] = $this->getDelagates();
+            return $this->_view('delegates_report.period', 'backend');
+        } else {
+            return $this->err404();
+        }
     }
 
     public function show(Request $request, $id) {
+        $donation_request = $this->getDelegatesReport($request, $id);
+        if (!$donation_request) {
+            return $this->err404();
+        }
+        $donation_request->images = preg_filter('/^/', url('public/uploads/delegates_report') . '/', json_decode($donation_request->images));
+        //dd($donation_request->images);
+        $this->data['delegates'] = $this->getDelagates();
+        $this->data['donation_request'] = $donation_request;
+        $this->data['status_arr'] = DonationRequest::$status_text;
+        return $this->_view('delegates_report.view', 'backend');
+    }
+
+    public function daily(Request $request, $id) {
         $donation_request = $this->getDelegatesReport($request, $id);
         if (!$donation_request) {
             return $this->err404();
@@ -94,7 +113,7 @@ class DelegatesReportController extends BackendController {
         return $delegates_report;
     }
 
-    private function getLog($request) {
+    private function getPeriodLog($request) {
         $start = $request->input('from');
         $end = $request->input('to');
         $delegate = $request->input('delegate');
@@ -129,6 +148,21 @@ class DelegatesReportController extends BackendController {
         } else {
             return collect([]);
         }
+    }
+
+    private function getDailyLog($request) {
+        $today = $request->input('from') ? $request->input('from') : date('Y-m-d');
+        $Users = User::select('id', "username")->where('type', 2)->paginate($this->limit)->appends($request->all());
+        $Users->getCollection()->transform(function($item, $key) use($today) {
+            $item->containers = $this->getDelagateContainer($item->id, $today);
+            return $item;
+        });
+//        if ($Users->count() > 0) {
+//            foreach ($Users as $one) {
+//                $one->containers = $this->getDelagateContainer($one->id, $today);
+//            }
+//        }
+        return $Users;
     }
 
     private function getDelagateContainer($delegate_id, $date) {

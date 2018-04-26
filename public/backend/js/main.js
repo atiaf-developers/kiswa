@@ -4,15 +4,55 @@ var Main = function () {
 
     var init = function () {
         handleChangeLang();
-     
+        handleDailyReportNoti();
+
+
+    }
+
+    var handleDailyReportNoti = function () {
+        var lastDailyReport = localStorage.getItem('lastDailyReport'),
+                time_now = (new Date()).getTime();
+        if (lastDailyReport == null) {
+            localStorage.setItem('lastDailyReport', time_now);
+        } else {
+            $24_hours = 1000 * 60 * 60 * 24;
+            $one_hour = 1000 * 60 * 60 ;
+            //$hours = 1;
+            if ((time_now - lastDailyReport) > $one_hour) {
+
+                localStorage.removeItem('lastDailyReport', time_now);
+
+                localStorage.setItem('lastDailyReport', time_now);
+                bootbox.dialog({
+                    message: '<p class="text-center">' + lang.daily_message + '</p>',
+                    title: lang.message,
+                    buttons: {
+                        ok: {
+                            label: "yes",
+                            className: 'btn-danger',
+                            callback: function () {
+                                window.location.href=config.admin_url+'/delegates_report?type=1'
+                                return false;
+                            }
+                        },
+                        noclose: {
+                            label: "no",
+                            className: 'btn-warning',
+                            callback: function () {
+
+                            }
+                        },
+                    }
+                });
+            }
+        }
+
 
     }
 
 
 
 
-
-    
     var handleChangeLang = function () {
         $(document).on('change', '#change-lang', function () {
             var lang_code = $(this).val();
