@@ -72,13 +72,13 @@
             <ul id="nav" class="nav navbar-nav menu">
                 <li><a href="{{ url('/') }}">{{ _lang('app.home') }}</a></li>
                 <li><a href="{{ route('about_us') }}">{{ _lang('app.about_us') }}</a></li>
-                <li><a href="{{ route('news_events') }}">الأخبار والفعاليات</a></li>
-                <li><a href="{{ route('corporation_activities') }}">أنشطة المؤسسة</a></li>
-                <li><a href="{{ route('gallary') }}">الصور</a></li>
-                <li><a href="{{ route('video_gallary') }}">الفيديوهات</a></li>
-                <li><a href="{{ _url('') }}#contact-form">اتصل بنا</a></li>
+                <li><a href="{{ route('news_events') }}">{{ _lang('app.news_and_events') }}</a></li>
+                <li><a href="{{ route('corporation_activities') }}">{{ _lang('app.corporation_activities') }}</a></li>
+                <li><a href="{{ route('gallary') }}">{{ _lang('app.photos') }}</a></li>
+                <li><a href="{{ route('video_gallary') }}">{{ _lang('app.videos') }}</a></li>
+                <li><a href="{{ _url('') }}#contact-form">{{ _lang('app.contact_us') }}</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>أخرى </a> 
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>{{ _lang('app.others') }} </a> 
 
                     <ul class="dropdown-menu">
                         @foreach ($others as $item)

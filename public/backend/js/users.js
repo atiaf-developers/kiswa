@@ -57,8 +57,9 @@ var Users = function() {
                             data: { type: type, _token: $('input[name="_token"]').val() },
                         },
                         "columns": [
-                            //                    {"data": "user_input", orderable: false, "class": "text-center"},
+                           
                             { "data": "username", "name": "username" },
+                            {"data": "name", "name": "name"},
                             { "data": "image", "name": "image" },
                             { "data": "mobile", "name": "mobile" },
                             { "data": "active", "name": "active" },
@@ -92,11 +93,12 @@ var Users = function() {
                         },
                         "columns": [
                             //                    {"data": "user_input", orderable: false, "class": "text-center"},
-                            { "data": "name", "name": "name" },
-                            { "data": "username", "name": "username" },
+                          { "data": "username", "name": "username" },
+                            {"data": "name", "name": "name"},
+                            { "data": "image", "name": "image" },
                             { "data": "mobile", "name": "mobile" },
                             { "data": "active", "name": "active" },
-                            { "data": "has_order", "name": "has_order" },
+                            { "data": "options", orderable: false, searchable: false }
                         ],
                         "order": [
                             [1, "desc"]
@@ -132,11 +134,12 @@ var Users = function() {
             },
             "columns": [
                 //                    {"data": "user_input", orderable: false, "class": "text-center"},
-                { "data": "username", "name": "username" },
-                { "data": "image", "name": "image" },
-                { "data": "mobile", "name": "mobile" },
-                { "data": "active", "name": "active" },
-                { "data": "options", orderable: false, searchable: false }
+                 { "data": "username", "name": "username" },
+                            {"data": "name", "name": "name"},
+                            { "data": "image", "name": "image" },
+                            { "data": "mobile", "name": "mobile" },
+                            { "data": "active", "name": "active" },
+                            { "data": "options", orderable: false, searchable: false }
             ],
             "order": [
                 [1, "desc"]

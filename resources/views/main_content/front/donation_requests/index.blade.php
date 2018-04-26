@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="title">
-                    <h2>انشاء حساب جديد</h2>
+                    <h2>{{ _lang('app.create_a _donation_request') }}</h2>
                 </div>
                 <div class="login-area">
                     <div class="form-w3agile margin">
@@ -51,7 +51,7 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label class="control-label color">نوع التبرع</label>
+                                                <label class="control-label color">{{ _lang('app.donation_type') }}</label>
                                                 <select class="form-control" name="donation_type">
                                                     <option value="">{{_lang('app.choose')}}</option>
                                                     @foreach($donation_types as $one)
@@ -70,7 +70,7 @@
                                     <div class="row">
                                         <div class="form-group"> 
                                             <div class="col-md-12">
-                                                <label class="control-label color">تفاصيل نصية</label>
+                                                <label class="control-label color">{{ _lang('app.detailes') }}</label>
                                                 <textarea class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
                                                 <span class="help-block">
                                                     @if ($errors->has('description'))
@@ -85,7 +85,7 @@
                                         <div class="form-group"> 
                                             <div class="col-md-12">
                                                 <div>
-                                                    <label class="control-label color">تحديد موعد للاستلام</label>
+                                                    <label class="control-label color">{{ _lang('app.specify_an_appointment') }}</label>
                                                     <div  class="form-control" id="appropriate_time"> </div>
                                                     <input type="hidden" id="result" name="appropriate_time" value="" />
                                                     <span class="help-block">
@@ -100,7 +100,7 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label class="control-label color">ارفاق 4 من الصور</label>
+                                                <label class="control-label color">{{ _lang('app.attach_4_photos') }}</label>
                                                 <input type="file" name="images[]" id="images" multiple>
                                                 <span class="help-block"></span>
                                             </div>
@@ -151,7 +151,9 @@
                             @if(!$User)
                             <div class="tab">
                                 <div class="row form-w3agile">
-                                    <h3 class="h3-dir"> ستصلك رسالة نصية بكود التفعيل على رقم الجوال الخاص بك <span id="mobile-message"></span> <a href="#" class="change-num">تغيير الرقم</a></h3>
+                                    <h3 class="h3-dir">{{ _lang('app.you_will_receive_a_text_message_with_activation_code_on_your_mobile_number') }} <span id="mobile-message"></span> <a href="#" class="change-num">
+                                        {{ _lang('app.change_number') }}
+                                    </a></h3>
                                     <div class="form-group col-sm-3 inputbox">
                                         <input type="text" class="form-control text-center" name="code[0]" placeholder="0">
                                         <span class="help-block"></span>
@@ -171,7 +173,7 @@
                                     <div class="msg-error" style="display: none;">
                                         <span id="activation-code-message" ></span>
                                     </div>
-                                    <a class="a-signin" href="#" ><strong>ارسال الكود مرة أخرى</strong></a>
+                                    <a class="a-signin" href="#" ><strong>{{ _lang('app.send_the_code_again') }}</strong></a>
                                 </div>
                             </div>
                             @endif

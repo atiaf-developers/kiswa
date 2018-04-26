@@ -289,6 +289,13 @@ header .social a:hover{
   color: #39c679 ;
 }
 
+.menu .active a {
+  color: #121212 ;
+}
+
+.menu .active a:before{
+  width: 25px;
+}
 
 .menu a:hover:before {
   width: 25px;
@@ -450,9 +457,9 @@ ul.dropdown-menu{
     color:#0f9ac8;
 }
 #features img{
-   width: 100%;
     float: right;
-    height: 535px;
+    height:470px;
+    max-width: 100%;
 }
 #features p{
     font-size: 16px;
@@ -1565,11 +1572,6 @@ a.read-more:hover{
   -webkit-transition-duration: .2s;
   -webkit-transition-timing-function: ease-in-out;
 }
-#profile .profile-area .block{
-    float: right;
-    width: 100%;
-    display: block;
-}
 /* =====================
    login page style
    ===================== */
@@ -1654,6 +1656,7 @@ a.read-more:hover{
     padding-right: 5px;
     font-size: 16px;
 }
+
 .form-w3agile a.map-button{
     margin: 30px 0 10px 0;
     background: #444;
@@ -1791,6 +1794,9 @@ width: 100%;
     text-align: right;
     width:100%;
     direction: rtl;
+}
+#login .login-area .tab label.color {
+    color: #0c86ae;
 }
 #login .login-area .tab .col-md-6{
     padding: 0;
@@ -2126,8 +2132,8 @@ width: 100%;
         margin: 0;
         padding: 20px 15px;
     }
-    #portfolio .block .recent-work-pic ul li img{
-        height:300px;
+    #portfolio .block .recent-work-pic ul li{
+        width:49%;
     }
     .logo-mobadra, .logo-keswa{
         float:left;
@@ -2136,43 +2142,6 @@ width: 100%;
     p.num-code{
         text-align: center;
     }
-    #testimonial .col-md-6{
-        border-right: 0;
-    }
-    #testimonial .border{
-        border-bottom:1px solid #dedede;
-    }
-    #features img{
-        float:none; 
-        margin: 0 auto;
-    }
-    #news .news-area{
-        padding: 0 15px;
-    }
-    #aboutus .aboutus-area img{
-        float: none;
-        display: block;
-        margin: 0 auto;
-        padding-bottom: 20px;
-    }
-    .login-area{
-        padding: 0 15px;
-    }
-    .form-w3agile a.button-login{
-        float:right;
-    }
-    #content .content-area .content-details img{
-        height:300px;
-    }
-    #contact-form form button {
-        float: none;
-    }
-    #videos .videos-area .col-sm-6{
-        float: none;
-        width:100%;
-        display: block;
-    }
-    
 }
 @media screen and (max-width: 767px) {
     .navbar-nav > li{
@@ -2227,25 +2196,9 @@ width: 100%;
     #portfolio .block .recent-work-pic ul li{
         width:100%;
     }
-    #testimonial .media .media-body, #testimonial .media .media-left{
-        width:100%;
-        float: none;
-        display: block;
-    }
-    #testimonial img{
-        margin: 0 auto;
-        display: block;
-    }
-    #testimonial .media .media-body{
-        text-align: center;
-        margin-top: 20px;
-    }
 }
 @media screen and (max-width: 480px) {
-    #profile table td{
-        width:100%;
-        display: block;
-    }
+    
 }
 
 /*

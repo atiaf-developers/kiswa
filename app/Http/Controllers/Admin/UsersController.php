@@ -224,7 +224,7 @@ class UsersController extends BackendController {
     }
     public function data(Request $request) {
         $type = $request->input('type');
-        $user = User::where('type', $type)->select('id', 'email', 'type', 'username', 'mobile', 'active','image')
+        $user = User::where('type', $type)->select('id', 'email', 'type', 'username','name', 'mobile', 'active','image')
         ->where('type',$type);
 
         return \Datatables::eloquent($user)

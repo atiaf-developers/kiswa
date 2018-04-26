@@ -36,7 +36,7 @@ class News extends MyModel {
         $transformer = new \stdClass();
         $transformer->slug = $item->slug;
         $transformer->title = $item->title;
-        $transformer->description = mb_strimwidth($item->description, 0, 300, '...');
+        $transformer->description = mb_strimwidth($item->description, 0, 100, '...');
         $news_images =  json_decode($item->images);
         $news_image_without_prefix =  static::rmv_prefix($news_images[0]);
         $transformer->image = url('public/uploads/news') . '/m_' .$news_image_without_prefix;

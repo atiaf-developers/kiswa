@@ -31,7 +31,7 @@ class Activity extends MyModel {
         $transformer = new \stdClass();
         $transformer->slug = $item->slug;
         $transformer->title = $item->title;
-        $transformer->description =  mb_strimwidth($item->description, 0, 300, '...');
+        $transformer->description =  mb_strimwidth($item->description, 0, 100, '...');
         $activity_images =  json_decode($item->images);
         $activity_image_without_prefix =  static::rmv_prefix($activity_images[0]);
         $transformer->image = url('public/uploads/activities') . '/m_' .$activity_image_without_prefix;

@@ -98,6 +98,17 @@ class UserController extends ApiController {
         }
     }
 
+    public function getUser()
+    {
+        try {
+            $user = User::transform($this->auth_user());
+            return _api_json($user);
+        } catch (\Exception $e) {
+            $message = _lang('app.error_is_occured');
+            return _api_json(new \stdClass(), ['message' => $message], 400);
+        }
+    }
+
     public function updateLocation(Request $request)
     {
         $validator = Validator::make($request->all(), $this->location_rules);

@@ -137,7 +137,9 @@
             <table class = "table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer">
                 <thead>
                     <tr>
+                        
                         <th>{{_lang('app.username')}}</th>
+                        <th>{{ _lang('app.name') }}</th>
                         <th>{{_lang('app.image')}}</th>
                         <th>{{_lang('app.mobile')}}</th>
                         <th>{{_lang('app.status')}}</th>
@@ -149,21 +151,8 @@
                 </tbody>
             </table>
         </div>
-        <!-- <div id="members-table" class="table-container" style="display: none;">
-            <table class = "table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer">
-                <thead>
-                    <tr>
-                        <th>{{_lang('app.name')}}</th>
-                        <th>{{_lang('app.username')}}</th>
-                        <th>{{_lang('app.mobile')}}</th>
-                        <th>{{_lang('app.status')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div> -->
+    
+        </div> 
 
 
         <!--Table Wrapper Finish-->

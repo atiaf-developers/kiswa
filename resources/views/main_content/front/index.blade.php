@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('pageTitle',$page_title)
+@section('pageTitle',_lang('app.keswa'))
 
 
 @section('js')
@@ -14,10 +14,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h1> مرحباً بكم في مشروع الاستفادة من فائض الملابس المستعملة</h1>
-                    <h2> يمكنك الأن انشاء طلب توصيل لتحديد موعد لقدوم المندوب اليك واستلام تبرعك</h2>
+                    <h1>{{ _lang('app.welcome_to_the_project_take_advantage_of_surplus_used_clothing') }}</h1>
+                    <h2> {{ _lang('app.you_can_now_create_a_delivery_request_to_schedule_an_appointment_and_receive_your_donation') }}</h2>
                     <div class="buttons">
-                        <a href="{{_url('donation-request')}}" class="btn btn-learn">انشاء طلب توصيل</a>
+                        <a href="{{_url('donation-request')}}" class="btn btn-learn">{{ _lang('app.create_a _donation_request') }}</a>
                     </div>
                 </div>
             </div>
@@ -27,6 +27,8 @@
         <a id="scroll" href="#features" class="scroll"></a>
     </div>
 </section>
+
+
 <section id="features">
     <div class="container">
         <div class="row">
@@ -35,6 +37,7 @@
                     <div class="title">
                         <h2>{{ _lang('app.about_keswa') }}</h2>
                     </div>
+
                     <div class="col-md-4">
                         <div class="row">
                             <img src="{{url('public/front/img')}}/about-bg.png" class="img-responsive" alt="" >
@@ -93,14 +96,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="title">
-                    <h2>{{ _lang('app.albums') }}</h2>
+                    <h2>{{ _lang('app.gallary') }}</h2>
                 </div>
                 <div class="block">
                     <div class="recent-work-pic">
                         <ul id="mixed-items">
                             @foreach ($albums as $one)
                             <li class="mix category-1 col-md-4">
-                                <a class="example-image-link" href="">
+                                <a class="example-image-link" href="{{ route('show_gallary',$one->slug) }}">
                                     <img class="img-responsive" src="{{ $one->image }}" alt="">
                                     <div class="overlay">
                                         <h3>{{ $one->title }}</h3>
@@ -127,7 +130,7 @@
                     <a id="video" video-url="{{ $video->url }}" style="cursor: pointer;">
                         <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: zoomIn;"></div>
                     </a>
-                    <a href="" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
+                    <a href="{{ route('video_gallary') }}" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
                         {{ _lang('app.more') }}
                     </a>
                 </div>
@@ -139,12 +142,12 @@
     <div class="container">
         <div class="row">
             <div class="title">
-                <h2>{{ _lang('app.foundation_activities') }}</h2>
+                <h2>{{ _lang('app.corporation_activities') }}</h2>
             </div>
             @if(count($activities)>0)
             @if(isset($activities[0]))
             <div class="col col-md-6">
-                <a href="">
+                <a href="{{ route('show_corporation_activities',$activities[0]->slug) }}">
                     <div class="media wow fadeInLeft" data-wow-delay=".3s">
                         <div class="media-left">
                             <img src="{{ $activities[0]->image }}" alt="">
@@ -161,7 +164,7 @@
             @endif
             @if(isset($activities[1]))
             <div class="col col-md-6 right">
-                <a href="">
+                <a href="{{ route('show_corporation_activities',$activities[1]->slug) }}">
                     <div class="media wow fadeInRight" data-wow-delay=".3s">
                         <div class="media-left">
                             <img src="{{ $activities[1]->image }}" alt="">
@@ -178,7 +181,7 @@
             @endif
             @if(isset($activities[2]))
             <div class="col col-md-6 border">
-                <a href="">
+                <a href="{{ route('show_corporation_activities',$activities[2]->slug) }}">
                     <div class="media wow fadeInLeft" data-wow-delay=".3s">
                         <div class="media-left">
                             <img src="{{ $activities[2]->image }}" alt="">
@@ -195,7 +198,7 @@
             @endif
             @if(isset($activities[3]))
             <div class="col col-md-6 right border">
-                <a href="">
+                <a href="{{ route('show_corporation_activities',$activities[3]->slug) }}">
                     <div class="media wow fadeInRight" data-wow-delay=".3s">
                         <div class="media-left">
                             <img src="{{ $activities[3]->image  }}" alt="">
@@ -264,9 +267,9 @@
             <div class="col-md-6 col">
                 <p><i class="fa fa-phone"></i> {{ $settings['phone']->value }} </p> 
                 <p><i class="fa fa-envelope-o"></i> {{ $settings['email']->value }} </p>                             
-                <p><i class="fa fa-map-marker"></i> المملكة العربية السعودية </p>
+                <p><i class="fa fa-map-marker"></i> {{ _lang('app.kingdom_of_saudi_arabia') }} </p>
                 <div class="app">
-                    <h3>حمل التطبيق الآن<i class="fa fa-download"></i> </h3>
+                    <h3>{{ _lang('app.download_the_app_now') }}<i class="fa fa-download"></i> </h3>
                     <a href="{{ $settings['store']->ios }}"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
                     <a href="{{ $settings['store']->android }}"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
                 </div>

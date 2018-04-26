@@ -49,7 +49,6 @@ a:active {
  *===================*/
 .btn {
   font-size: 15px;
-  text-transform: uppercase;
   font-weight: 300;
   padding: 12px 25px;
   border-radius: 0;
@@ -147,15 +146,21 @@ header {
 .bottom-header{
     padding: 5px 0;
 }
+.bottom-header .col-md-6, .top-header .col-md-6, #features .col-md-4, #contact-form .col-md-6, #aboutus .aboutus-area .col-md-4, #blog-details .blog-details-area .col-md-5,
+#content .content-area .content-details .col-md-3, #profile .profile-area .col-md-9, #profile .profile-area .col-md-9 .form-group .col-sm-9,
+#profile .block .blog-comment .col-md-10{
+    float:right;
+}
 #logo img.logo-2{
     width:20%;
     display: block;
     margin: 0 15px;
-    float: right;
+    float: left;
 }
 #logo img.logo{
     width:35%;
     display: block;
+    float:right;
 }
 .logo-mobadra, .logo-keswa{
     display: block;
@@ -177,11 +182,11 @@ header .navbar {
 }
 header .btn-read{
     color: #fff ;
-    padding:5px 15px 5px 5px;
+    padding:5px 5px 5px 15px;
     font-size: 13px;
     font-weight: bold;
-    float:right;
-    border-left:1px solid #fff;
+    float:left;
+    border-right:1px solid #fff;
 }
 header .btn-read:last-child{
     border-left:none;
@@ -191,6 +196,8 @@ header .btn-read:hover{
 }
 header .btn-read i{
     font-size: 16px;
+    float: right;
+    padding-top: 3px;
 }
 header p{
     font-size: 14px;
@@ -215,10 +222,10 @@ header .contact-header p{
     font-size: 15px;
 }
 header .social{
-    float: left;
+    float: right;
     padding-right: 15px;
     width: 100%;
-    text-align: left;
+    text-align: right;
     padding: 5px 0;
 }
 header .social a{
@@ -277,7 +284,7 @@ header .social a:hover{
 .menu a:before {
   content: "";
   position: absolute;
-  right: 23px;
+  left: 23px;
   bottom: 12px;
   width: 0;
   height: 1px;
@@ -289,6 +296,11 @@ header .social a:hover{
   color: #39c679 ;
 }
 
+.navbar-toggle{
+    margin-left: 15px;
+    float: left;
+}
+
 
 .menu a:hover:before {
   width: 25px;
@@ -297,16 +309,17 @@ header .social a:hover{
     width:100%;
 }
 .navbar-nav > li{
-    float: right;
+    float: left;
 }
 .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
     background: none;
 }
 .dropdown-menu > li > a{
-    text-align: right;
+    text-align: left;
 }
 nav .caret{
-    margin: 0 5px;
+    float: right;
+    margin: 10px 5px;
 }
 .navbar-nav > li > a{
     padding: 15px 25px;
@@ -336,6 +349,10 @@ ul.dropdown-menu{
 .navbar-nav > li > .dropdown-menu{
     direction: rtl;
 }
+.navbar-right .dropdown-menu{
+    left: 0;
+    right: auto;
+}
 /* =================
    Home page style
    ================= */
@@ -362,8 +379,9 @@ ul.dropdown-menu{
   position: relative;
   z-index: 999;
   color: #fff;
-  text-align: right;
+  text-align: left;
   text-shadow: 1px 1px 1px #000;
+  direction: ltr;
 }
 #banner .block h1 {
     padding-bottom: 25px;
@@ -441,23 +459,27 @@ ul.dropdown-menu{
     padding:90px 40px;
     margin: 70px 0;
     border:10px solid #0f9ac8;
-    border-left:0;
+    border-right:0;
 }
 #features .text-left a{
     font-size: 16px;
+    width: 100%;
+    display: block;
+    text-align: right;
 }
 #features .text-left a i{
     color:#0f9ac8;
+    padding-top: 5px;
 }
 #features img{
    width: 100%;
-    float: right;
+    float: left;
     height: 535px;
 }
 #features p{
     font-size: 16px;
     text-align: justify;
-    direction: rtl;
+    direction: ltr;
 }
 #features .feature-block {
   padding-bottom: 35px;
@@ -632,8 +654,13 @@ ul.dropdown-menu{
   transform: translate(-50%, -50%);
 }
 i.fa-angle-double-left{
-    padding: 0 5px;
-    color:#fff;
+        padding: 0 5px;
+        color: #fff;
+        float: right;
+        padding-top: 3px;
+}
+.fa-angle-double-left:before {
+    content: "\f101";
 }
 i.fa-flag-o{
     padding: 0 5px;
@@ -705,6 +732,7 @@ i.fa-flag-o{
 }
 #play-video i.fa-angle-double-left{
     color:#0f9ac8;
+    margin-top: 3px;
 }
 #play-video a:hover{
     color:#0f9ac8;
@@ -737,7 +765,8 @@ i.fa-flag-o{
 
 
 #testimonial .media .media-left {
-  padding-right: 20px;
+  padding-left: 20px;
+  float: right;
 }
 #testimonial .media .media-left a {
   position: relative;
@@ -751,7 +780,7 @@ i.fa-flag-o{
 }
 #testimonial .media .media-body {
   padding-top: 5px;
-  direction: rtl;
+  direction: ltr;
 }
 #testimonial .media .media-body h4 {
   color: #0f9ac8;
@@ -941,6 +970,9 @@ i.fa-flag-o{
   background:#f9f9f9;
   direction: rtl;
 }
+#contact-form .form-group{
+    direction: ltr;
+}
 #contact-form form label{
     font-weight: normal;
     color: #0f9ac8;
@@ -965,7 +997,7 @@ i.fa-flag-o{
   padding: 10px;
 }
 #contact-form form button {
-  float: right;
+  float: left;
   color: #fff;
   font-size: 16px;
   padding: 17px 43px;
@@ -986,6 +1018,7 @@ i.fa-flag-o{
 }
 #contact-form p{
     padding: 10px 0;
+    direction: ltr;
 }
 #contact-form p i, header i{
     color: #0f9ac8;
@@ -1001,9 +1034,9 @@ i.fa-flag-o{
 #contact-form .app {
     display: inline;
     float: left;
-    text-align: right;
+    text-align: left;
     border-top: 1px solid #dadada;
-    padding-left: 15px;
+    padding-right: 15px;
     width: 100%;
 }
 #contact-form .app h3{
@@ -1017,8 +1050,8 @@ i.fa-flag-o{
 }
 #contact-form .app a img {
     width: 150px;
-    float: right;
-    margin: 10px 0 10px 10px;
+    float: left;
+    margin: 10px 10px 10px 0;
 }
 footer .block a{
   font-weight: 600;
@@ -1087,6 +1120,7 @@ footer {
   background: #444;
   padding: 40px 0;
   text-align: center;
+  direction: ltr;
 }
 footer p {
   font-size: 14px;
@@ -1148,6 +1182,7 @@ footer span{
 #blog-post .content p {
   margin-top: 10px;
   color: #777;
+  direction: ltr;
 }
 #blog-post .content .btn-read, #news .news-area .box .btn-read{
   background: #0f9ac8 ;
@@ -1207,7 +1242,8 @@ a.read-more:hover{
     color: #444;
     line-height: 23px;
     margin-bottom: 10px;
-    text-align: right;
+    text-align: left;
+    direction: ltr;
 }
 
 #blog-left .block blockquote{
@@ -1268,7 +1304,7 @@ a.read-more:hover{
   float: right;
   border-radius: 7px;
   margin: 10px 0;
-  text-align: right;
+  text-align: left;
 }
 #profile .block .blog-comment  img{
     width:60px;
@@ -1565,11 +1601,6 @@ a.read-more:hover{
   -webkit-transition-duration: .2s;
   -webkit-transition-timing-function: ease-in-out;
 }
-#profile .profile-area .block{
-    float: right;
-    width: 100%;
-    display: block;
-}
 /* =====================
    login page style
    ===================== */
@@ -1603,6 +1634,7 @@ a.read-more:hover{
     text-align: center;
     font-size: 20px;
     padding: 5px 0 10px 0;
+    direction: ltr;
 }
 #login .login-area form.contactus p strong{
     color:#0c86ae;
@@ -1611,7 +1643,7 @@ a.read-more:hover{
 	font-size:16px;
 	height: 42px;
 	margin:10px 0;
-	direction:rtl;
+	direction:ltr;
 }
 .form-w3agile a.button-login{
 	background:#0c86ae;
@@ -1632,7 +1664,7 @@ a.read-more:hover{
 
 .form-w3agile .a-login, .form-w3agile .a-signin{
 	margin:10px 0;
-	text-align:left;
+	text-align:right;
 	display:block;
 	color: #3c3d41;
         font-size: 16px;
@@ -1645,10 +1677,9 @@ a.read-more:hover{
     padding-top: 15px;  
     display: block;
     width: 100%;
-    float: left;
 }
 .form-w3agile label{
-    text-align: right;
+    text-align: left;
     display: block;
     color: #0c86ae;
     padding-right: 5px;
@@ -1712,7 +1743,7 @@ p.num-code{
     margin-bottom: 20px;
 }
 #picker{
-    direction: rtl;
+    direction: ltr;
 }
 .border-top{
     border-top: 1px solid #e7e7e7;
@@ -1770,7 +1801,7 @@ width: 100%;
 }
 #login .login-area .tab input{
     margin: 10px 0;
-    text-align: right;
+    text-align: left;
 }
 #login .login-area .tab input.text-center{
     text-align: center;
@@ -1814,6 +1845,8 @@ width: 100%;
     float: none;
     width: 100%;
     display: block;
+    text-align: right;
+    direction: rtl;
 }
 #login .login-area #regForm button:hover {
   opacity: 0.8;
@@ -1854,12 +1887,17 @@ width: 100%;
     margin-top: .25rem;
     font-size: 100%;
     color: #28a745;
+    text-align: right;
 }
 .invalid-feedback {
     width: 100%;
     margin-top: .25rem;
     font-size: 100%;
     color: #dc3545;
+    text-align: right;
+}
+.tab .form-w3agile .a-signin{
+    float: left;
 }
 /* =====================
    aboutus page style
@@ -1871,6 +1909,9 @@ width: 100%;
     float: right;
     width: 100%;
     display: block;
+}
+#aboutus .aboutus-area img{
+    float: right;
 }
 #aboutus .aboutus-area p{
     text-align: justify;
@@ -1893,6 +1934,7 @@ width: 100%;
     text-align: center;
     padding: 20px 0;
 }
+
 
 
 /* =====================
@@ -1933,7 +1975,7 @@ width: 100%;
 #news .news-area .box p {
     margin-top: 10px;
     color: #777;
-    direction: rtl;
+    direction: ltr;
 }
 
 /* =====================
@@ -1949,15 +1991,15 @@ width: 100%;
 }
 #blog-details .blog-details-area p{
     text-align: justify;
-    direction: rtl;
+    direction: ltr;
 }
 #blog-details .blog-details-area span.time{
-    text-align: right;
+    text-align: left;
     color:#0c86ae;
     margin: 5px 0;
     display: block;
     font-weight: bold;
-    direction: rtl;
+    direction: ltr;
     font-size: 15px;
 }
 
@@ -1978,7 +2020,7 @@ width: 100%;
     display: block;
     padding: 15px 0;
     border-bottom:1px solid #0c86ae;
-    text-align: right;
+    text-align: left;
 }
 #content .content-area .content-details img{
     width:100%;
@@ -1999,9 +2041,11 @@ width: 100%;
     padding: 5px 0;
     text-align: left;
     font-weight: bold;
+    float: right;
 }
 #content .content-area .content-details a i{
     color:#0c86ae;
+    margin-top: 4px;
 }
 /* =====================
    profile page style
@@ -2031,16 +2075,21 @@ width: 100%;
     margin: 10px 0;
     font-size: 16px;
 }
+#profile .profile-area .block{
+    float: right;
+    width: 100%;
+    display: block;
+}
 
 #profile table {
     border-collapse: collapse;
     width: 100%;
-    direction: rtl;
+    direction: ltr;
     margin-top:20px;
 }
 
 #profile table td{
-	text-align:right;
+	text-align:left;
 	direction: ltr;
 }
 #profile table td:nth-child(2n+1) {
@@ -2085,6 +2134,7 @@ width: 100%;
   margin-bottom: 30px;
   text-shadow: 0 2px 2px #ddd;
   color:#B0181D;
+  direction: ltr;
 }
 #aa-error .aa-error-area span {
   color: #000;
@@ -2136,6 +2186,18 @@ width: 100%;
     p.num-code{
         text-align: center;
     }
+    .bottom-header .col-md-6, .top-header .col-md-6, #features .col-md-4, #contact-form .col-md-6,
+    #aboutus .aboutus-area .col-md-4, #blog-details .blog-details-area .col-md-5, #content .content-area .content-details .col-md-3,
+    #profile .profile-area .col-md-9, #profile .profile-area .col-md-9 .form-group .col-sm-9, #profile .block .blog-comment .col-md-10{
+        float:none;
+        width:100%;
+    }
+    #logo img.logo-2{
+        float: right;
+    }
+    #logo img.logo{
+        float:left;
+    }
     #testimonial .col-md-6{
         border-right: 0;
     }
@@ -2167,18 +2229,20 @@ width: 100%;
     #contact-form form button {
         float: none;
     }
+    #profile .form-w3agile label.col-form-label{
+        line-height:normal;
+    }
     #videos .videos-area .col-sm-6{
         float: none;
         width:100%;
         display: block;
     }
-    
 }
 @media screen and (max-width: 767px) {
     .navbar-nav > li{
         float: none;
         width:100%;
-        text-align: right;
+        text-align: left;
     }
     .menu a:before{
         bottom:5px;
@@ -2194,7 +2258,6 @@ width: 100%;
     #logo img.logo-2{
         margin: 0 auto;
         display: block;
-        float: none;
         margin-top:10px;
     }
     .dropdown-menu > li > a,.navbar-nav .open .dropdown-menu > li > a{
@@ -2240,6 +2303,7 @@ width: 100%;
         text-align: center;
         margin-top: 20px;
     }
+    
 }
 @media screen and (max-width: 480px) {
     #profile table td{

@@ -49,6 +49,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::group(['middleware' => 'jwt.auth'], function () {
 
         Route::post('user/update', 'UserController@update');
+        Route::get('get_user', 'UserController@getUser');
         Route::post('rate', 'BasicController@rate');
         Route::get('donation_requests', 'DonationRequestsController@index');
         Route::post('change_request_status', 'DonationRequestsController@status');
