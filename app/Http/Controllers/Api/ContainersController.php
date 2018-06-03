@@ -33,6 +33,7 @@ class ContainersController extends ApiController {
                         ->whereDate('unloaded_containers.date_of_unloading', date('Y-m-d'));
                     })
                     ->join('containers_translations', 'containers_translations.container_id', '=', 'containers.id')
+                    ->where('containers.active', 1)
                     ->where('containers.delegate_id', $user->id)
                     ->where('containers_translations.locale', $this->lang_code)
                     ->select('containers.id', 'containers_translations.title', 'containers_translations.address', 'containers.lat', 'containers.lng', DB::raw($this->iniDiffLocations('containers', $lat, $lng)), 'unloaded_containers.id as status')

@@ -71,7 +71,7 @@
         <nav class="collapse navbar-collapse navbar-right" role="navigation">
             <ul id="nav" class="nav navbar-nav menu">
                 <li><a href="{{ url('/') }}">{{ _lang('app.home') }}</a></li>
-                <li><a href="{{ route('about_us') }}">{{ _lang('app.about_us') }}</a></li>
+                <li><a href="{{ route('about_us') }}">{{ _lang('app.about_kiswa') }}</a></li>
                 <li><a href="{{ route('news_events') }}">{{ _lang('app.news_and_events') }}</a></li>
                 <li><a href="{{ route('corporation_activities') }}">{{ _lang('app.corporation_activities') }}</a></li>
                 <li><a href="{{ route('gallary') }}">{{ _lang('app.photos') }}</a></li>

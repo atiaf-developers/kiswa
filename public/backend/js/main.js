@@ -28,7 +28,7 @@ var Main = function () {
                     title: lang.message,
                     buttons: {
                         ok: {
-                            label: "yes",
+                            label: lang.yes,
                             className: 'btn-danger',
                             callback: function () {
                                 window.location.href=config.admin_url+'/delegates_report?type=1'
@@ -36,7 +36,7 @@ var Main = function () {
                             }
                         },
                         noclose: {
-                            label: "no",
+                            label: lang.no,
                             className: 'btn-warning',
                             callback: function () {
 

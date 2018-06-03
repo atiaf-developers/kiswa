@@ -21,14 +21,14 @@
 
                        @foreach ($videos as $video)
                          <div class="col-sm-6 col-md-6 col-lg-6">
-                            <div class="row">
+                       
                                 <h3>{{ $video->title }}</h3>
                                 <div class="video">
-                                    <iframe width="470" height="300" src="https://www.youtube.com/embed/{{$video->youtube_url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                    <iframe width="100%" height="300" src="https://www.youtube.com/embed/{{$video->youtube_url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
                                    
                                 </div>
-                            </div>
+                          
                         </div>
                        @endforeach
                         

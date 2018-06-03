@@ -9,7 +9,7 @@ class Album extends MyModel {
     protected $table = "albums";
     public static $sizes = array(
         's' => array('width' => 200, 'height' => 200),
-        'm' => array('width' => 400, 'height' => 400),
+        'm' => array('width' => 1000, 'height' => 800),
     );
 
     public function translations() {

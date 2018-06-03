@@ -99,7 +99,8 @@ class NewsController extends BackendController {
 
             $message['message_ar'] = 'خبر جديد ' . $news_title['ar'];
             $message['message_en'] = 'new news ' . $news_title['en'];
-            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 3, 'id' => $news->id);
+    
+            $notification = array('title' => _lang('app.keswa'), 'body' => $message['message_ar'], 'type' => 3, 'id' => $news->id);
 
             $Fcm = new Fcm;
             $token = '/topics/keswa_and';
@@ -273,7 +274,7 @@ class NewsController extends BackendController {
                             $back = "";
                             if (\Permissions::check('news', 'edit') || \Permissions::check('news', 'delete')) {
                                 $back .= '<div class="btn-group">';
-                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
+                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> '._lang('app.options');
                                 $back .= '<i class="fa fa-angle-down"></i>';
                                 $back .= '</button>';
                                 $back .= '<ul class = "dropdown-menu" role = "menu">';

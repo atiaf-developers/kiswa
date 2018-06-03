@@ -64,7 +64,7 @@ class LoginController extends FrontController {
                     return redirect()->intended(route('home'));
                 }
             } else {
-                $msg = _lang('messages.invalid_credentials');
+                $msg = _lang('app.invalid_credentials');
                 if ($request->ajax()) {
                     return _json('error', $msg);
                 } else {

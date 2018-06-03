@@ -100,7 +100,7 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label class="control-label color">{{ _lang('app.attach_4_photos') }}</label>
+                                                <label class="control-label color">{{ _lang('app.attach_maximum_4_photos') }}</label>
                                                 <input type="file" name="images[]" id="images" multiple>
                                                 <span class="help-block"></span>
                                             </div>
@@ -141,7 +141,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <input id="pac-input" class="controls" type="text"
-                                               placeholder="Enter a location" style="height: 30px;width: 30%;">
+                                               placeholder="{{_lang('app.enter_location')}}" style="height: 30px;width: 30%;">
                                         <div id="map" style="height: 500px; width:100%;"></div>
                                     </div>
 
@@ -150,8 +150,9 @@
                             </div>
                             @if(!$User)
                             <div class="tab">
+                                 <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
                                 <div class="row form-w3agile">
-                                    <h3 class="h3-dir">{{ _lang('app.you_will_receive_a_text_message_with_activation_code_on_your_mobile_number') }} <span id="mobile-message"></span> <a href="#" class="change-num">
+                                    <h3 class="h3-dir">{{ _lang('app.you_will_receive_a_text_message_with_activation_code_on_your_mobile_number') }} <span id="mobile-message"></span> <a href="#" class="change-num" onclick="DonationRequest.nextPrev(this, -1)">
                                         {{ _lang('app.change_number') }}
                                     </a></h3>
                                     <div class="form-group col-sm-3 inputbox">
@@ -173,7 +174,7 @@
                                     <div class="msg-error" style="display: none;">
                                         <span id="activation-code-message" ></span>
                                     </div>
-                                    <a class="a-signin" href="#" ><strong>{{ _lang('app.send_the_code_again') }}</strong></a>
+                                    <a class="a-signin" href="#" onclick="Main.resend_code(this);return false;"><strong>{{ _lang('app.send_the_code_again') }}</strong></a>
                                 </div>
                             </div>
                             @endif

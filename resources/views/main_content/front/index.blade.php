@@ -17,7 +17,7 @@
                     <h1>{{ _lang('app.welcome_to_the_project_take_advantage_of_surplus_used_clothing') }}</h1>
                     <h2> {{ _lang('app.you_can_now_create_a_delivery_request_to_schedule_an_appointment_and_receive_your_donation') }}</h2>
                     <div class="buttons">
-                        <a href="{{_url('donation-request')}}" class="btn btn-learn">{{ _lang('app.create_a _donation_request') }}</a>
+                        <a href="{{_url('donation-request')}}" class="btn btn-learn">{{ _lang('app.create_a_donation_request') }}</a>
                     </div>
                 </div>
             </div>
@@ -121,6 +121,7 @@
         </div>
     </div>
 </section>
+@if($video)
 <section id="play-video">
     <div class="container">
         <div class="row">
@@ -131,13 +132,14 @@
                         <div class="button ion-ios-play-outline wow zoomIn" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: zoomIn;"></div>
                     </a>
                     <a href="{{ route('video_gallary') }}" class="btn btn-read"><i class="fa fa-angle-double-left"></i>
-                        {{ _lang('app.more') }}
+                        {{ _lang('app.more_videos') }}
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
+@endif
 <section id="testimonial">
     <div class="container">
         <div class="row">
@@ -270,8 +272,8 @@
                 <p><i class="fa fa-map-marker"></i> {{ _lang('app.kingdom_of_saudi_arabia') }} </p>
                 <div class="app">
                     <h3>{{ _lang('app.download_the_app_now') }}<i class="fa fa-download"></i> </h3>
-                    <a href="{{ $settings['store']->ios }}"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
-                    <a href="{{ $settings['store']->android }}"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
+                    <a target="_blank" href="{{ $settings['store']->ios }}"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
+                    <a target="_blank" href="{{ $settings['store']->android }}"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
                 </div>
             </div>
         </div>

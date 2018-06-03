@@ -44,10 +44,9 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('send_verification_code', 'RegisterController@sendVerificationCode');
 
     Route::get('setting', 'BasicController@getSettings');
-    Route::get('notifications', 'NotificationsController@index');
-    Route::get('noti_count', 'NotificationsController@getUnReadNoti');
-    Route::group(['middleware' => 'jwt.auth'], function () {
 
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::post('logout', 'UserController@logout');
         Route::post('user/update', 'UserController@update');
         Route::get('get_user', 'UserController@getUser');
         Route::post('rate', 'BasicController@rate');
@@ -56,6 +55,8 @@ Route::group(['namespace' => 'Api'], function () {
         Route::get('containers', 'ContainersController@index');
         Route::get('log_dump', 'ContainersController@Logdump');
         Route::post('unload_container', 'ContainersController@unload_container');
-        Route::post('update_location','UserController@updateLocation');
+        Route::post('update_location', 'UserController@updateLocation');
+        Route::get('notifications', 'NotificationsController@index');
+        Route::get('noti_count', 'NotificationsController@noti_count');
     });
 });

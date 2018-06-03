@@ -77,6 +77,8 @@ use RegistersUsers;
         }
         if ($step == 1) {
             $activation_code = Random(4);
+            //$activation_code = 1234;
+            $send = $this->sendSMS([$request->input('mobile')], $activation_code);
             $message = _lang('app.verification_code_is') . ' ' . $activation_code;
             return _json('success', ['step' => $step, 'activation_code' => $activation_code]);
         } else if ($step == 2) {
@@ -93,16 +95,18 @@ use RegistersUsers;
                 $User = new User;
                 $User->name = $request->input('name');
                 $User->username = $request->input('username');
-                $User->mobile = $request->input('dial_code').$request->input('mobile');
+                $User->mobile = $request->input('dial_code') . $request->input('mobile');
                 if ($request->input('email')) {
                     $User->email = $request->input('email');
                 }
                 $User->password = bcrypt($request->input('password'));
+                $User->active = 1;
+                $User->type = 1;
                 $User->save();
                 $message = _lang('app.registered_done_successfully');
-                return _json('success', ['step'=>$step,'message'=>$message]);
+                return _json('success', ['step' => $step, 'message' => $message]);
             } catch (\Exception $ex) {
-                
+
                 $message = _lang('app.error_is_occured');
                 return _json('error', $message);
             }

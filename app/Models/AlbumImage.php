@@ -12,7 +12,7 @@ class AlbumImage extends Model
     protected $table = "album_images";
     public static $sizes = array(
         's' => array('width' => 200, 'height' => 200),
-        'm' => array('width' => 400, 'height' => 400),
+          'm' => array('width' => 1000, 'height' => 800),
     );
 
 

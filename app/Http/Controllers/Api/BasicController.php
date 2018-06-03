@@ -221,7 +221,7 @@ class BasicController extends ApiController {
                     ->where('news_translations.locale', $this->lang_code)
                     ->where('news.active', true)
                     ->where('news.id', $id)
-                    ->select('news.id', 'news.images', 'news.created_at', 'news_translations.title', 'news_translations.description')
+                    ->select('news.id', 'news.slug','news.images', 'news.created_at', 'news_translations.title', 'news_translations.description')
                     ->first();
 
             if (!$news) {

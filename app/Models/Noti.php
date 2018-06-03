@@ -35,7 +35,7 @@ class Noti extends MyModel {
                     ->select("activities.slug", "activities_translations.title")
                     ->first();
             if ($activity) {
-                $message = _lang('app.new_activity') . ' \n ' . $activity->title;
+                $message = '<p>'._lang('app.a_new_activity_has_been_added') . '<br>' . $activity->title.'</p>';
             }
         } else if ($item->entity_type_id == 6) {
             $news = News::Join('news_translations', 'news.id', '=', 'news_translations.news_id')
@@ -45,7 +45,7 @@ class Noti extends MyModel {
                     ->select("news.slug", 'news_translations.title')
                     ->first();
             if ($news) {
-                $message = _lang('app.new_news') . ' \n ' . $news->title;
+                $message = '<p>'._lang('app.a_new_news_has_been_added') . '<br>' . $news->title.'</p>';
             }
         } else {
             $donation_request = DonationRequest::join('donation_types', 'donation_types.id', '=', 'donation_requests.donation_type_id')
@@ -55,7 +55,7 @@ class Noti extends MyModel {
                     ->select('donation_types_translations.title', 'donation_requests.description')
                     ->first();
             $status_text = DonationRequest::$status_text[$item->entity_type_id]['client']['message_' . $lang_code];
-            $message = $status_text . '\n' . _lang('app.donation_type') . ' : ' . $donation_request->title . '\n' . _lang('app.detailes') . ' : ' . $donation_request->description;
+            $message = '<p>'.$status_text . '<br>' . _lang('app.donation_type') . ' : ' . $donation_request->title . '<br>' . _lang('app.detailes') . ' : ' . $donation_request->description.'</p>';
         }
         $obj->body = $message;
 
@@ -89,7 +89,7 @@ class Noti extends MyModel {
                     ->first();
             if ($activity) {
                 $url = _url('corporation-activities/' . $activity->slug);
-                $message = _lang('app.new_activity') . '<br>' . $activity->title;
+                $message = _lang('app.a_new_activity_has_been_added') . '<br>' . $activity->title;
             }
         } else if ($item->entity_type_id == 6) {
             $news = News::Join('news_translations', 'news.id', '=', 'news_translations.news_id')
@@ -99,7 +99,7 @@ class Noti extends MyModel {
                     ->select("news.slug", 'news_translations.title')
                     ->first();
             if ($news) {
-                $message = _lang('app.new_news') . '<br>' . $news->title;
+                $message = _lang('app.a_new_news_has_been_added') . '<br>' . $news->title;
                 $url = _url('news-and-events/' . $news->slug);
             }
         } else {
@@ -132,6 +132,7 @@ class Noti extends MyModel {
                 $query2->where('n_o.notifiable_type', $where_array['notifiable_type']);
             });
         });
+        $notifications->where('n_o.created_at','>=',  $where_array['created_at']);
         $notifications->orderBy('n_o.created_at', 'DESC');
         $result = $notifications->get();
         $result = $notifications->paginate(static::$limit);
@@ -150,5 +151,14 @@ class Noti extends MyModel {
 
         return $result;
     }
+    
+    public static function unRead($user_id) {
+        $notifications = DB::table('noti_object as n_o')->join('noti as n', 'n.noti_object_id', '=', 'n_o.id');
+        $notifications->where('n.notifier_id', $user_id);
+        $notifications->where('n_o.notifiable_type', 1);
+        $notifications->where('n.read_status', 0);
+        return $notifications->count();
+    }
+
 
 }

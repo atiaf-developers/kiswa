@@ -60,7 +60,7 @@ var Contact_messages = function () {
             "order": [
                 [4, "desc"]
             ],
-            "oLanguage": {"sUrl": config.base_url + '/datatable-lang-' + config.lang_code + '.json'}
+            "oLanguage": {"sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json'}
 
         });
     }

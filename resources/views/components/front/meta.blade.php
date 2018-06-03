@@ -52,6 +52,7 @@
 
     var lang = {
         currency_sign: "{{ $currency_sign }}",
+        sent_successfully: "{{ _lang('app.sent_successfully') }}",
         order_is_deleted: "{{ _lang('app.order_is_deleted') }}",
         save: "{{ _lang('app.save') }}",
         request_sent_successfully: "{{ _lang('app.request_sent_successfully') }}",

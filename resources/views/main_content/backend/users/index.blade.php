@@ -1,7 +1,11 @@
 @extends('layouts.backend')
 
-@section('pageTitle', _lang('app.users'))
+@section('pageTitle', _lang('app.clients'))
+@section('breadcrumb')
+<li><a href="{{url('admin')}}">{{_lang('app.dashboard')}}</a> <i class="fa fa-circle"></i></li>
+<li><span> {{_lang('app.clients')}}</span></li>
 
+@endsection
 @section('js')
 
 <script src="{{url('public/backend/js')}}/users.js" type="text/javascript"></script>
@@ -121,9 +125,7 @@
       </div>
 
 <div class = "panel panel-default">
-    <div class = "panel-heading">
-        <h3 class = "panel-title">{{_lang('app.users')}}</h3>
-    </div>
+
     <div class = "panel-body">
         <!--Table Wrapper Start-->
         <!-- <div  style="padding: 30px; padding-top: 10px;width: 400px; margin: 40px auto 10px auto;position: relative;">
@@ -143,6 +145,7 @@
                         <th>{{_lang('app.image')}}</th>
                         <th>{{_lang('app.mobile')}}</th>
                         <th>{{_lang('app.status')}}</th>
+                        <th>{{_lang('app.created_at')}}</th>
                         <th>{{_lang('app.options')}}</th>
                     </tr>
                 </thead>

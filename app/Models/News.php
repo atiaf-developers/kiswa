@@ -10,7 +10,7 @@ class News extends MyModel {
 
     public static $sizes = array(
         's' => array('width' => 200, 'height' => 200),
-        'm' => array('width' => 400, 'height' => 400),
+        'm' => array('width' => 600, 'height' => 400),
     );
 
 
@@ -22,11 +22,16 @@ class News extends MyModel {
     public static function transform($item) {
         $lang = static::getLangCode();
         $transformer = new \stdClass();
+        $transformer->id = $item->id;
         $transformer->title = $item->title;
         $transformer->description = $item->description;
-        $prefixed_array = preg_filter('/^/', url('public/uploads/news') . '/', json_decode($item->images));
+        $activity_images =  json_decode($item->images);
+        foreach ($activity_images as $key => $value) {
+            $activity_images[$key] =  static::rmv_prefix($value);
+        }
+        $prefixed_array = preg_filter('/^/', url('public/uploads/news') . '/m_', $activity_images);
         $transformer->images = $prefixed_array;
-        $transformer->url = url("$lang/news-and-events/$item->slug");
+        $transformer->url = _url("news-and-events/$item->slug");
         $transformer->created_at = date('d/m/Y', strtotime($item->created_at));
 
         return $transformer;
@@ -35,8 +40,8 @@ class News extends MyModel {
     public static function transformHome($item) {
         $transformer = new \stdClass();
         $transformer->slug = $item->slug;
-        $transformer->title = $item->title;
-        $transformer->description = mb_strimwidth($item->description, 0, 100, '...');
+        $transformer->title = str_limit($item->title, 50, '...');
+        $transformer->description = str_limit($item->description, 100, '...');
         $news_images =  json_decode($item->images);
         $news_image_without_prefix =  static::rmv_prefix($news_images[0]);
         $transformer->image = url('public/uploads/news') . '/m_' .$news_image_without_prefix;

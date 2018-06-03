@@ -11,7 +11,7 @@ use Image;
 class MyModel extends Model {
 
     protected $lang_code;
-    protected static $limit = 1;
+    protected static $limit = 10;
     protected static $distance = 1000000;
     protected static $status_text = [
         2 => 'start',

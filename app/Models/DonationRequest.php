@@ -19,29 +19,29 @@ class DonationRequest extends Model {
     ];
     public static $status_text = [
         0 => [
-            'client' => ['message_ar' => '', 'message_en' => 'pending'],
-            'delegate' => ['message_ar' => '', 'message_en' => 'pending'],
-            'admin' => ['message_ar' => '', 'message_en' => 'pending']
+            'client' => ['message_ar' => '', 'message_en' => ''],
+            'delegate' => ['message_ar' => '', 'message_en' => ''],
+            'admin' => ['message_ar' => 'قيد الأنتظار', 'message_en' => 'pending']
         ],
         1 => [
-            'client' => ['message_ar' => 'جارى', 'message_en' => 'assigned'],
-            'delegate' => ['message_ar' => 'بدأ', 'message_en' => 'start'],
-            'admin' => ['message_ar' => 'جارى', 'message_en' => 'assigned']
+            'client' => ['message_ar' => 'تم اسناد الطلب', 'message_en' => 'assigned'],
+            'delegate' => ['message_ar' => 'بدأ المهمه', 'message_en' => 'start'],
+            'admin' => ['message_ar' => 'تم اسناد الطلب', 'message_en' => 'assigned']
         ],
         2 => [
             'client' => ['message_ar' => 'المندوب قادم اليك لاستلام التبرع', 'message_en' => 'The delegate is coming to you to receive the donation'],
-            'delegate' => ['message_ar' => 'جارى', 'message_en' => 'i have arrived'],
-            'admin' => ['message_ar' => 'جارى', 'message_en' => 'pending']
+            'delegate' => ['message_ar' => 'لقد وصلت', 'message_en' => 'i have arrived'],
+            'admin' => ['message_ar' => 'تم بدأ المهمه', 'message_en' => 'task_was_started']
         ],
         3 => [
             'client' => ['message_ar' => 'لقد وصل المندوب لاستلام التبرع', 'message_en' => 'The delegate has arrived to receive the donation'],
-            'delegate' => ['message_ar' => 'جارى', 'message_en' => 'Received'],
-            'admin' => ['message_ar' => 'جارى', 'message_en' => 'pending']
+            'delegate' => ['message_ar' => 'تم الاستلام', 'message_en' => 'Received'],
+            'admin' => ['message_ar' => 'لقد وصل المندوب لاستلام التبرع', 'message_en' => 'The delegate has arrived to receive the donation']
         ],
         4 => [
             'client' => ['message_ar' => 'لقد تم استلام التبرع عن طريق المندوب', 'message_en' => 'The donation was received by the delegate'],
-            'delegate' => ['message_ar' => 'جارى', 'message_en' => 'donation has been received successfully'],
-            'admin' => ['message_ar' => 'جارى', 'message_en' => 'pending']
+            'delegate' => ['message_ar' => 'تم استلام التبرع بنجاح', 'message_en' => 'donation has been received successfully'],
+            'admin' => ['message_ar' => 'لقد تم استلام التبرع عن طريق المندوب', 'message_en' => 'The donation was received by the delegate']
         ],
     ];
 

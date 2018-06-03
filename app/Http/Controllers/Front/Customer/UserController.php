@@ -82,6 +82,7 @@ class UserController extends FrontController {
     public function notifications() {
         $where_array['notifier_id'] = $this->User->id;
         $where_array['notifiable_type'] = 1;
+        $where_array['created_at'] = $this->User->created_at;
         $this->data['noti'] = Noti::getNoti($where_array,'ForFront');
         //dd($this->data['noti']);
         $view = 'customer.notifications';

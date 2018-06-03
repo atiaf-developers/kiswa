@@ -160,7 +160,7 @@ var My = function () {
             }
             bootbox.dialog({
                 message: message,
-                title: lang.error,
+                title: lang.attention_message,
                 buttons: {
                     danger: {
                         label: lang.close,

@@ -1,6 +1,6 @@
 @extends('layouts.profile')
 
-@section('pageTitle',_lang('app.dashboard'))
+@section('pageTitle',_lang('app.edit_my_profile'))
 
 
 @section('js')
@@ -89,7 +89,7 @@
                 <div class="col-md-12">
                     <div class="col-sm-9">
                         <div class="row">
-                            <input type="password" name="password" class="form-control" placeholder="password123">
+                            <input type="password" name="password" class="form-control" placeholder="">
                             <span class="help-block">
                                 @if ($errors->has('password'))
                                 {{ $errors->first('password') }}
@@ -106,7 +106,7 @@
                 <div class="col-md-12">
                     <div class="col-sm-9">
                         <div class="row">
-                            <input type="password" name="confirm_password" class="form-control" placeholder="password123">
+                            <input type="password" name="confirm_password" class="form-control" placeholder="">
                             <span class="help-block">
                                 @if ($errors->has('confirm_password'))
                                 {{ $errors->first('confirm_password') }}

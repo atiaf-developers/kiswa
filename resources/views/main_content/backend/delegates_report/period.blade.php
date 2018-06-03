@@ -90,6 +90,16 @@
 
                 <div class="row">
                     @if($log->count()>0)
+                    <div class="col-sm-10 col-sm-offset-2"  style="margin-bottom: 10px;">
+                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                            <span class="label label-sm label-success" style="margin-right: 5px;margin-left: 5px;"> </span> {{_lang('app.discharge')}}
+                        </div>
+                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                            <span class="label label-sm label-danger" style="margin-right: 5px;margin-left: 5px;"> </span>   {{_lang('app.no_discharge')}}
+
+                        </div>
+
+                    </div>
                     <div class="col-sm-12">
                         <table class = "table table-responsive table-striped table-bordered table-hover">
                             <thead>

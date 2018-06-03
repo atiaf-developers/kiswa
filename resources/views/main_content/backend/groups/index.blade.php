@@ -60,7 +60,7 @@
                                         <label for="{{$s_open_id }}">
                                             <span class="inc"></span>
                                             <span class="check"></span>
-                                            <span class="box"></span> {{ $action }} </label>
+                                            <span class="box"></span> {{ _lang('app.'.$action) }} </label>
                                     </div>
                                     @endforeach
 

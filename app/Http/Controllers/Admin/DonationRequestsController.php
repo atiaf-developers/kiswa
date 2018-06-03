@@ -45,6 +45,7 @@ class DonationRequestsController extends BackendController {
         }
         $this->data['donation_requests'] = $this->getDonationRequests($request);
         $this->data['info'] = $this->getInfo($request);
+        //dd($this->data['info']);
         $this->data['delegates'] = $this->getDelagates();
         $this->data['status_filter'] = DonationRequest::$status_filter;
         $this->data['status_arr'] = DonationRequest::$status_text;
@@ -82,21 +83,11 @@ class DonationRequestsController extends BackendController {
                 $DonationRequest->delegate_id = $delegate;
                 $DonationRequest->status = 1;
                 $DonationRequest->save();
-                $device = User::join('devices','devices.id','=','users.device_id')
-                               ->where('users.id',$DonationRequest->delegate_id)
-                               ->select('devices.device_type','devices.device_token')
-                               ->first();
-                if ($device) {
-                    $message['message_ar'] = 'تم اسناد طلب تبرع جديد اليك';
-                    $message['message_en'] = 'new request for a donation has been assigned to you';
-                    $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 1);
-                    $device_type = $device->device_type == 1 ? 'and' : 'ios';
-                    $Fcm = new Fcm;
-                    //dd($device_type);
-                    $Fcm->send($device->device_token, $notification, $device_type);
-                    
-                }
-
+                $message['message_ar'] = 'تم اسناد طلب تبرع جديد اليك';
+                $message['message_en'] = 'new request for a donation has been assigned to you';
+                $notification = array('title' => _lang('app.keswa'), 'body' => $message['message_ar'], 'type' =>4);
+               $send= $this->send_noti_fcm($notification, $DonationRequest->delegate_id);
+               //dd($send);
                 DB::commit();
                 return _json('success', url('admin/donation_requests'));
             } catch (\Exception $ex) {
@@ -113,7 +104,7 @@ class DonationRequestsController extends BackendController {
         $donation_requests->join('donation_types_translations as trans', 'donation_types.id', '=', 'trans.donation_type_id');
         $donation_requests->leftJoin('users', 'users.id', '=', 'donation_requests.delegate_id');
         $donation_requests->select([
-            'donation_requests.id', "users.username", "trans.title as donation_title", "donation_requests.appropriate_time",
+            'donation_requests.id', "users.id as user_id", "users.username", "trans.title as donation_title", "donation_requests.appropriate_time",
             "donation_requests.status", "donation_requests.created_at", "donation_requests.date", "donation_requests.lat", "donation_requests.lng",
             "donation_requests.name", "donation_requests.mobile", "donation_requests.images", "donation_requests.description"
         ]);
@@ -132,12 +123,12 @@ class DonationRequestsController extends BackendController {
 
     private function getInfo($request) {
         $donation_requests = DonationRequest::join('donation_types', 'donation_types.id', '=', 'donation_requests.donation_type_id');
-        $donation_requests->join('donation_types_translations as trans', 'donation_types.id', '=', 'trans.donation_type_id');
+        //$donation_requests->join('donation_types_translations as trans', 'donation_types.id', '=', 'trans.donation_type_id');
         $donation_requests->leftJoin('users', 'users.id', '=', 'donation_requests.delegate_id');
 
         $donation_requests = $this->handleWhere($donation_requests, $request);
-        $donation_requests->select(DB::RAW("COUNT(IF( status = 5, status, NULL)) AS completed"), DB::RAW("COUNT(IF( status != 5, status, NULL)) AS not_completed"));
-
+        $donation_requests->select(DB::RAW("COUNT(IF( status = 4, status, NULL)) AS completed"), DB::RAW("COUNT(IF( status != 4, status, NULL)) AS not_completed"));
+//        $donation_requests->select(DB::RAW("SUM(case when donation_requests.status =4 then 1 ELSE 0 end) AS completed"), DB::RAW("SUM(case when donation_requests.status !=4 then 1 ELSE 0 end) AS not_completed"));
         return $donation_requests->first();
     }
 
@@ -158,11 +149,11 @@ class DonationRequestsController extends BackendController {
             if ($delegate = $request->input('delegate')) {
                 $donation_requests->where("users.id", $delegate);
             }
-            if ($order = $request->input('order')) {
+            if ($order = $request->input('request')) {
                 $donation_requests->where("donation_requests.id", $order);
             }
             if ($status = $request->input('status')) {
-                $status = array_search($status, DonationRequest::$status_text);
+                $status = array_search($status, DonationRequest::$status_filter);
                 //dd($status);
                 $donation_requests->where("donation_requests.status", $status);
             }

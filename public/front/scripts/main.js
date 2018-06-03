@@ -5,7 +5,10 @@ var Main = function () {
     var init = function () {
         handlePusher();
     }
+    var handleResendCode = function () {
 
+
+    }
 
 
     var handlePusher = function () {
@@ -77,6 +80,33 @@ var Main = function () {
         init: function () {
             init();
         },
+        resend_code: function () {
+
+            var action = config.url + '/ajax/resend_code';
+            $.ajax({
+                url: action,
+                data: {mobile: $('#mobile').val()},
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data.type == 'success') {
+
+                        $('.alert-danger').hide();
+                        $('.alert-success').show().find('.message').html(lang.sent_successfully);
+                        $('.alert-success').delay(3000).fadeOut(1000);
+
+                    }
+
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    App.ajax_error_message(xhr);
+                },
+                dataType: "JSON",
+                type: "GET"
+            });
+
+        }
 
     }
 

@@ -35,12 +35,11 @@ class LoginController extends ApiController {
                 $token->id = $user->id;
                 $token->expire = strtotime('+' . $this->expire_no . $this->expire_type);
                 $expire_in_seconds = $token->expire;
-                $device = Device::updateOrCreate(
-                    ['device_id' =>$request->input('device_id')],
+                //dd($user->id);
+                Device::updateOrCreate(
+                    ['device_id' =>$request->input('device_id'),'user_id' => $user->id],
                     ['device_token' => $request->input('device_token'),'device_type' => $request->input('device_type')]
                 );
-                $user->device_id = $device->id;
-                $user->save();
 
                 $user = User::transform($user);
                 return _api_json($user, ['message' => _lang('app.login_done_successfully'), 'token' => AUTHORIZATION::generateToken($token), 'expire' => $expire_in_seconds]);

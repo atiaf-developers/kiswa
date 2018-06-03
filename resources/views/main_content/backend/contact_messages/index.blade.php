@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('pageTitle', 'Page Title')
+@section('pageTitle',  _lang('app.contact_messages'))
 
 @section('js')
 <script src="{{url('public/backend/js')}}/contact_messages.js" type="text/javascript"></script>

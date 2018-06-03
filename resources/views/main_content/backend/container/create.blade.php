@@ -34,12 +34,12 @@
                     <div class="col-md-4">
                         <div class="form-group form-md-line-input col-md-12">
                             <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="">
-                            <label for="question">{{_lang('app.title') }} {{ _lang('app. '.$value.'') }}</label>
+                            <label for="question">{{_lang('app.title') }} {{ _lang('app.'.$value) }}</label>
                             <span class="help-block"></span>
                         </div>
                         {{--  <div class="form-group form-md-line-input col-md-12">
                             <textarea class="form-control" id="answer[{{ $key }}]" name="answer[{{ $key }}]"  cols="30" rows="10"></textarea>
-                            <label for="answer">{{_lang('app.answer') }} {{ _lang('app. '.$value.'') }}</label>
+                            <label for="answer">{{_lang('app.answer') }} {{ _lang('app.'.$value) }}</label>
                             <span class="help-block"></span>
                         </div>  --}}
                     </div>

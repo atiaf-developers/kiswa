@@ -8,16 +8,17 @@ use App\Helpers\AUTHORIZATION;
 use App\Models\User;
 use App\Models\DesignerCategory;
 use App\Models\Designer;
+use App\Models\Device;
 use Validator;
 use DB;
 
 class UserController extends ApiController {
-   
 
     private $location_rules = array(
         'lat' => 'required',
         'lng' => 'required'
     );
+
     public function __construct() {
         parent::__construct();
     }
@@ -78,13 +79,12 @@ class UserController extends ApiController {
                         $User->password = bcrypt($request->input('password'));
                     }
                 }
-                if ($image=$request->input('image')) {
+                if ($image = $request->input('image')) {
                     $image = preg_replace("/\r|\n/", "", $image);
                     User::deleteUploaded('users', $User->image);
                     if (isBase64image($image)) {
-                         $User->image = User::upload($image, 'users', true, false, true);
+                        $User->image = User::upload($image, 'users', true, false, true);
                     }
-                   
                 }
 
                 $User->save();
@@ -98,8 +98,7 @@ class UserController extends ApiController {
         }
     }
 
-    public function getUser()
-    {
+    public function getUser() {
         try {
             $user = User::transform($this->auth_user());
             return _api_json($user);
@@ -109,8 +108,7 @@ class UserController extends ApiController {
         }
     }
 
-    public function updateLocation(Request $request)
-    {
+    public function updateLocation(Request $request) {
         $validator = Validator::make($request->all(), $this->location_rules);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
@@ -126,8 +124,11 @@ class UserController extends ApiController {
             $message = _lang('app.error_is_occured');
             return _api_json('', ['message' => $message], 400);
         }
-        
+    }
 
+    public function logout(Request $request) {
+        Device::where('user_id', $this->auth_user()->id)->where('device_id', $request->input('device_id'))->update(['device_token'=>'']);
+        return _api_json(new \stdClass(), array(), 201);
     }
 
 }

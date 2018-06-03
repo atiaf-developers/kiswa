@@ -92,6 +92,7 @@
         languages: '{!!json_encode(array_keys($languages))!!}',
     }
     var lang = {
+        attention_message: "{{ _lang('app.attention_message')}}",
         daily_message: "{{ _lang('app.do_you_want_to_review_delegates_daily_report_?')}}",
         filesize_can_not_be_more_than: "{{ _lang('app.filesize_can_not_be_more_than')}}",
         lounge_number: "{{ _lang('app.lounge_number')}}",

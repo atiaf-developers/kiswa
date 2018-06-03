@@ -16,7 +16,7 @@
 <input type="hidden" name="lat" id="lat" value="{{ $donation_request->lat}}">
 <input type="hidden" name="lng" id="lng" value="{{ $donation_request->lng }}">
 
-<div class="row">
+
     <div class="row">
         <div class="col-md-6">
             <div class="col-md-12">
@@ -180,21 +180,8 @@
             <!-- END SAMPLE TABLE PORTLET-->
         </div>
     </div>
-    <div class="row">
+ 
 
-
-
-
-
-
-
-
-
-
-    </div>
-
-
-</div>
 @if($donation_request->status==7)
 <div id="invoice-content" style="display: none;"> 
     @include('main_content/reports/invoice')

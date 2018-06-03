@@ -34,7 +34,7 @@
 
                 <div class="form-group form-md-line-input col-md-6">
                     <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="">
-                    <label for="title">{{_lang('app.title') }} {{ _lang('app. '.$key.'') }}</label>
+                    <label for="title">{{_lang('app.title') }} {{ _lang('app.'.$key) }}</label>
                     <span class="help-block"></span>
                 </div>
 
@@ -60,7 +60,7 @@
 
                     <div class="form-group form-md-line-input col-md-6">
                         <textarea  class="form-control" id="description[{{ $key }}]" name="description[{{ $key }}]" value="" cols="30" rows="10"></textarea>
-                        <label for="description">{{_lang('app.description') }} {{ _lang('app. '.$key.'') }}</label>
+                        <label for="description">{{_lang('app.description') }} {{ _lang('app.'.$key) }}</label>
                         <span class="help-block"></span>
                     </div>
 

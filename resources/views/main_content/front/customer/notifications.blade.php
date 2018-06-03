@@ -1,6 +1,6 @@
 @extends('layouts.profile')
 
-@section('pageTitle',_lang('app.dashboard'))
+@section('pageTitle',_lang('app.notifications'))
 
 
 @section('js')
@@ -16,7 +16,7 @@
             <span>{{$one->created_at}}</span>
         </div>
         <a class="col-md-2" href="{{$one->url}}">
-            <img class="img-responsive" src="img/user.png" alt="">
+            <img class="img-responsive" src="{{ url('public/front/img') }}/noti.png" alt="">
         </a>
     </div>
 </div>

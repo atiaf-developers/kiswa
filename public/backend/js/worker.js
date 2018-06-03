@@ -2,37 +2,41 @@ var type = 2;
 var Famous_grid;
 var Members_grid;
 var Worker_grid;
-var Worker = function() {
-    var init = function() {
+var Worker = function () {
+    var init = function () {
         //alert('heree');
         $.extend(lang, new_lang);
-        
+
         //console.log(lang);
         handleRecords();
         handleDatatables();
         handleSubmit();
         handlePasswordActions();
         My.readImageMulti('user_image');
+        if($('#map').length > 0){
+               Map.initMap(false, false, false, false);
+        }
+     
 
     };
-    var handlePasswordActions = function(string_length) {
-        $('#show-password').click(function() {
+    var handlePasswordActions = function (string_length) {
+        $('#show-password').click(function () {
             if ($('#password').val() != '') {
                 $("#password").attr("type", "text");
             } else {
                 $("#password").attr("type", "password");
             }
         });
-        $('#random-password').click(function() {
+        $('#random-password').click(function () {
             $('[id^="password"]').closest('.form-group').removeClass('has-error').addClass('has-success');
             $('[id^="password"]').closest('.form-group').find('.help-block').html('').css('opacity', 0);
             $('[id^="password"]').val(randomPassword(8));
         });
     }
-    var randomPassword = function(string_length) {
+    var randomPassword = function (string_length) {
         var chars = "0123456789!@#$%^&*abcdefghijklmnopqrstuvwxtzABCDEFGHIJKLMNOPQRSTUVWXTZ!@#$%^&*";
         var myrnd = [],
-            pos;
+                pos;
         while (string_length--) {
             pos = Math.floor(Math.random() * chars.length);
             myrnd += chars.substr(pos, 1);
@@ -40,8 +44,8 @@ var Worker = function() {
         return myrnd;
     }
 
-    var handleDatatables = function() {
-        $(document).on('click', '.data-box', function() {
+    var handleDatatables = function () {
+        $(document).on('click', '.data-box', function () {
             $('.data-box').removeClass('active');
             $(this).addClass('active');
             type = 2;
@@ -55,25 +59,25 @@ var Worker = function() {
                         "ajax": {
                             "url": config.admin_url + "/users/data?type=clients",
                             "type": "POST",
-                            data: { type: type, _token: $('input[name="_token"]').val() },
+                            data: {type: type, _token: $('input[name="_token"]').val()},
                         },
                         "columns": [
                             //                    {"data": "user_input", orderable: false, "class": "text-center"},
-                            { "data": "username", "name": "username" },
-                            { "data": "image", "name": "image" },
-                            { "data": "mobile", "name": "mobile" },
-                            { "data": "active", "name": "active" },
-                            { "data": "options", orderable: false, searchable: false }
+                            {"data": "username", "name": "username"},
+                            {"data": "image", "name": "image"},
+                            {"data": "mobile", "name": "mobile"},
+                            {"data": "active", "name": "active"},
+                            {"data": "options", orderable: false, searchable: false}
                         ],
                         "order": [
                             [1, "desc"]
                         ],
-                        "oLanguage": { "sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json' }
+                        "oLanguage": {"sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json'}
 
                     });
 
                 } else {
-                    Famous_grid.on('preXhr.dt', function(e, settings, data) {
+                    Famous_grid.on('preXhr.dt', function (e, settings, data) {
                         data.type = type
                         data._token = $('input[name="_token"]').val()
                     })
@@ -89,24 +93,24 @@ var Worker = function() {
                         "ajax": {
                             "url": config.admin_url + "/users/data?type=clients",
                             "type": "POST",
-                            data: { type: type, _token: $('input[name="_token"]').val() },
+                            data: {type: type, _token: $('input[name="_token"]').val()},
                         },
                         "columns": [
                             //                    {"data": "user_input", orderable: false, "class": "text-center"},
-                            { "data": "name", "name": "name" },
-                            { "data": "username", "name": "username" },
-                            { "data": "mobile", "name": "mobile" },
-                            { "data": "active", "name": "active" },
+                            {"data": "name", "name": "name"},
+                            {"data": "username", "name": "username"},
+                            {"data": "mobile", "name": "mobile"},
+                            {"data": "active", "name": "active"},
                         ],
                         "order": [
                             [1, "desc"]
                         ],
-                        "oLanguage": { "sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json' }
+                        "oLanguage": {"sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json'}
 
                     });
 
                 } else {
-                    Members_grid.on('preXhr.dt', function(e, settings, data) {
+                    Members_grid.on('preXhr.dt', function (e, settings, data) {
                         data.type = type
                         data._token = $('input[name="_token"]').val()
                     })
@@ -121,7 +125,7 @@ var Worker = function() {
             return false;
         });
     }
-    var handleRecords = function() {
+    var handleRecords = function () {
 
         Famous_grid = $('#famous-table .dataTable').dataTable({
             //"processing": true,
@@ -129,24 +133,25 @@ var Worker = function() {
             "ajax": {
                 "url": config.admin_url + "/users/data?type=clients",
                 "type": "POST",
-                data: { type: type, _token: $('input[name="_token"]').val() },
+                data: {type: type, _token: $('input[name="_token"]').val()},
             },
             "columns": [
                 //                    {"data": "user_input", orderable: false, "class": "text-center"},
-                { "data": "username", "name": "username" },
-                { "data": "image", "name": "image" },
-                { "data": "mobile", "name": "mobile" },
-                { "data": "active", "name": "active" },
-                { "data": "options", orderable: false, searchable: false }
+                {"data": "username", "name": "username"},
+                {"data": "image", "name": "image"},
+                {"data": "mobile", "name": "mobile"},
+                {"data": "active", "name": "active"},
+                {"data": "created_at", "name": "created_at"},
+                {"data": "options", orderable: false, searchable: false}
             ],
             "order": [
-                [1, "desc"]
+                [4, "desc"]
             ],
-            "oLanguage": { "sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json' }
+            "oLanguage": {"sUrl": config.url + '/datatable-lang-' + config.lang_code + '.json'}
 
         });
     }
-    var handleSubmit = function() {
+    var handleSubmit = function () {
 
         $('#addEditWorkerForm').validate({
             rules: {
@@ -156,39 +161,39 @@ var Worker = function() {
                 mobile: {
                     required: true
                 },
-                
+
             },
             //messages: lang.messages,
-            highlight: function(element) { // hightlight error inputs
+            highlight: function (element) { // hightlight error inputs
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 
             },
-            unhighlight: function(element) {
+            unhighlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
                 $(element).closest('.form-group').find('.help-block').html('').css('opacity', 0);
 
             },
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 $(element).closest('.form-group').find('.help-block').html($(error).html()).css('opacity', 1);
             }
         });
-        $('#addEditWorker .submit-form').click(function() {
+        $('#addEditWorker .submit-form').click(function () {
             if ($('#addEditWorkerForm').validate().form()) {
                 $('#addEditWorker .submit-form').prop('disabled', true);
                 $('#addEditWorker .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
-                setTimeout(function() {
+                setTimeout(function () {
                     $('#addEditWorkerForm').submit();
                 }, 1000);
 
             }
             return false;
         });
-        $('#addEditWorkerForm input').keypress(function(e) {
+        $('#addEditWorkerForm input').keypress(function (e) {
             if (e.which == 13) {
                 if ($('#addEditWorkerForm').validate().form()) {
                     $('#addEditWorker .submit-form').prop('disabled', true);
                     $('#addEditWorker .submit-form').html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('#addEditWorkerForm').submit();
                     }, 1000);
                 }
@@ -198,7 +203,7 @@ var Worker = function() {
 
 
 
-        $('#addEditWorkerForm').submit(function() {
+        $('#addEditWorkerForm').submit(function () {
             var id = $('#id').val();
             var formData = new FormData($(this)[0]);
             var action = config.admin_url + '/users?type=clients';
@@ -215,7 +220,7 @@ var Worker = function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
+                success: function (data) {
                     $('#addEditWorker .submit-form').prop('disabled', false);
                     $('#addEditWorker .submit-form').html(lang.save);
 
@@ -247,8 +252,8 @@ var Worker = function() {
                         if (typeof data.errors === 'object') {
                             for (i in data.errors) {
                                 $('[name="' + i + '"]')
-                                    .closest('.form-group').addClass('has-error');
-                                 $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
+                                        .closest('.form-group').addClass('has-error');
+                                $('[name="' + i + '"]').closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
                             }
                         } else {
                             //alert('here');
@@ -261,14 +266,14 @@ var Worker = function() {
                                     tryAgain: {
                                         text: lang.try_again,
                                         btnClass: 'btn-red',
-                                        action: function() {}
+                                        action: function () {}
                                     }
                                 }
                             });
                         }
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     $('#addEditWorker .submit-form').prop('disabled', false);
                     $('#addEditWorker .submit-form').html(lang.save);
                     My.ajax_error_message(xhr);
@@ -280,7 +285,7 @@ var Worker = function() {
             return false;
 
         });
-        $('#sendMassageForm').submit(function() {
+        $('#sendMassageForm').submit(function () {
             var id = $('#id').val();
             var formData = new FormData($(this)[0]);
             var action = config.admin_url + '/msgUsers?page=client';
@@ -291,7 +296,7 @@ var Worker = function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
+                success: function (data) {
                     $('#addEditUsers .submit-form').prop('disabled', false);
                     $('#addEditUsers .submit-form').html(lang.save);
 
@@ -323,7 +328,7 @@ var Worker = function() {
                         if (typeof data.errors === 'object') {
                             for (i in data.errors) {
                                 $('[name="' + i + '"]')
-                                    .closest('.form-group').addClass('has-error');
+                                        .closest('.form-group').addClass('has-error');
                                 $('#' + i).closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
                             }
                         } else {
@@ -337,14 +342,14 @@ var Worker = function() {
                                     tryAgain: {
                                         text: lang.try_again,
                                         btnClass: 'btn-red',
-                                        action: function() {}
+                                        action: function () {}
                                     }
                                 }
                             });
                         }
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     $('#sendMassageForm .submit-form').prop('disabled', false);
                     $('#sendMassageForm .submit-form').html(lang.save);
                     My.ajax_error_message(xhr);
@@ -365,15 +370,15 @@ var Worker = function() {
 
 
     return {
-        init: function() {
+        init: function () {
             init();
         },
-        edit: function(t) {
+        edit: function (t) {
             var id = $(t).attr("data-id");
             My.editForm({
                 element: t,
                 url: config.admin_url + '/users/' + id + '?type=delegates',
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
 
                     Worker.empty();
@@ -393,18 +398,18 @@ var Worker = function() {
                     }
 
                     $('#addEditWorker').modal('show');
-                   
+
                 }
             });
 
         },
-        massage: function(t) {
+        massage: function (t) {
             var id = $(t).attr("data-id");
             document.getElementById('user_id').value = id;
             My.editForm({
                 element: t,
                 url: config.admin_url + '/users/' + id + '?type=clients',
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
 
                     Worker.empty();
@@ -425,7 +430,7 @@ var Worker = function() {
             });
 
         },
-        Orders: function(t) {
+        Orders: function (t) {
             var id = $(t).attr("data-id");
             var action = config.admin_url + '/order/wait/' + id;
             $.ajax({
@@ -435,7 +440,7 @@ var Worker = function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
+                success: function (data) {
                     if (data.type == 'success') {
                         toastr.options = {
                             "debug": false,
@@ -464,7 +469,7 @@ var Worker = function() {
                         if (typeof data.errors === 'object') {
                             for (i in data.errors) {
                                 $('[name="' + i + '"]')
-                                    .closest('.form-group').addClass('has-error');
+                                        .closest('.form-group').addClass('has-error');
                                 $('#' + i).closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
                             }
                         } else {
@@ -478,14 +483,14 @@ var Worker = function() {
                                     tryAgain: {
                                         text: lang.try_again,
                                         btnClass: 'btn-red',
-                                        action: function() {}
+                                        action: function () {}
                                     }
                                 }
                             });
                         }
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
 
                     My.ajax_error_message(xhr);
                 },
@@ -495,7 +500,7 @@ var Worker = function() {
 
             return false;
         },
-        allowable: function(t) {
+        allowable: function (t) {
             var id = $(t).attr("data-id");
 
             var action = config.admin_url + '/users/trust/' + id + '?type=clients';
@@ -506,7 +511,7 @@ var Worker = function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
+                success: function (data) {
                     if (data.type == 'success') {
                         toastr.options = {
                             "debug": false,
@@ -535,7 +540,7 @@ var Worker = function() {
                         if (typeof data.errors === 'object') {
                             for (i in data.errors) {
                                 $('[name="' + i + '"]')
-                                    .closest('.form-group').addClass('has-error');
+                                        .closest('.form-group').addClass('has-error');
                                 $('#' + i).closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
                             }
                         } else {
@@ -549,14 +554,14 @@ var Worker = function() {
                                     tryAgain: {
                                         text: lang.try_again,
                                         btnClass: 'btn-red',
-                                        action: function() {}
+                                        action: function () {}
                                     }
                                 }
                             });
                         }
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
 
                     My.ajax_error_message(xhr);
                 },
@@ -566,7 +571,7 @@ var Worker = function() {
 
             return false;
         },
-        order: function(t) {
+        order: function (t) {
             var id = $(t).attr("data-id");
 
             var action = config.admin_url + '/users/order/' + id + '?type=clients';
@@ -577,7 +582,7 @@ var Worker = function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
+                success: function (data) {
                     if (data.type == 'success') {
                         toastr.options = {
                             "debug": false,
@@ -606,7 +611,7 @@ var Worker = function() {
                         if (typeof data.errors === 'object') {
                             for (i in data.errors) {
                                 $('[name="' + i + '"]')
-                                    .closest('.form-group').addClass('has-error');
+                                        .closest('.form-group').addClass('has-error');
                                 $('#' + i).closest('.form-group').find(".help-block").html(data.errors[i][0]).css('opacity', 1)
                             }
                         } else {
@@ -620,14 +625,14 @@ var Worker = function() {
                                     tryAgain: {
                                         text: lang.try_again,
                                         btnClass: 'btn-red',
-                                        action: function() {}
+                                        action: function () {}
                                     }
                                 }
                             });
                         }
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
 
                     My.ajax_error_message(xhr);
                 },
@@ -637,13 +642,13 @@ var Worker = function() {
 
             return false;
         },
-        delete: function(t) {
+        delete: function (t) {
             var id = $(t).attr("data-id");
             My.deleteForm({
                 element: t,
                 url: config.admin_url + '/users/' + id + '?type=delegates',
-                data: { _method: 'DELETE', _token: $('input[name="_token"]').val() },
-                success: function(data) {
+                data: {_method: 'DELETE', _token: $('input[name="_token"]').val()},
+                success: function (data) {
 
                     Famous_grid.api().ajax.reload();
 
@@ -651,7 +656,7 @@ var Worker = function() {
                 }
             });
         },
-        add: function() {
+        add: function () {
             // google.maps.event.trigger(map, "resize");
             Worker.empty();
             My.setModalTitle('#addEditWorker', lang.add_user);
@@ -662,7 +667,7 @@ var Worker = function() {
 
 
         },
-        empty: function() {
+        empty: function () {
             $('#id').val(0);
             $('#active').find('option').eq(0).prop('selected', true);
             $('#user_image').val(null);
@@ -674,6 +679,6 @@ var Worker = function() {
         },
     };
 }();
-$(document).ready(function() {
+$(document).ready(function () {
     Worker.init();
 });

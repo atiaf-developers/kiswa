@@ -35,6 +35,7 @@ if (in_array($currentLanguageCode, $languages)) {
         Route::get('getAddress/{id}', 'AjaxController@getAddress');
         Route::get('ajax/checkAvailability', 'AjaxController@checkAvailability');
         Route::post('ajax/reserve_submit', 'AjaxController@reserve_submit');
+        Route::get('ajax/resend_code', 'AjaxController@resend_code');
         Auth::routes();
 
         Route::get('user-activation-code', 'Auth\RegisterController@showActivationForm')->name('activation');

@@ -41,7 +41,12 @@ class DelegatesReportController extends BackendController {
             foreach ($request->all() as $key => $value) {
 
                 if ($value) {
-                    $this->data[$key] = $value;
+                   
+                    if($key=='date' && $value > date('Y-m-d')){
+                         $this->data[$key] = date('Y-m-d');
+                    }else{
+                        $this->data[$key] = $value;
+                    }
                 }
             }
             //dd($this->data['from']);
@@ -151,12 +156,14 @@ class DelegatesReportController extends BackendController {
     }
 
     private function getDailyLog($request) {
-        $today = $request->input('from') ? $request->input('from') : date('Y-m-d');
+        $today = !$request->input('date') || $request->input('date') > date('Y-m-d') ? date('Y-m-d') : $request->input('date');
+         //dd($today);
         $Users = User::select('id', "username")->where('type', 2)->paginate($this->limit)->appends($request->all());
         $Users->getCollection()->transform(function($item, $key) use($today) {
             $item->containers = $this->getDelagateContainer($item->id, $today);
             return $item;
         });
+       //dd($Users);
 //        if ($Users->count() > 0) {
 //            foreach ($Users as $one) {
 //                $one->containers = $this->getDelagateContainer($one->id, $today);
@@ -164,6 +171,7 @@ class DelegatesReportController extends BackendController {
 //        }
         return $Users;
     }
+
 
     private function getDelagateContainer($delegate_id, $date) {
         $delegates_report = ContainerAssignedHistory::join('containers', function ($join) use($date, $delegate_id) {

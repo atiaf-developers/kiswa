@@ -31,7 +31,7 @@
 
                     <input type="text" class="form-control" id="title[{{ $key }}]" name="title[{{ $key }}]" value="{{ $translations[$key]->title }}" >
 
-                    <label for="title">{{_lang('app.title') }} {{ _lang('app. '.$key.'') }}</label>
+                    <label for="title">{{_lang('app.title') }} {{ _lang('app.'.$key) }}</label>
                     <span class="help-block"></span>
 
                 </div>

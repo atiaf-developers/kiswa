@@ -81,6 +81,14 @@ class ContainersController extends BackendController {
             $ContainerAssignedHistory->delegate_id = $request->input('delegate_id');
             $ContainerAssignedHistory->start = date('Y-m-d');
             $ContainerAssignedHistory->save();
+            if ($request->input('active') == 1) {
+                $message_obj = new \stdClass();
+                $message_obj->message_ar = 'تم اسناد حاويه جديده لك ' .' ( ' . $title['ar'].' )';
+                $message_obj->message_en = 'A new container has been assigned to you' .' ( ' . $title['en'].' )';
+                $notification = ['title' => 'Keswa', 'body' => $message_obj->message_ar, 'type' => 5];
+                $this->send_noti_fcm($notification, $container->delegate_id);
+            }
+
             DB::commit();
             return _json('success', _lang('app.added_successfully'));
         } catch (\Exception $ex) {
@@ -124,6 +132,7 @@ class ContainersController extends BackendController {
         }
         DB::beginTransaction();
         try {
+
             if ($container->delegate_id != (int) $request->input('delegate_id')) {
                 //dd('here2');
                 ContainerAssignedHistory::whereNull('end')
@@ -136,6 +145,9 @@ class ContainersController extends BackendController {
                 $ContainerAssignedHistory->start = date('Y-m-d');
                 $ContainerAssignedHistory->save();
             }
+
+
+
             $container->active = $request->input('active');
             $container->lat = $request->input('lat');
             $container->lng = $request->input('lng');
@@ -157,7 +169,16 @@ class ContainersController extends BackendController {
             }
 
 
-            //dd('here');
+            $message_obj = new \stdClass();
+            if ($request->input('active') == 1) {
+                $message_obj->message_ar = 'تم اسناد حاويه جديده لك ' . ' ( ' . $title['ar'].' )';
+                $message_obj->message_en = 'A new container has been assigned to you' . ' ( ' . $title['en'].' )';
+            } else {
+                $message_obj->message_ar = 'تم حذف الحاوية ' . ' ( ' . $title['ar'].' )';
+                $message_obj->message_en = 'container has been deleted' . ' ( ' . $title['en'].' )';
+            }
+            $notification = ['title' => 'Keswa', 'body' => $message_obj->message_ar, 'type' => 5];
+            $this->send_noti_fcm($notification, $request->input('delegate_id'));
             DB::commit();
             return _json('success', _lang('app.updated_successfully'));
         } catch (\Exception $ex) {
@@ -175,6 +196,12 @@ class ContainersController extends BackendController {
         try {
             ContainerTranslation::where('container_id', $container->id)->delete();
             $container->delete();
+
+            $message_obj = new \stdClass();
+            $message_obj->message_ar = 'تم حذف الحاوية ' .' ( ' . $title['ar'].' )';
+            $message_obj->message_en = 'container has been deleted' . ' ( '. $title['en'].' )';
+            $notification = ['title' => 'Keswa', 'body' => $message_obj, 'type' => 5];
+            $this->send_noti_fcm($notification, $container->delegate_id);
             DB::commit();
             return _json('success', _lang('app.deleted_successfully'));
         } catch (\Exception $ex) {
@@ -201,7 +228,7 @@ class ContainersController extends BackendController {
                             $back = "";
                             if (\Permissions::check('container', 'edit') || \Permissions::check('container', 'delete')) {
                                 $back .= '<div class="btn-group">';
-                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
+                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> ' . _lang('app.options');
                                 $back .= '<i class="fa fa-angle-down"></i>';
                                 $back .= '</button>';
                                 $back .= '<ul class = "dropdown-menu" role = "menu">';

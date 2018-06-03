@@ -32,7 +32,7 @@ class DonationRequestsController extends ApiController {
     );
     private $step_three_rules = array(
         'name' => 'required',
-        'mobile' => 'required|unique:users',
+        'mobile' => 'required',
         'images' => 'required',
         'description' => 'required',
         'appropriate_time' => 'required',
@@ -117,6 +117,10 @@ class DonationRequestsController extends ApiController {
                 return _api_json(new \stdClass());
             } else if ($request->step == 2) {
                 $verification_code = Random(4);
+                $verification_code =(int) $verification_code;
+                //$verification_code = 1234;
+                $send=$this->sendSMS([$request->input('mobile')], $verification_code);
+                //dd(json_decode($send->getBody()));
                 return _api_json(new \stdClass(), ['code' => $verification_code]);
             } else {
                 DB::beginTransaction();
@@ -134,68 +138,54 @@ class DonationRequestsController extends ApiController {
         }
     }
 
-    public function store2(Request $request) {
-        if ($request->step) {
-            if ($request->step == 1) {
-                $validator = Validator::make($request->all(), $this->step_one_rules);
-                if ($validator->fails()) {
-                    $errors = $validator->errors()->toArray();
-                    return _api_json(new \stdClass(), ['errors' => $errors], 400);
-                }
-                return _api_json('');
-            } else if ($request->step == 2) {
+    public function status(Request $request) {
+        try {
 
-                $validator = Validator::make($request->all(), $this->step_two_rules);
-                if ($validator->fails()) {
-                    $errors = $validator->errors()->toArray();
-                    return _api_json(new \stdClass(), ['errors' => $errors], 400);
-                }
-                $verification_code = Random(4);
-                return _api_json('', ['code' => $verification_code]);
-            } else if ($request->step == 3) {
-                $validator = Validator::make($request->all(), $this->step_three_rules);
-                if ($validator->fails()) {
-                    $errors = $validator->errors()->toArray();
-                    return _api_json('', ['errors' => $errors], 400);
-                }
-                DB::beginTransaction();
-                try {
-
-                    $this->create_donation_request($request);
-                    DB::commit();
-                    $message = _lang('app.request_has_been_sent_successfully');
-                    return _api_json('', ['message' => $message], 201);
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    $message = _lang('app.error_is_occured');
-                    return _api_json('', ['message' => $message], 400);
-                }
-            } else {
-                return _api_json('', ['message' => _lang('app.error_is_occured')], 400);
-            }
-        } else {
-            unset($this->step_one_rules['device_id'], $this->step_one_rules['device_token'], $this->step_one_rules['device_type']);
-            $validator = Validator::make($request->all(), $this->step_one_rules);
+            $validator = Validator::make($request->all(), $this->status_rules);
             if ($validator->fails()) {
                 $errors = $validator->errors()->toArray();
                 return _api_json(new \stdClass(), ['errors' => $errors], 400);
             }
 
-            DB::beginTransaction();
-            try {
-                $this->create_donation_request($request);
-                DB::commit();
-                $message = _lang('app.request_has_been_sent_successfully');
-                return _api_json('', ['message' => $message], 201);
-            } catch (\Exception $e) {
-                DB::rollback();
-                $message = _lang('app.error_is_occured');
-                return _api_json('', ['message' => $message], 400);
+            $donation_request = DonationRequest::leftJoin('devices', 'devices.id', '=', 'donation_requests.device_id')
+                    ->leftJoin('users', 'users.id', '=', 'donation_requests.client_id')
+                    ->where('donation_requests.id', $request->input('request_id'))
+                    ->select('donation_requests.*', 'devices.device_token', 'devices.device_type')
+                    ->first();
+//            dd($donation_request);
+            if (!$donation_request) {
+                $message = _lang('app.not_found');
+                return _api_json('', ['message' => $message], 404);
             }
+            if (in_array($request->status, [2, 3, 4])) {
+                $message = DonationRequest::$status_text[$request->status]['client'];
+            } else {
+                $message = _lang('app.not_found');
+                return _api_json('', ['message' => $message], 404);
+            }
+            $donation_request->status = $request->input('status');
+            $donation_request->save();
+            $notification = ['title' => 'Keswa', 'body' => $message['message_ar'], 'type' => 1];
+            if ($donation_request->client_id) {
+                $notifier_id = $donation_request->client_id;
+                $notifible_type = 1;
+                $this->create_noti($request->input('request_id'), $notifier_id, $request->input('status'), $notifible_type);
+                //dd('here');
+                event(new Noti(['user_id' => $notifier_id, 'type' => 1, 'body' => $message['message_' . $this->lang_code], 'url' => null]));
+                $this->send_noti_fcm($notification, $donation_request->client_id);
+            } else {
+                $this->send_noti_fcm($notification, false, $donation_request->device_token, $donation_request->device_type);
+            }
+
+
+            return _api_json('', ['message' => _lang('app.updated_successfully')]);
+        } catch (\Exception $e) {
+            $message = _lang('app.error_is_occured');
+            return _api_json('', ['message' => $e->getMessage()], 400);
         }
     }
 
-    public function status(Request $request) {
+    public function status2(Request $request) {
         try {
 
             $validator = Validator::make($request->all(), $this->status_rules);
@@ -259,6 +249,7 @@ class DonationRequestsController extends ApiController {
         $donation_request->appropriate_time = $request->input('appropriate_time');
         $donation_request->lat = $request->input('lat');
         $donation_request->lng = $request->input('lng');
+        $donation_request->date = date('Y-m-d');
         $donation_request->donation_type_id = $request->input('donation_type');
         $donation_images = json_decode($request->images);
         $images = [];
@@ -273,12 +264,12 @@ class DonationRequestsController extends ApiController {
         if ($this->auth_user()) {
             $donation_request->name = $this->auth_user()->name;
             $donation_request->mobile = $this->auth_user()->mobile;
-            $donation_request->device_id = $this->auth_user()->device_id;
+            $donation_request->client_id = $this->auth_user()->id;
         } else {
             $donation_request->name = $request->input('name');
             $donation_request->mobile = $request->input('mobile');
             $device = Device::updateOrCreate(
-                            ['device_id' => $request->input('device_id')], ['device_token' => $request->input('device_token'), 'device_type' => $request->input('device_type')]
+                            ['device_id' => $request->input('device_id'), 'user_id' => null], ['device_token' => $request->input('device_token'), 'device_type' => $request->input('device_type')]
             );
             $donation_request->device_id = $device->id;
         }

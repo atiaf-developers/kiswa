@@ -41,6 +41,14 @@ class AjaxController extends FrontController {
                 ])->cookie('city_id', $city_id, $long)->cookie('area_id', $area_id, $long);
     }
 
+    public function resend_code(Request $request) {
+        $mobile = $request->input('mobile');
+        $activation_code = Random(4);
+        $activation_code = 1234;
+        $this->sendSMS([$request->input('mobile')], $activation_code);
+        return _json('success', _lang('app.sent_successfully'));
+    }
+
     public function checkAvailability(Request $request) {
         $date = $request->input('date');
         $game_id = $request->input('game_id');
@@ -150,8 +158,8 @@ class AjaxController extends FrontController {
     private function getAvailableTimes($date, $game_id) {
         $date_found = GameAvailability::where('date', $date)->where('game_id', 3)->first();
         $times = array();
-        $work_from=$this->_settings["work_from"]->value;
-        $work_to=$this->_settings["work_to"]->value;
+        $work_from = $this->_settings["work_from"]->value;
+        $work_to = $this->_settings["work_to"]->value;
         if (!$date_found) {
             $start = "$date $work_from";
             $end = "$date $work_to";

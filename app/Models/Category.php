@@ -9,7 +9,7 @@ class Category extends MyModel {
     protected $table = "categories";
     public static $sizes = array(
         's' => array('width' => 120, 'height' => 120),
-        'm' => array('width' => 400, 'height' => 400),
+        'm' => array('width' => 600, 'height' => 400),
     );
 
     public static function getAll() {
@@ -28,7 +28,7 @@ class Category extends MyModel {
         $transformer = new \stdClass();
         $transformer->id = $item->id;
         $transformer->title = $item->title;
-        $transformer->image = url('public/uploads/categories/s_' . static::rmv_prefix($item->image));
+        $transformer->image = url('public/uploads/categories/m_' . static::rmv_prefix($item->image));
         if ($item->description) {
             $transformer->description = $item->description;
         }

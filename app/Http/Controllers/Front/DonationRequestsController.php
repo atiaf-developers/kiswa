@@ -124,9 +124,7 @@ class DonationRequestsController extends FrontController {
                 if (count($images) > 4) {
                     return _json('error', ['images[]' => [_lang('app.maximum_images_is_4')]]);
                 }
-            } else {
-                return _json('error', ['images[]' => [_lang('app.please_upload_one_image_at_least')]]);
-            }
+            } 
 
             return _json('success', ['step' => $step]);
         }
@@ -134,6 +132,8 @@ class DonationRequestsController extends FrontController {
         if (!$this->User) {
             if ($step == 2) {
                 $activation_code = Random(4);
+                //$activation_code = 1234;
+                $send = $this->sendSMS([$request->input('mobile')], $activation_code);
                 $message = _lang('app.verification_code_is') . ' ' . $activation_code;
                 return _json('success', ['step' => $step, 'activation_code' => $activation_code]);
             }
@@ -148,7 +148,7 @@ class DonationRequestsController extends FrontController {
                 try {
                     $this->create_donation_request($request);
                     DB::commit();
-                    $message = _lang('app.request_has_been_sent_successfully');
+                    $message = _lang('app.the_delegate_will_come_to_you_to_receive_your_donation_request');
                     return _json('success', ['step' => $step, 'message' => $message]);
                 } catch (\Exception $ex) {
                     DB::rollback();
@@ -162,7 +162,7 @@ class DonationRequestsController extends FrontController {
             try {
                 $this->create_donation_request($request);
                 DB::commit();
-                $message = _lang('app.request_has_been_sent_successfully');
+                $message = _lang('app.the_delegate_will_come_to_you_to_receive_your_donation_request');
                 return _json('success', ['step' => $step, 'message' => $message]);
             } catch (\Exception $ex) {
                 DB::rollback();
@@ -171,7 +171,6 @@ class DonationRequestsController extends FrontController {
                 return _json('error', $message);
             }
         }
-     
     }
 
     public function submitDonationRequestForm2(Request $request) {
@@ -216,20 +215,26 @@ class DonationRequestsController extends FrontController {
         $donation_request->appropriate_time = $request->input('appropriate_time');
         $donation_request->lat = $request->input('lat');
         $donation_request->lng = $request->input('lng');
+        $donation_request->date = date('Y-m-d');
         //dd( $request->input('donation_type'));
         $donation_request->donation_type_id = $request->input('donation_type');
         $donation_images = $request->file('images');
         $images = [];
-        foreach ($donation_images as $image) {
-            $images[] = DonationRequest::upload($image, 'donation_requests', true);
+        if ($donation_images && count($donation_images) > 0) {
+            foreach ($donation_images as $image) {
+                $images[] = DonationRequest::upload($image, 'donation_requests', true);
+            }
+            $donation_request->images = json_encode($images);
         }
-        $donation_request->images = json_encode($images);
+
+
         if ($this->User) {
             $donation_request->name = $this->User->name;
             $donation_request->mobile = $this->User->mobile;
+            $donation_request->client_id = $this->User->id;
         } else {
             $donation_request->name = $request->input('name');
-            $donation_request->mobile = $request->input('dial_code').$request->input('mobile');
+            $donation_request->mobile = $request->input('dial_code') . $request->input('mobile');
         }
         $donation_request->save();
     }

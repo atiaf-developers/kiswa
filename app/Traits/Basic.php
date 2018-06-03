@@ -6,6 +6,8 @@ use App\Models\Setting;
 use Image;
 use App\Models\NotiObject;
 use App\Models\Noti;
+use App\Helpers\Fcm;
+use App\Models\Device;
 
 trait Basic {
 
@@ -50,9 +52,7 @@ trait Basic {
         $this->data['title_slug'] = $this->title_slug;
     }
 
-    
-
-   protected function create_noti($entity_id,$notifier_id,$entity_type,$notifible_type=1) {
+    protected function create_noti($entity_id, $notifier_id, $entity_type, $notifible_type = 1) {
         $NotiObject = new NotiObject;
         $NotiObject->entity_id = $entity_id;
         $NotiObject->entity_type_id = $entity_type;
@@ -61,24 +61,66 @@ trait Basic {
         $Noti = new Noti;
         $Noti->notifier_id = $notifier_id;
         $Noti->noti_object_id = $NotiObject->id;
-        
+        if($notifier_id==null){
+            $Noti->read_status = 2;
+        }
         $Noti->save();
     }
+    protected function sendSMS($numbers,$msg) {
+        //dd($msg);
+        $params = array(
+            'mobile' => env('MOBILY_MOBILE'),
+            'password' => env('MOBILY_PASSWORD'),
+            'numbers' => implode(',', $numbers),
+            'sender' => env('MOBILY_SENDER'),
+            'msg' => $msg,
+            'applicationType'=>68,
+            'lang'=>3
+        );
+        $url='http://www.mobily.ws/api/msgSend.php';
+        $url.='?'. http_build_query($params);
+        //dd($url);
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', $url);
+        return $res;
+    }
 
-    protected function lang_rules($columns_arr=array())
-    {
-        $rules=array();
+    protected function send_noti_fcm($notification, $user_id = false, $device_token = false, $device_type = false) {
+        $Fcm = new Fcm;
+        if ($user_id) {
+            $token_and = Device::where('user_id', $user_id)
+                    ->where('device_type', 1)
+                    ->pluck('device_token');
+            $token_ios = Device::where('user_id', $user_id)
+                    ->where('device_type', 2)
+                    ->pluck('device_token');
+            $token_and = $token_and->toArray();
+            $token_ios = $token_ios->toArray();
+            if (count($token_and) > 0) {
+                //$token_and=$token_and[0];
+              //dd($token_and);
+                return $Fcm->send($token_and, $notification, 'and');
+            } else if (count($token_ios) > 0) {
+                return $Fcm->send($token_ios, $notification, 'ios');
+            }
+        } else {
+            $device_type = $device_type == 1 ? 'and' : 'ios';
+            return $Fcm->send($device_token, $notification, $device_type);
+        }
+    }
 
-        if(!empty($columns_arr)){
-            foreach($columns_arr as $column=>$rule){
-                foreach($this->languages as $lang_key => $locale){
-                    $key=$column.'.'.$lang_key;
-                    $rules[$key]=$rule;
+    protected function lang_rules($columns_arr = array()) {
+        $rules = array();
+
+        if (!empty($columns_arr)) {
+            foreach ($columns_arr as $column => $rule) {
+                foreach ($this->languages as $lang_key => $locale) {
+                    $key = $column . '.' . $lang_key;
+                    $rules[$key] = $rule;
                 }
             }
         }
         return $rules;
     }
-    
 
 }

@@ -69,53 +69,65 @@
             </div>
             <div class="panel-body">
 
-                <div class="row">
-                    @if($log->count()>0)
-                    <div class="col-sm-12">
-                        <table class = "table table-responsive table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>{{_lang('app.delegate')}}</th>
-                                    <th width="90%">{{_lang('app.containers')}}</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($log as $delegate)
-                                <tr>
-                                    <td>{{$delegate->username}}</td>
-                                    <td>
-                                        @if($delegate->containers->count()>0)
-                                        @foreach($delegate->containers as $container)
-                                        @php $class=$container->date_of_unloading?'label-success':'label-danger'; @endphp
-                                        <p class="label label-sm {{$class}}">{{$container->container_title}}</p>
-                                        @endforeach
-                                        @else
-                                        <span>{{_lang('app.no_containers_assigned_at_this_day')}}</span>
-                                        @endif
-                                    </td>
+                @if($log->count()>0)
 
-                                </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-
-
-
-
-                            </tfoot>
-                        </table>
+                <div class="col-sm-10 col-sm-offset-2"  style="margin-bottom: 10px;">
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <span class="label label-sm label-success" style="margin-right: 5px;margin-left: 5px;"> </span> {{_lang('app.discharge')}}
                     </div>
-                    <div class="text-center">
-                        {{ $log->links() }}  
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <span class="label label-sm label-danger" style="margin-right: 5px;margin-left: 5px;"> </span>   {{_lang('app.no_discharge')}}
+
                     </div>
-                    @else
-                    <p class="text-center">{{_lang('app.no_results')}}</p>
-                    @endif
-
-
+                    
                 </div>
-                <!--row-->
+
+
+
+                <div class="col-sm-12">
+                    <table class = "table table-responsive table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>{{_lang('app.delegate')}}</th>
+                                <th width="90%">{{_lang('app.containers')}}</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($log as $delegate)
+                            <tr>
+                                <td>{{$delegate->username}}</td>
+                                <td>
+                                    @if($delegate->containers->count()>0)
+                                    @foreach($delegate->containers as $container)
+                                    @php $class=$container->date_of_unloading?'label-success':'label-danger'; @endphp
+                                    <p class="label label-sm {{$class}}">{{$container->container_title}}</p>
+                                    @endforeach
+                                    @else
+                                    <span>{{_lang('app.no_containers_assigned_at_this_day')}}</span>
+                                    @endif
+                                </td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+
+
+
+
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="text-center">
+                    {{ $log->links() }}  
+                </div>
+                @else
+                <p class="text-center">{{_lang('app.no_results')}}</p>
+                @endif
+
+
             </div>
 
         </div>

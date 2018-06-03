@@ -18,7 +18,7 @@ class FrontController extends Controller {
     protected $User = false;
     protected $isUser = false;
     protected $_Request = false;
-    protected $limit = 1;
+    protected $limit = 10;
     protected $order_minutes_limit = 16;
     protected $_settings;
     protected $data = array();

@@ -98,7 +98,8 @@ class ActivitiesController extends BackendController {
 
             $message['message_ar'] = 'نشاط جديد ' . $activity_title['ar'];
             $message['message_en'] = 'new ativity ' . $activity_title['en'];
-            $notification = array('title' => _lang('app.keswa'), 'body' => $message, 'type' => 2, 'id' => $activity->id);
+  
+            $notification = array('title' => _lang('app.keswa'), 'body' => $message['message_ar'] , 'type' => 2, 'id' => $activity->id);
 
             $Fcm = new Fcm;
             $token = '/topics/keswa_and';
@@ -267,7 +268,7 @@ class ActivitiesController extends BackendController {
                             $back = "";
                             if (\Permissions::check('activities', 'edit') || \Permissions::check('activities', 'delete')) {
                                 $back .= '<div class="btn-group">';
-                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> options';
+                                $back .= ' <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">'._lang('app.options');
                                 $back .= '<i class="fa fa-angle-down"></i>';
                                 $back .= '</button>';
                                 $back .= '<ul class = "dropdown-menu" role = "menu">';

@@ -1,6 +1,6 @@
 @extends('layouts.profile')
 
-@section('pageTitle',_lang('app.dashboard'))
+@section('pageTitle',_lang('app.my_profile'))
 
 
 @section('js')
@@ -24,6 +24,10 @@
     <tr>
         <td>{{_lang('app.mobile')}}</td>
        <td>{{$User->mobile}}</td>
+    </tr>
+    <tr>
+        <td>{{_lang('app.password')}}</td>
+       <td>*******</td>
     </tr>
  
 </table>

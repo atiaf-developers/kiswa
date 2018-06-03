@@ -3,7 +3,7 @@ var Map = function () {
 
 
     var input = document.getElementById('pac-input');
-
+    var cuurent_location = false
     var map;
     var latlng;
     var geocoder;
@@ -67,23 +67,57 @@ var Map = function () {
         var lat = $('#lat').val();
         var lng = $('#lng').val();
         latlng = new google.maps.LatLng('24.7136', '46.6753');
-        if (!lat && !lng || lat == 0 && lng ==0) {
-                    if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
-               latlng = new google.maps.LatLng(latitude, longitude);
 
-           });
-       } else {
-       latlng = new google.maps.LatLng('24.7136', '46.6753');
-       }
+        if (!lat && !lng || lat == 0 && lng == 0) {
+
+            if (navigator.geolocation) {
+
+
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    latlng = new google.maps.LatLng(latitude, longitude);
+                    var mapOptions = {
+                        center: latlng,
+                        zoom: 18,
+                        draggable: true
+                    }
+                    if (!draggable) {
+                        mapOptions.draggable = false
+                    }
+                    map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                    if (!drawable)
+                    {
+                        geocode(map, latlng);
+                    }
+
+                    if (clickable) {
+
+                        mapOnClick();
+                    }
+                    //markerOnClick();
+                    if (searchable) {
+                        search(drawable);
+                    }
+
+
+                    if (drawable)
+                    {
+                        isClosed[i] = false;
+                        drawOnePolygon();
+                    }
+
+
+                });
+            } else {
+
+            }
         } else {
-            //alert('here');
-            latlng = new google.maps.LatLng(lat, lng);
+
         }
 
-
+        console.log(latlng.lat);
         var mapOptions = {
             center: latlng,
             zoom: 18,
@@ -117,11 +151,13 @@ var Map = function () {
         }
 
 
+
+
     }
 
     var drawOnePolygon = function () {
 
-    //console.log(points);
+        //console.log(points);
         drawPoly(map);
         google.maps.event.addListener(map, 'click', function (clickEvent) {
             if (polygons.length == 1) {
@@ -367,7 +403,7 @@ var Map = function () {
     }
     var drawpolygonOld = function (location) {
         //console.log(location);
-    
+
         for (j = 0; j < location.length; j++) {
             var pointOb = {};
             pointOb.lat = parseFloat(location[j].lat);
@@ -479,7 +515,7 @@ var Map = function () {
                 if (results[0]) {
                     map.setZoom(15);
                     console.log(results[0].formatted_address);
-                    createMarker(map, latlng,false,results[0].formatted_address);
+                    createMarker(map, latlng, false, results[0].formatted_address);
                     document.getElementById('lat').value = latlng.lat();
                     document.getElementById('lng').value = latlng.lng();
                     console.log(results[0]);
@@ -637,7 +673,7 @@ var Map = function () {
 
             if (!dragable)
             {
-                createMarker(map, place.geometry.location,false,place.formatted_address);
+                createMarker(map, place.geometry.location, false, place.formatted_address);
             }
 
 
