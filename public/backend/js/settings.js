@@ -19,6 +19,9 @@ var Settings = function() {
                     required: true,
                     email: true
                 },
+                'setting[slogan_url]': {
+                    required: true,
+                },
                 'setting[social_media][facebook]': {
                     required: true
                 },

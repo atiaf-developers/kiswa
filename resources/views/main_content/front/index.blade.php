@@ -19,13 +19,18 @@
                     <div class="buttons">
                         <a href="{{_url('donation-request')}}" class="btn btn-learn">{{ _lang('app.create_a_donation_request') }}</a>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="scrolldown">
-        <a id="scroll" href="#features" class="scroll"></a>
-    </div>
+                    <div class="app">
+                       <h3>{{ _lang('app.download_the_app_now') }}<i class="fa fa-download"></i> </h3>
+                       <a target="_blank" href="{{ $settings['store']->ios }}"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
+                       <a target="_blank" href="{{ $settings['store']->android }}"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <div class="scrolldown">
+    <a id="scroll" href="#features" class="scroll"></a>
+</div>
 </section>
 
 
@@ -267,14 +272,14 @@
                 <div class="alert alert-danger" style="display:{{Session('errorMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span class="message">{{Session::get('errorMessage')}}</span></div>
             </div>
             <div class="col-md-6 col">
+                <p>
+                   {{ _lang('app.we_welcome_all_your_inquiry_because_your_opinions_on_what_we_offer_are_of_interest_to_us,_so_that_we can_provide_the_best_service') }}.<br>
+                    {{  _lang('app.send_your_inquiry_or_feedback_and_we_will_take_it_into_account') }}.                          
+                </p>
                 <p><i class="fa fa-phone"></i> {{ $settings['phone']->value }} </p> 
                 <p><i class="fa fa-envelope-o"></i> {{ $settings['email']->value }} </p>                             
                 <p><i class="fa fa-map-marker"></i> {{ _lang('app.kingdom_of_saudi_arabia') }} </p>
-                <div class="app">
-                    <h3>{{ _lang('app.download_the_app_now') }}<i class="fa fa-download"></i> </h3>
-                    <a target="_blank" href="{{ $settings['store']->ios }}"><img src="{{url('public/front/img')}}/app.png" alt=""></a>
-                    <a target="_blank" href="{{ $settings['store']->android }}"><img src="{{url('public/front/img')}}/google.png" alt=""></a>
-                </div>
+
             </div>
         </div>
     </div>

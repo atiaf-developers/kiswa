@@ -27,13 +27,18 @@
             <div class="form-body">
 
                 <div class="form-group form-md-line-input col-md-6">
-                    <input type="number" class="form-control" id="phone" name="setting[phone]" value="{{$settings['phone']->value}}">
+                    <input type="number" class="form-control" id="phone" name="setting[phone]" value="{{ isset($settings['phone']) ? $settings['phone']->value : ''}}">
                     <label for="phone">{{_lang('app.phone') }}</label>
                     <span class="help-block"></span>
                 </div>
                 <div class="form-group form-md-line-input col-md-6">
-                    <input type="text" class="form-control" id="email" name="setting[email]" value="{{$settings['email']->value}}">
+                    <input type="text" class="form-control" id="email" name="setting[email]" value="{{isset($settings['email']) ? $settings['email']->value : ''}}">
                     <label for="email">{{_lang('app.email') }}</label>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group form-md-line-input col-md-6">
+                    <input type="text" class="form-control" id="slogan_url" name="setting[slogan_url]" value="{{isset($settings['slogan_url']) ? $settings['slogan_url']->value : ''}}">
+                    <label for="slogan_url">{{_lang('app.slogan_url') }}</label>
                     <span class="help-block"></span>
                 </div>
                 <div class="form-group form-md-line-input col-md-6">
@@ -46,16 +51,7 @@
                     <label for="phone">{{_lang('app.ios_url') }}</label>
                     <span class="help-block"></span>
                 </div>
-                    {{--  <div class="form-group col-md-2">
-                    <label class="control-label">{{_lang('app.about_image')}}</labe                l>
-
-                    <div class="about_image_bo                    x">
-                <img src="{{url('public/uploads').'/'.$settings['about_image']->value}}" width="100" height="80" class="about_image" />
-                        </div>
-                        <input type="file" name="about_image" id="about_image" style="display:none;">     
-                        <span class="help-block"></span>             
-                    </div>  --}}
-
+                   
                     <div class="clearfix"></div>
 
 

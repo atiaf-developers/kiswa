@@ -868,6 +868,10 @@ return [
      'daily_report' => 'تقرير يومي',
      'no_containers_assigned_at_this_day' => 'لم يتم أسناد حاوية في هذا اليوم',
      'period_report' => 'تقرير لقترة معينه',
+
+     'we_welcome_all_your_inquiry_because_your_opinions_on_what_we_offer_are_of_interest_to_us,_so_that_we can_provide_the_best_service' => 'نرحب بجميع استفسارتكم لان آرائكم حول ما نقدمه تهمنا،ولكى نتمكن من تقديم افضل خدمة',
+     'send_your_inquiry_or_feedback_and_we_will_take_it_into_account' => 'ارسل استفسارك او تعقيبك وسنأخذها بعين الاعتبار',
+     'slogan_url' => 'رابط شعار المبادرة',
      
 
 

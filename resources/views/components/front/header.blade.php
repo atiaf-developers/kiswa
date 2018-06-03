@@ -20,7 +20,7 @@
 
                         <a href="{{_url('customer/user/notifications')}}" class="btn btn-read"><i class="fa fa-bell"></i>{{ _lang('app.notifications') }}</a>
 
-                       
+
 
                         @else
                         <a class="btn btn-read" href="{{_url('login?return='.base64_encode(request()->getPathInfo() . (request()->getQueryString() ? ('?' . request()->getQueryString()) : ''))) }}"><i class="fa fa-user"></i>{{_lang('app.login')}}</a>
@@ -36,14 +36,19 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="logo-mobadra">
-                            <a href="{{_url('')}}">
+                            <a href="{{ $settings['slogan_url']->value }}" target="_blank">
                                 <img class="logo" src="{{url('public/front/img')}}/logo2.png" alt="">
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="logo-center">
+                            <img src="{{url('public/front/img')}}/logo3.png" alt="">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="logo-keswa">
                             <a href="{{_url('')}}">
                                 <img class="logo-2" src="{{url('public/front/img')}}/logo.png" alt="">
