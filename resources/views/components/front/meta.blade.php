@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="" />
-<meta name="keywords" content="" />
+<meta name="description" content="{{$settings_translations->description}}" />
+<meta name="keywords" content="{{$settings_translations->key_words}}" />
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>@yield('pageTitle')</title>

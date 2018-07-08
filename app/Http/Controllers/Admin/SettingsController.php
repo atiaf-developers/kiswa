@@ -45,6 +45,7 @@ class SettingsController extends BackendController {
             'description' => 'required',
             'address' => 'required',
             'policy' => 'required',
+            'key_words' => 'required',
         );
 
         $this->rules = array_merge($this->rules, $this->lang_rules($columns_arr));
@@ -73,11 +74,13 @@ class SettingsController extends BackendController {
                 $address = $request->input('address');
                 $about = $request->input('about');
                 $policy = $request->input('policy');
+                $key_words = $request->input('key_words');
+ 
                 foreach ($about as $key => $value) {
                     SettingTranslation::updateOrCreate(
                             ['locale' => $key], [
                                 'locale' => $key, 'title' => $value, 'description' => $description[$key],
-                                'address' => $address[$key], 'about' => $about[$key],'policy' => $policy[$key]
+                                'address' => $address[$key], 'about' => $about[$key],'policy' => $policy[$key],'key_words' => $key_words[$key]
                             ]);
                 }
                 DB::commit();

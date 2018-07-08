@@ -68,9 +68,15 @@ var Settings = function() {
             var address = "textarea[name='address[" + langs[x] + "]']";
             var about = "textarea[name='about[" + langs[x] + "]']";
             var policy = "textarea[name='policy[" + langs[x] + "]']";
+            var key_words = "textarea[name='key_words[" + langs[x] + "]']";
             // $(title).rules('add', {
             //     required: true
             // });
+
+            
+            $(key_words).rules('add', {
+                required: true
+            });
             $(description).rules('add', {
                 required: true
             });

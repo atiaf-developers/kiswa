@@ -51,112 +51,141 @@
                     <label for="phone">{{_lang('app.ios_url') }}</label>
                     <span class="help-block"></span>
                 </div>
-                   
-                    <div class="clearfix"></div>
+
+                <div class="clearfix"></div>
 
 
 
 
-                </div>
-
-
-
-
-                <!--Table Wrapper Finish-->
             </div>
 
+
+
+
+            <!--Table Wrapper Finish-->
         </div>
+
+    </div>
     
 
-        @foreach ($languages as $key => $value)
-        <div class="panel panel-default">
+    @foreach ($languages as $key => $value)
+    <div class="panel panel-default">
 
-            <div class="panel-body">
+        <div class="panel-body">
 
-                <div class="form-body">
-                    <div class="col-md-12">
+            <div class="form-body">
+                <div class="col-md-12">
 
-                        <div class="form-group form-md-line-input col-md-3">
-                            <textarea class="form-control" id="description[{{ $key }}]" name="description[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->description:''}}</textarea>
-                            <label for="description">{{_lang('app.description') }} {{ _lang('app. '.$value.'') }}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-3">
-                            <textarea class="form-control" id="about[{{ $key }}]" name="about[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->about:''}}</textarea>
-                            <label for="about">{{_lang('app.about') }} {{ _lang('app. '.$value.'') }}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-3">
-                            <textarea class="form-control" id="address[{{ $key }}]" name="address[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->address:''}}</textarea>
-                            <label for="address">{{_lang('app.address') }} {{ _lang('app. '.$value.'') }}</label>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group form-md-line-input col-md-3">
-                            <textarea class="form-control" id="policy[{{ $key }}]" name="policy[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->policy:''}}</textarea>
-                            <label for="policy">{{_lang('app.policy') }} {{ _lang('app. '.$value.'') }}</label>
-                            <span class="help-block"></span>
-                        </div>
+                    <div class="form-group form-md-line-input col-md-3">
+                        <textarea class="form-control" id="description[{{ $key }}]" name="description[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->description:''}}</textarea>
+                        <label for="description">{{_lang('app.description') }} {{ _lang('app. '.$value.'') }}</label>
+                        <span class="help-block"></span>
+                    </div>
+                    <div class="form-group form-md-line-input col-md-3">
+                        <textarea class="form-control" id="about[{{ $key }}]" name="about[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->about:''}}</textarea>
+                        <label for="about">{{_lang('app.about') }} {{ _lang('app. '.$value.'') }}</label>
+                        <span class="help-block"></span>
+                    </div>
+                    <div class="form-group form-md-line-input col-md-3">
+                        <textarea class="form-control" id="address[{{ $key }}]" name="address[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->address:''}}</textarea>
+                        <label for="address">{{_lang('app.address') }} {{ _lang('app. '.$value.'') }}</label>
+                        <span class="help-block"></span>
+                    </div>
+                    <div class="form-group form-md-line-input col-md-3">
+                        <textarea class="form-control" id="policy[{{ $key }}]" name="policy[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->policy:''}}</textarea>
+                        <label for="policy">{{_lang('app.policy') }} {{ _lang('app. '.$value.'') }}</label>
+                        <span class="help-block"></span>
                     </div>
                 </div>
-
-
-
-
-                <!--Table Wrapper Finish-->
             </div>
 
+
+
+
+            <!--Table Wrapper Finish-->
         </div>
-        @endforeach
 
+    </div>
+    @endforeach
 
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{_lang('app.social_media')}}</h3>
-            </div>
-            <div class="panel-body">
-
-                <div class="form-body">
-                    <div class="form-group form-md-line-input col-md-6">
-                        <input type="text" class="form-control" name="setting[social_media][facebook]" value="{{ isset($settings['social_media']->facebook) ? $settings['social_media']->facebook :'' }}">
-                        <label for="social_media_facebook">{{_lang('app.facebook') }}</label>
-                        <span class="help-block"></span>
-                    </div>
-                    <div class="form-group form-md-line-input col-md-6">
-                        <input type="text" class="form-control" name="setting[social_media][twitter]" value="{{ isset($settings['social_media']->twitter) ? $settings['social_media']->twitter :'' }}">
-                        <label for="social_media_twitter">{{_lang('app.twitter') }}</label>
-                        <span class="help-block"></span>
-                    </div>
-                    <div class="form-group form-md-line-input col-md-6">
-                        <input type="text" class="form-control" name="setting[social_media][instagram]" value="{{ isset($settings['social_media']->instagram) ? $settings['social_media']->instagram :'' }}">
-                        <label for="social_media_instagram">{{_lang('app.instagram') }}</label>
-                        <span class="help-block"></span>
-                    </div>
-                    <div class="form-group form-md-line-input col-md-6">
-                        <input type="text" class="form-control" name="setting[social_media][google]" value="{{ isset($settings['social_media']->google) ?$settings['social_media']->google :'' }}">
-                        <label for="social_media_google">{{_lang('app.google') }}</label>
-                        <span class="help-block"></span>
-                    </div>
-                    <div class="form-group form-md-line-input col-md-6">
-                        <input type="text" class="form-control" name="setting[social_media][youtube]" value="{{ isset($settings['social_media']->youtube) ? $settings['social_media']->youtube :'' }}">
-                        <label for="social_media_youtube">{{_lang('app.youtube') }}</label>
-                        <span class="help-block"></span>
-                    </div>
-
-                    <div class="clearfix"></div>
-                </div>
-
-
-
-
-                <!--Table Wrapper Finish-->
-            </div>
-            <div class="panel-footer text-center">
-                <button type="button" class="btn btn-info submit-form"
-                        >{{_lang('app.save') }}</button>
-            </div>
-
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{_lang('app.key_words')}}</h3>
         </div>
+        <div class="panel-body">
+
+            <div class="form-body">
+
+          @foreach ($languages as $key => $value)
+
+            <div class="form-group form-md-line-input col-md-6">
+                <textarea class="form-control" id="key_words[{{ $key }}]" name="key_words[{{ $key }}]"  cols="30" rows="10">{{isset($settings_translations[$key])?$settings_translations[$key]->key_words:''}}</textarea>
+                <label for="key_words">{{_lang('app.key_words') }} {{ _lang('app. '.$value.'') }}</label>
+                <span class="help-block"></span>
+            </div>
+
+            @endforeach
+
+            <div class="clearfix"></div>
+        </div>
+
+
+
+
+        <!--Table Wrapper Finish-->
+    </div>
+
+</div>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{_lang('app.social_media')}}</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="form-body">
+            <div class="form-group form-md-line-input col-md-6">
+                <input type="text" class="form-control" name="setting[social_media][facebook]" value="{{ isset($settings['social_media']->facebook) ? $settings['social_media']->facebook :'' }}">
+                <label for="social_media_facebook">{{_lang('app.facebook') }}</label>
+                <span class="help-block"></span>
+            </div>
+            <div class="form-group form-md-line-input col-md-6">
+                <input type="text" class="form-control" name="setting[social_media][twitter]" value="{{ isset($settings['social_media']->twitter) ? $settings['social_media']->twitter :'' }}">
+                <label for="social_media_twitter">{{_lang('app.twitter') }}</label>
+                <span class="help-block"></span>
+            </div>
+            <div class="form-group form-md-line-input col-md-6">
+                <input type="text" class="form-control" name="setting[social_media][instagram]" value="{{ isset($settings['social_media']->instagram) ? $settings['social_media']->instagram :'' }}">
+                <label for="social_media_instagram">{{_lang('app.instagram') }}</label>
+                <span class="help-block"></span>
+            </div>
+            <div class="form-group form-md-line-input col-md-6">
+                <input type="text" class="form-control" name="setting[social_media][google]" value="{{ isset($settings['social_media']->google) ?$settings['social_media']->google :'' }}">
+                <label for="social_media_google">{{_lang('app.google') }}</label>
+                <span class="help-block"></span>
+            </div>
+            <div class="form-group form-md-line-input col-md-6">
+                <input type="text" class="form-control" name="setting[social_media][youtube]" value="{{ isset($settings['social_media']->youtube) ? $settings['social_media']->youtube :'' }}">
+                <label for="social_media_youtube">{{_lang('app.youtube') }}</label>
+                <span class="help-block"></span>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+
+
+
+        <!--Table Wrapper Finish-->
+    </div>
+    <div class="panel-footer text-center">
+        <button type="button" class="btn btn-info submit-form"
+        >{{_lang('app.save') }}</button>
+    </div>
+
+</div>
 
 
 
