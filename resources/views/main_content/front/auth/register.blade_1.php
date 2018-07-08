@@ -41,6 +41,32 @@
                         </div>
 
                      
+                        <div class="tab">
+                            <div class="alert alert-success" style="display:{{Session('successMessage')?'block;':'none;'}}; " role="alert"><i class="fa fa-check" aria-hidden="true"></i> <span class="message">{{Session::get('successMessage')}}</span></div>
+                            <div class="row form-w3agile">
+                                <h3 class="h3-dir">{{ _lang('app.you_will_receive_a_text_message_with_activation_code_on_your_mobile_number') }} <span id="mobile-message"></span> <a href="#" class="change-num" onclick="Login.nextPrev(this, -1)">{{ _lang('app.change_number') }}</a></h3>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[0]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[1]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[2]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="form-group col-sm-3 inputbox">
+                                    <input type="text" class="form-control text-center" name="code[3]" placeholder="0">
+                                    <span class="help-block"></span>
+                                </div>
+                                <div class="msg-error" style="display: none;">
+                                    <span id="activation-code-message" ></span>
+                                </div>
+                                <a class="a-signin" href="#" onclick="Main.resend_code(this);return false;" ><strong>{{ _lang('app.send_the_code_again') }}</strong></a>
+                            </div>
+                        </div>
                         <div class="tab dir form-group">
                             <h3>{{ _lang('app.complete_the_data') }}</h3>
                             <div class="form-group">
@@ -96,6 +122,7 @@
                         </div>
                         <!-- Circles which indicates the steps of the form: -->
                         <div class="steps">
+                            <span class="step"></span>
                             <span class="step"></span>
                             <span class="step"></span>
                             <span class="step"></span>

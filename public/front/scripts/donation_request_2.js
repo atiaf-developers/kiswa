@@ -93,11 +93,15 @@ var DonationRequest = function () {
                         $('#nextBtn').html(lang.next);
                         var step = data.data.step;
                         if (!config.isUser) {
-                            if (step == 2) {
+                            if (step == 3) {
                                 $('.next2').hide();
                                 $('.alert-danger').hide();
                                 $('.alert-success').show().find('.message').html(data.data.message);
-                            } 
+                            } else if (step == 2) {
+                                $('#mobile-message').html($('#mobile').val());
+                                activation_code = data.data.activation_code;
+
+                            }
                         } else {
                             if (step == 2) {
                                 $('.next2').hide();
@@ -228,5 +232,3 @@ var DonationRequest = function () {
 jQuery(document).ready(function () {
     DonationRequest.init();
 });
-
-

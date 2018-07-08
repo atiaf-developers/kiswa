@@ -12,7 +12,7 @@ use App\Models\User;
 use Session;
 use Socialite;
 
-class RegisterController extends FrontController {
+class Register2Controller extends FrontController {
     /*
       |--------------------------------------------------------------------------
       | Register Controller
@@ -30,8 +30,10 @@ use RegistersUsers;
     private $step_one_rules = array(
         'mobile' => 'required|unique:users',
     );
-
     private $step_two_rules = array(
+        'code.*' => 'required',
+    );
+    private $step_three_rules = array(
         'name' => 'required',
         'username' => 'required|unique:users',
         'mobile' => 'required|unique:users',
@@ -63,7 +65,9 @@ use RegistersUsers;
             $rules = $this->step_one_rules;
         } else if ($step == 2) {
             $rules = $this->step_two_rules;
-        }  else {
+        } else if ($step == 3) {
+            $rules = $this->step_three_rules;
+        } else {
             return _json('error', _lang('app.error_is_occured'));
         }
         $validator = Validator::make($request->all(), $rules);
@@ -72,9 +76,21 @@ use RegistersUsers;
             return _json('error', $this->errors);
         }
         if ($step == 1) {
-       
-            return _json('success', ['step' => $step]);
+            $activation_code = Random(4);
+            $mobile= $request->input('dial_code').$request->input('mobile');
+            $send = $this->sendSMS([$mobile], $activation_code);
+            $message = _lang('app.verification_code_is') . ' ' . $activation_code;
+            return _json('success', ['step' => $step, 'activation_code' => $activation_code]);
         } else if ($step == 2) {
+            $form_code = implode('', $request->input('code'));
+            $ajax_code = $request->input('ajax_code');
+            //dd($ajax_code);
+            if ($ajax_code != $form_code) {
+                return _json('error', ['activation_code' => [_lang('app.code_is_wrong')]]);
+            } else {
+                return _json('success', ['step' => $step]);
+            }
+        } else if ($step == 3) {
             try {
                 $User = new User;
                 $User->name = $request->input('name');
@@ -94,7 +110,7 @@ use RegistersUsers;
                 $message = _lang('app.error_is_occured');
                 return _json('error', $message);
             }
-        } 
+        }
     }
 
     public function showEditMobileForm() {

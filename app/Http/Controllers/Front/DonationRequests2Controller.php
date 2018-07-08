@@ -11,7 +11,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use DB;
 use App\Models\DonationRequest;
 
-class DonationRequestsController extends FrontController {
+class DonationRequests2Controller extends FrontController {
 
     private $rules = array(
         'auth' => array(
@@ -38,6 +38,12 @@ class DonationRequestsController extends FrontController {
                 'images.*' => 'required|image|mimes:gif,png,jpeg',
             ),
             'step_two_rules' => array(
+                'lat' => 'required',
+                'lng' => 'required',
+                'name' => 'required',
+                'mobile' => 'required',
+            ),
+            'step_three_rules' => array(
                 'donation_type' => 'required',
                 'description' => 'required',
                 'appropriate_time' => 'required',
@@ -45,7 +51,8 @@ class DonationRequestsController extends FrontController {
                 'lat' => 'required',
                 'lng' => 'required',
                 'name' => 'required',
-                'mobile' => 'required'
+                'mobile' => 'required',
+                'code.*' => 'required',
             ),
         ),
     );
@@ -91,6 +98,8 @@ class DonationRequestsController extends FrontController {
                 $rules = $this->rules['guest']['step_one_rules'];
             } else if ($step == 2) {
                 $rules = $this->rules['guest']['step_two_rules'];
+            } else if ($step == 3) {
+                $rules = $this->rules['guest']['step_three_rules'];
             } else {
                 return _json('error', _lang('app.error_is_occured'));
             }
@@ -122,7 +131,19 @@ class DonationRequestsController extends FrontController {
 
         if (!$this->User) {
             if ($step == 2) {
-               
+                $activation_code = Random(4);
+                $mobile = $request->input('dial_code') . $request->input('mobile');
+                $send = $this->sendSMS([$mobile], $activation_code);
+                $message = _lang('app.verification_code_is') . ' ' . $activation_code;
+                return _json('success', ['step' => $step, 'activation_code' => $activation_code]);
+            }
+            if ($step == 3) {
+                $form_code = implode('', $request->input('code'));
+                $ajax_code = $request->input('ajax_code');
+                //dd($ajax_code);
+                if ($ajax_code != $form_code) {
+                    return _json('error', ['activation_code' => [_lang('app.code_is_wrong')]]);
+                }
                 DB::beginTransaction();
                 try {
                     $this->create_donation_request($request);
@@ -135,10 +156,7 @@ class DonationRequestsController extends FrontController {
                     $message = _lang('app.error_is_occured');
                     return _json('error', $message);
                 }
-            }else{
-                return _json('success', ['step' => $step]);
             }
-        
         } else {
             DB::beginTransaction();
             try {

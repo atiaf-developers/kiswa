@@ -43,7 +43,7 @@ class RegisterController extends ApiController {
 
             $verification_code = Random(4);
             $verification_code =(int) $verification_code;
-            //$verification_code =1234;
+            $verification_code =1234;
             $send=$this->sendSMS([$request->input('mobile')], $verification_code);
             //dd(json_decode($send->getBody()));
             return _api_json(new \stdClass(), ['code' => $verification_code]);
